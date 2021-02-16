@@ -40,9 +40,9 @@ export default {
     };
   },
   methods: {
-    onSignInClick(event) {
-      console.log(event);
+    onSignInClick() {
       console.log("click");
+      this.$modal.show("sign-in-modal");
     }
   }
 };
