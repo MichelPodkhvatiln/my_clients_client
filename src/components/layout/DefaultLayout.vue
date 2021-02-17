@@ -6,12 +6,6 @@
         <router-view />
       </main>
     </div>
-
-    <modal name="sign-in-modal">
-      <div>
-        Hello
-      </div>
-    </modal>
   </div>
 </template>
 

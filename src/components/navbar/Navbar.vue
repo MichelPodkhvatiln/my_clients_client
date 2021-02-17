@@ -14,7 +14,9 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <custom-button text="SignIn" color="light" @click="onSignInClick" />
+            <button class="button is-light" @click="onSignInClick">
+              Sing In
+            </button>
           </div>
         </div>
       </div>
