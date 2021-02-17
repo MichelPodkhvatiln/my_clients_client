@@ -11,6 +11,7 @@
         <div class="control">
           <input
             class="input"
+            v-model="form.email"
             type="email"
             placeholder="e.g. alex@example.com"
           />
@@ -20,21 +21,58 @@
       <div class="field">
         <label class="label">Password</label>
         <div class="control">
-          <input class="input" type="password" placeholder="********" />
+          <input
+            class="input"
+            v-model="form.password"
+            type="password"
+            placeholder="********"
+          />
         </div>
       </div>
     </div>
     <div class="form-footer">
       <div class="buttons">
-        <button class="button is-primary">Sign in</button>
+        <button class="button is-primary" :disabled="isInvalidFormFields">
+          Sign in
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { required, minLength, email } from "vuelidate/lib/validators";
+
 export default {
-  name: "SignInForm"
+  name: "SignInForm",
+  data() {
+    return {
+      form: {
+        email: "",
+        password: ""
+      }
+    };
+  },
+  computed: {
+    isInvalidFormFields() {
+      const isInvalidEmail = this.$v.form.email.$invalid;
+      const isInvalidPassword = this.$v.form.password.$invalid;
+
+      return isInvalidEmail || isInvalidPassword;
+    }
+  },
+  validations: {
+    form: {
+      email: {
+        required,
+        email
+      },
+      password: {
+        required,
+        minLength: minLength(8)
+      }
+    }
+  }
 };
 </script>
 
