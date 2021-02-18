@@ -74,15 +74,14 @@ export default {
     },
     async logOut({ commit }) {
       const routePath = router.currentRoute.path;
-
-      if (routePath === "/admin") {
-        await router.push("/");
-      }
-
       const token = localStorage.getItem("token");
 
       if (token) {
         await window.httpClient.post("/api/auth/log-out", { token });
+      }
+
+      if (routePath === "/admin") {
+        await router.push("/");
       }
 
       commit("resetState");
