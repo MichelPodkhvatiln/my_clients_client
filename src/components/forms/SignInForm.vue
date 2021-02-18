@@ -32,7 +32,21 @@
     </div>
     <div class="form-footer">
       <div class="buttons">
-        <button class="button is-primary" :disabled="isInvalidFormFields">
+        <button v-if="user.role" class="button is-danger" @click="onSignOut">
+          Sign out
+        </button>
+        <button
+          v-if="user.role === 'admin'"
+          class="button is-danger"
+          @click="onTest"
+        >
+          Test
+        </button>
+        <button
+          class="button is-primary"
+          :disabled="isInvalidFormFields"
+          @click="onSignInClick"
+        >
           Sign in
         </button>
       </div>
@@ -41,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import { required, minLength, email } from "vuelidate/lib/validators";
 
 export default {
@@ -54,6 +69,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("userModule", ["user"]),
     isInvalidFormFields() {
       const isInvalidEmail = this.$v.form.email.$invalid;
       const isInvalidPassword = this.$v.form.password.$invalid;
@@ -71,6 +87,18 @@ export default {
         required,
         minLength: minLength(8)
       }
+    }
+  },
+  methods: {
+    ...mapActions("userModule", ["signIn", "signOut", "testAdmin"]),
+    async onSignInClick() {
+      await this.signIn(this.form);
+    },
+    async onTest() {
+      await this.testAdmin();
+    },
+    onSignOut() {
+      this.signOut();
     }
   }
 };
