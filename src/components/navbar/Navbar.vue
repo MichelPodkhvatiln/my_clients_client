@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <modal name="sign-in-modal" height="auto" @closed="onModalClose">
+    <modal name="auth-modal" height="auto" @closed="onModalClose">
       <auth-form :is-sign-in="isSignIn" :is-sign-up="isSignUp" />
     </modal>
   </nav>
@@ -37,7 +37,7 @@ import AuthForm from "@/components/forms/AuthForm.vue";
 export default {
   name: "Navbar",
   components: {
-    AuthForm
+    AuthForm,
   },
   data() {
     return {
@@ -46,13 +46,13 @@ export default {
       linkList: [
         {
           path: "/",
-          title: "Home"
+          title: "Home",
         },
         {
           path: "/about",
-          title: "About"
-        }
-      ]
+          title: "About",
+        },
+      ],
     };
   },
   methods: {
@@ -62,12 +62,12 @@ export default {
     },
     onSignInClick() {
       this.isSignIn = true;
-      this.$modal.show("sign-in-modal");
+      this.$modal.show("auth-modal");
     },
     onSignUpClick() {
       this.isSignUp = true;
-      this.$modal.show("sign-in-modal");
-    }
-  }
+      this.$modal.show("auth-modal");
+    },
+  },
 };
 </script>
