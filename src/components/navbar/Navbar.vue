@@ -10,17 +10,27 @@
         >
           {{ link.title }}
         </router-link>
+        <router-link v-if="isAdmin" class="navbar-item" to="/admin">
+          Admin Dashboard
+        </router-link>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
-            <button class="button is-light" @click="onSignInClick">
-              Sing In
+          <template v-if="!isUserLogIn">
+            <div class="buttons">
+              <button class="button is-light" @click="onSignInClick">
+                Sing In
+              </button>
+              <button class="button is-primary" @click="onSignUpClick">
+                Sing Up
+              </button>
+            </div>
+          </template>
+          <template v-else>
+            <button class="button is-light" @click="onLogOutClick">
+              Log Out
             </button>
-            <button class="button is-primary" @click="onSignUpClick">
-              Sing Up
-            </button>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -34,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import AuthForm from "@/components/forms/AuthForm.vue";
 
 export default {
@@ -57,7 +68,11 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters("userModule", ["isUserLogIn", "isAdmin"]),
+  },
   methods: {
+    ...mapActions("userModule", ["logOut"]),
     onModalClose() {
       this.isSignIn = false;
       this.isSignUp = false;
@@ -69,6 +84,9 @@ export default {
     onSignUpClick() {
       this.isSignUp = true;
       this.$modal.show("auth-modal");
+    },
+    onLogOutClick() {
+      this.logOut();
     },
   },
 };
