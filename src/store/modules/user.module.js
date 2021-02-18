@@ -42,6 +42,10 @@ export default {
 
       commit("setUser", user);
     },
+    // eslint-disable-next-line no-empty-pattern
+    async signUp({}, payload) {
+      await window.httpClient.post("/api/auth/sign-up", payload);
+    },
     signOut({ commit }) {
       commit("resetState");
 

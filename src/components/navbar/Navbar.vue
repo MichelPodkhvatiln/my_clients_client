@@ -17,18 +17,32 @@
             <button class="button is-light" @click="onSignInClick">
               Sing In
             </button>
+            <button class="button is-primary" @click="onSignUpClick">
+              Sing Up
+            </button>
           </div>
         </div>
       </div>
     </div>
+
+    <modal name="sign-in-modal" height="auto" @closed="onModalClose">
+      <auth-form :is-sign-in="isSignIn" :is-sign-up="isSignUp" />
+    </modal>
   </nav>
 </template>
 
 <script>
+import AuthForm from "@/components/forms/AuthForm.vue";
+
 export default {
   name: "Navbar",
+  components: {
+    AuthForm
+  },
   data() {
     return {
+      isSignIn: false,
+      isSignUp: false,
       linkList: [
         {
           path: "/",
@@ -42,8 +56,16 @@ export default {
     };
   },
   methods: {
+    onModalClose() {
+      this.isSignIn = false;
+      this.isSignUp = false;
+    },
     onSignInClick() {
-      console.log("click");
+      this.isSignIn = true;
+      this.$modal.show("sign-in-modal");
+    },
+    onSignUpClick() {
+      this.isSignUp = true;
       this.$modal.show("sign-in-modal");
     }
   }
