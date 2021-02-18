@@ -52,6 +52,23 @@ export default {
 
       commit("setUser", user);
     },
+    async signInByToken({ commit }, payload) {
+      const { data } = await window.httpClient.post(
+        "/api/auth/sign-in-by-token",
+        payload
+      );
+
+      const user = {
+        email: data.email,
+        role: data.role,
+        username: data.username,
+      };
+
+      localStorage.setItem("token", data.accessToken);
+      window.httpClient.bindToken(data.accessToken);
+
+      commit("setUser", user);
+    },
     async signUp({}, payload) {
       await window.httpClient.post("/api/auth/sign-up", payload);
     },
@@ -60,6 +77,12 @@ export default {
 
       if (routePath === "/admin") {
         await router.push("/");
+      }
+
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await window.httpClient.post("/api/auth/log-out", { token });
       }
 
       commit("resetState");
