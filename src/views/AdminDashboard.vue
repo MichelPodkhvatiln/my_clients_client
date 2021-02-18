@@ -1,13 +1,27 @@
 <template>
-  <div class="about">
-    <h1>This is an admin dashboard page</h1>
+  <div class="admin-dashboard">
+    <admin-menu />
   </div>
 </template>
 
 <script>
+import AdminMenu from "@/components/admin-dashboard/AdminMenu.vue";
+
 export default {
   name: "AdminDashboard",
+  components: {
+    AdminMenu,
+  },
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.admin-dashboard {
+  position: absolute;
+  top: 0;
+  left: -32px; //remove is-fluid class padding
+  right: -32px; //remove is-fluid class padding
+  display: flex;
+  height: 100%;
+}
+</style>

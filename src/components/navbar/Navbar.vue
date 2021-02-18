@@ -6,15 +6,29 @@
           v-for="link in linkList"
           :key="link.path"
           class="navbar-item"
+          :class="{ 'is-active': currentRoute === link.path }"
           :to="link.path"
         >
           {{ link.title }}
         </router-link>
-        <router-link v-if="isAdmin" class="navbar-item" to="/admin">
+        <router-link
+          v-if="isAdmin"
+          class="navbar-item"
+          :class="{ 'is-active': currentRoute === '/admin' }"
+          to="/admin"
+        >
           Admin Dashboard
         </router-link>
       </div>
       <div class="navbar-end">
+        <template v-if="isUserLogIn">
+          <div class="navbar-item">
+            <span>
+              {{ user.username }}
+            </span>
+          </div>
+        </template>
+
         <div class="navbar-item">
           <template v-if="!isUserLogIn">
             <div class="buttons">
@@ -69,7 +83,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("userModule", ["isUserLogIn", "isAdmin"]),
+    ...mapGetters("userModule", ["user", "isUserLogIn", "isAdmin"]),
+    currentRoute() {
+      return this.$route.path;
+    },
   },
   methods: {
     ...mapActions("userModule", ["logOut"]),
