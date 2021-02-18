@@ -25,9 +25,11 @@
       </div>
     </div>
 
-    <modal name="auth-modal" height="auto" @closed="onModalClose">
-      <auth-form :is-sign-in="isSignIn" :is-sign-up="isSignUp" />
-    </modal>
+    <MountingPortal mountTo="body" append name="body">
+      <modal name="auth-modal" height="auto" @closed="onModalClose">
+        <auth-form :is-sign-in="isSignIn" :is-sign-up="isSignUp" />
+      </modal>
+    </MountingPortal>
   </nav>
 </template>
 

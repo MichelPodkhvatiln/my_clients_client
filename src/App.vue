@@ -10,8 +10,8 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 export default {
   name: "App",
   components: {
-    DefaultLayout
-  }
+    DefaultLayout,
+  },
 };
 </script>
 
