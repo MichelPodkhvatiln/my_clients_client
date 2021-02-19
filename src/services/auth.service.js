@@ -30,4 +30,8 @@ export class AuthService extends BaseHttpService {
   login(credentials) {
     return this.post(this.endpoints.login, credentials);
   }
+
+  signUp(credentials) {
+    return this.post(this.endpoints.signUp, credentials);
+  }
 }

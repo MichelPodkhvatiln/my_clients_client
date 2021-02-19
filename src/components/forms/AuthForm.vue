@@ -132,7 +132,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("userModule", ["login"]),
+    ...mapActions("userModule", ["login", "signUp"]),
     async onSubmit() {
       if (this.isSignIn) {
         const credentials = {
@@ -148,20 +148,20 @@ export default {
         }
       }
 
-      // if (this.isSignUp) {
-      //   const signUpData = {
-      //     username: this.form.username,
-      //     email: this.form.email,
-      //     password: this.form.password,
-      //   };
-      //
-      //   try {
-      //     await this.signUp(signUpData);
-      //     this.$modal.hide("auth-modal");
-      //   } catch (error) {
-      //     console.error(error);
-      //   }
-      // }
+      if (this.isSignUp) {
+        const credentials = {
+          username: this.form.username,
+          email: this.form.email,
+          password: this.form.password,
+        };
+
+        try {
+          await this.signUp(credentials);
+          this.$modal.hide("auth-modal");
+        } catch (error) {
+          console.error(error);
+        }
+      }
     },
   },
 };

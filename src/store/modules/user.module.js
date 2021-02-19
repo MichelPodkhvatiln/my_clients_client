@@ -75,8 +75,8 @@ export default {
       localStorage.removeItem("userId");
       localStorage.removeItem("token");
     },
-    // async signUp({}, payload) {
-    //   await window.httpClient.post("/api/auth/sign-up", payload);
-    // },
+    async signUp({}, credentials) {
+      await services.auth.signUp(credentials);
+    },
   },
 };
