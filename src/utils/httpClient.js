@@ -5,7 +5,6 @@ const apiURL =
     ? process.env.VUE_APP_API_REMOTE_URL
     : process.env.VUE_APP_API_LOCAL_URL;
 
-console.log(apiURL);
 const config = {
   baseURL: apiURL,
   timeout: 1000000,
