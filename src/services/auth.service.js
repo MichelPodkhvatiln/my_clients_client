@@ -19,12 +19,12 @@ export class AuthService extends BaseHttpService {
     return this.getEndpoints("auth");
   }
 
-  bindToken(token) {
-    super.bindToken(token);
+  setToken(token) {
+    return this.bindToken(token);
   }
 
-  removeToken() {
-    super.removeToken();
+  deleteToken() {
+    return this.removeToken();
   }
 
   login(credentials) {
