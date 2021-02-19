@@ -28,19 +28,16 @@ export default {
     };
   },
   async beforeMount() {
+    const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
 
-    if (!token) {
+    if (!userId || !token) {
       this.isLoading = false;
       return;
     }
 
-    const payload = {
-      token,
-    };
-
     try {
-      await this.signInByToken(payload);
+      await this.getUser({ userId });
     } catch (error) {
       console.error(error);
     } finally {
@@ -48,7 +45,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("userModule", ["signInByToken"]),
+    ...mapActions("userModule", ["getUser"]),
   },
 };
 </script>

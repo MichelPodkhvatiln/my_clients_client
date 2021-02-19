@@ -1,4 +1,4 @@
-//import router from "@/router";
+import router from "@/router";
 import { services } from "@/utils/services";
 
 export default {
@@ -36,8 +36,8 @@ export default {
     },
   },
   actions: {
-    async signIn({ commit }, payload) {
-      const data = await services.auth.login(payload);
+    async getUser({ commit }, { userId }) {
+      const { data } = await services.user.getUser(userId);
 
       const user = {
         email: data.email,
@@ -45,47 +45,38 @@ export default {
         username: data.username,
       };
 
+      commit("setUser", user);
+    },
+    async login({ commit }, credentials) {
+      const { data } = await services.auth.login(credentials);
+
+      const user = {
+        email: data.email,
+        role: data.role,
+        username: data.username,
+      };
+
+      services.auth.setToken(data.accessToken);
+      localStorage.setItem("userId", data.id);
       localStorage.setItem("token", data.accessToken);
-      // window.httpClient.bindToken(data.accessToken);
 
       commit("setUser", user);
     },
-    // async signInByToken({ commit }, payload) {
-    //   const { data } = await window.httpClient.post(
-    //     "/api/auth/sign-in-by-token",
-    //     payload
-    //   );
-    //
-    //   const user = {
-    //     email: data.email,
-    //     role: data.role,
-    //     username: data.username,
-    //   };
-    //
-    //   localStorage.setItem("token", data.accessToken);
-    //   window.httpClient.bindToken(data.accessToken);
-    //
-    //   commit("setUser", user);
-    // },
+    async logOut({ commit }) {
+      const routePath = router.currentRoute.path;
+
+      if (routePath === "/admin") {
+        await router.push("/");
+      }
+
+      commit("resetState");
+
+      services.auth.deleteToken();
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+    },
     // async signUp({}, payload) {
     //   await window.httpClient.post("/api/auth/sign-up", payload);
-    // },
-    // async logOut({ commit }) {
-    //   const routePath = router.currentRoute.path;
-    //   const token = localStorage.getItem("token");
-    //
-    //   if (token) {
-    //     await window.httpClient.post("/api/auth/log-out", { token });
-    //   }
-    //
-    //   if (routePath === "/admin") {
-    //     await router.push("/");
-    //   }
-    //
-    //   commit("resetState");
-    //
-    //   localStorage.removeItem("token");
-    //   window.httpClient.removeToken();
     // },
   },
 };

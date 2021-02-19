@@ -132,36 +132,36 @@ export default {
     },
   },
   methods: {
-    ...mapActions("userModule", ["signIn", "signUp"]),
+    ...mapActions("userModule", ["login"]),
     async onSubmit() {
       if (this.isSignIn) {
-        const signInData = {
+        const credentials = {
           email: this.form.email,
           password: this.form.password,
         };
 
         try {
-          await this.signIn(signInData);
+          await this.login(credentials);
           this.$modal.hide("auth-modal");
         } catch (error) {
           console.error(error);
         }
       }
 
-      if (this.isSignUp) {
-        const signUpData = {
-          username: this.form.username,
-          email: this.form.email,
-          password: this.form.password,
-        };
-
-        try {
-          await this.signUp(signUpData);
-          this.$modal.hide("auth-modal");
-        } catch (error) {
-          console.error(error);
-        }
-      }
+      // if (this.isSignUp) {
+      //   const signUpData = {
+      //     username: this.form.username,
+      //     email: this.form.email,
+      //     password: this.form.password,
+      //   };
+      //
+      //   try {
+      //     await this.signUp(signUpData);
+      //     this.$modal.hide("auth-modal");
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // }
     },
   },
 };
