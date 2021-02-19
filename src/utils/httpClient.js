@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const apiURL =
+  process.env.NODE_ENV === "production"
+    ? process.env.VUE_APP_API_REMOTE_URL
+    : process.env.VUE_APP_API_LOCAL_URL;
+
+console.log(apiURL);
 const config = {
-  baseURL: process.env.VUE_APP_API_LOCAL_URL,
+  baseURL: apiURL,
   timeout: 1000000,
   mode: "cors",
   headers: {
