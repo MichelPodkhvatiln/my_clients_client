@@ -13,8 +13,8 @@ export default {
   methods: {
     onSalonConfigClick() {
       console.log("onSalonConfigClick");
-    },
-  },
+    }
+  }
 };
 </script>
 

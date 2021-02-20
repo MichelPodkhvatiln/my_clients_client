@@ -20,11 +20,11 @@ export default {
   name: "App",
   components: {
     DefaultLayout,
-    HalfCircleSpinner,
+    HalfCircleSpinner
   },
   data() {
     return {
-      isLoading: true,
+      isLoading: true
     };
   },
   async beforeMount() {
@@ -45,8 +45,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("userModule", ["getUser"]),
-  },
+    ...mapActions("userModule", ["getUser"])
+  }
 };
 </script>
 

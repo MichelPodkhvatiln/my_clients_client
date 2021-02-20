@@ -10,8 +10,8 @@ import AdminMenu from "@/components/admin-dashboard/AdminMenu.vue";
 export default {
   name: "AdminDashboard",
   components: {
-    AdminMenu,
-  },
+    AdminMenu
+  }
 };
 </script>
 

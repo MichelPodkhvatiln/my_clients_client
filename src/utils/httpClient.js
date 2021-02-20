@@ -11,8 +11,8 @@ const config = {
   mode: "cors",
   headers: {
     Accept: "application/json",
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 };
 
 const client = axios.create(config);

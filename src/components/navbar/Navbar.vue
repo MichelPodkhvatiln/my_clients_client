@@ -64,7 +64,7 @@ import AuthForm from "@/components/forms/AuthForm.vue";
 export default {
   name: "Navbar",
   components: {
-    AuthForm,
+    AuthForm
   },
   data() {
     return {
@@ -73,20 +73,20 @@ export default {
       linkList: [
         {
           path: "/",
-          title: "Home",
+          title: "Home"
         },
         {
           path: "/about",
-          title: "About",
-        },
-      ],
+          title: "About"
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters("userModule", ["user", "isUserLogIn", "isAdmin"]),
     currentRoute() {
       return this.$route.path;
-    },
+    }
   },
   methods: {
     ...mapActions("userModule", ["logOut"]),
@@ -104,7 +104,7 @@ export default {
     },
     onLogOutClick() {
       this.logOut();
-    },
-  },
+    }
+  }
 };
 </script>

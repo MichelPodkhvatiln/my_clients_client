@@ -7,8 +7,8 @@ export default {
     user: {
       email: null,
       role: null,
-      username: null,
-    },
+      username: null
+    }
   },
   getters: {
     user(state) {
@@ -21,19 +21,19 @@ export default {
     },
     isAdmin(state) {
       return state.user.role === "admin";
-    },
+    }
   },
   mutations: {
     resetState(state) {
       state.user = {
         email: null,
         role: null,
-        username: null,
+        username: null
       };
     },
     setUser(state, payload) {
       state.user = payload;
-    },
+    }
   },
   actions: {
     async getUser({ commit }, { userId }) {
@@ -42,7 +42,7 @@ export default {
       const user = {
         email: data.email,
         role: data.role,
-        username: data.username,
+        username: data.username
       };
 
       commit("setUser", user);
@@ -53,7 +53,7 @@ export default {
       const user = {
         email: data.email,
         role: data.role,
-        username: data.username,
+        username: data.username
       };
 
       services.auth.setToken(data.accessToken);
@@ -77,6 +77,6 @@ export default {
     },
     async signUp({}, credentials) {
       await services.auth.signUp(credentials);
-    },
-  },
+    }
+  }
 };

@@ -63,36 +63,36 @@ export default {
   props: {
     isSignIn: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isSignUp: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       form: {
         email: "",
         password: "",
-        username: "",
-      },
+        username: ""
+      }
     };
   },
   validations: {
     form: {
       email: {
         required,
-        email,
+        email
       },
       password: {
         required,
-        minLength: minLength(8),
+        minLength: minLength(8)
       },
       username: {
-        required,
-      },
-    },
+        required
+      }
+    }
   },
   computed: {
     formMainText() {
@@ -129,7 +129,7 @@ export default {
       const isValidPassword = !this.$v.form.password.$invalid;
 
       return isValidUsername && isValidEmail && isValidPassword;
-    },
+    }
   },
   methods: {
     ...mapActions("userModule", ["login", "signUp"]),
@@ -137,7 +137,7 @@ export default {
       if (this.isSignIn) {
         const credentials = {
           email: this.form.email,
-          password: this.form.password,
+          password: this.form.password
         };
 
         try {
@@ -152,7 +152,7 @@ export default {
         const credentials = {
           username: this.form.username,
           email: this.form.email,
-          password: this.form.password,
+          password: this.form.password
         };
 
         try {
@@ -162,8 +162,8 @@ export default {
           console.error(error);
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
