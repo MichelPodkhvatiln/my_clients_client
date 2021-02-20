@@ -65,7 +65,7 @@ export default {
     async logOut({ commit }) {
       const routePath = router.currentRoute.path;
 
-      if (routePath === "/admin") {
+      if (routePath.includes("admin")) {
         await router.push("/");
       }
 
