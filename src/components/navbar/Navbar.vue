@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark">
+  <nav class="navbar is-dark app-navbar">
     <div class="navbar-menu">
       <div class="navbar-start">
         <router-link
@@ -111,3 +111,10 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+.app-navbar {
+  box-shadow: 0 3px 4px 0 rgba(#000000, 0.2), 0 3px 3px -2px rgba(#000000, 0.14),
+    0 1px 8px 0 rgba(#000000, 0.12);
+}
+</style>

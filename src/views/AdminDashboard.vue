@@ -34,11 +34,12 @@ export default {
 .admin-dashboard__menu {
   padding: 10px;
   min-width: 200px;
-  width: 20%;
+  width: 17%;
+  border-right: 1px solid #e2e2e2;
 }
 
 .admin-dashboard__view {
   padding: 10px;
-  width: 80%;
+  width: 83%;
 }
 </style>

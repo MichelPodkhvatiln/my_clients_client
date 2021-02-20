@@ -1,5 +1,5 @@
 <template>
-  <aside class="menu admin-menu">
+  <aside class="menu">
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li v-for="link in linkList.general" :key="link.path">
