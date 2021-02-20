@@ -14,7 +14,7 @@
         <router-link
           v-if="isAdmin"
           class="navbar-item"
-          :class="{ 'is-active': currentRoute === '/admin' }"
+          :class="{ 'is-active': isAdminPages }"
           to="/admin"
         >
           Admin Dashboard
@@ -86,6 +86,9 @@ export default {
     ...mapGetters("userModule", ["user", "isUserLogIn", "isAdmin"]),
     currentRoute() {
       return this.$route.path;
+    },
+    isAdminPages() {
+      return this.currentRoute.includes("admin");
     }
   },
   methods: {
