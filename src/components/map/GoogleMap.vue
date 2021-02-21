@@ -60,7 +60,8 @@ export default {
       this.map = new this.googleMaps.Map(this.$refs.map, {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 15,
-        disableDefaultUI: true
+        disableDefaultUI: true,
+        zoomControl: true,
       });
 
       this.setCurrentPositionToMap();
@@ -178,13 +179,13 @@ export default {
           return "Unknown address";
         }
 
-        const street = addressObj.street.length ? `${addressObj.street},` : "";
+        const street = addressObj.street.length ? `${addressObj.street}, ` : "";
         const streetNumber = addressObj.streetNumber.length
-          ? `${addressObj.streetNumber},`
+          ? `${addressObj.streetNumber}, `
           : "";
-        const city = addressObj.city.length ? `${addressObj.city},` : "";
+        const city = addressObj.city.length ? `${addressObj.city}, ` : "";
         const country = addressObj.country.length
-          ? `${addressObj.country},`
+          ? `${addressObj.country}`
           : "";
 
         return street + streetNumber + city + country;
