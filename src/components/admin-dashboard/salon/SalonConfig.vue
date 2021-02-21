@@ -10,12 +10,9 @@
         <button v-if="!isAddMode" class="button is-info" @click="toggleAddMode">
           Add new salon
         </button>
-        <button v-else class="button is-danger" @click="toggleAddMode">
-          Cancel
-        </button>
       </div>
     </header>
-    <component :is="activeComponentName" />
+    <component :is="activeComponentName" @onCancelCreate="toggleAddMode" />
   </section>
 </template>
 
@@ -53,10 +50,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.salon-config {
+  width: 100%;
+  height: 100%;
+}
+
 .salon-config__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
+  margin-bottom: 15px;
 }
 </style>

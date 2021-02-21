@@ -41,5 +41,6 @@ export default {
 .admin-dashboard__view {
   padding: 10px;
   width: 83%;
+  overflow-y: auto;
 }
 </style>
