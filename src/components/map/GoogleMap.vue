@@ -1,8 +1,11 @@
 <template>
   <div class="map-wrapper">
-    <div v-if="isMapReady" class="map-address-block">
-      Some address text
-    </div>
+    <transition name="fade">
+      <div v-if="isMapReady" class="map-address-block">
+        {{ address }}
+      </div>
+    </transition>
+
     <div ref="map" class="map"></div>
   </div>
 </template>
@@ -10,18 +13,25 @@
 <script>
 import { googleMapsApiURL } from "@/utils/constants";
 
+import { GoogleMapsService } from "@/services/googleMaps.service";
+
 export default {
   name: "GoogleMap",
   data() {
     return {
-      isMapReady: false,
       googleMaps: null,
+      googleMapsService: new GoogleMapsService(),
+      isMapReady: false,
       map: null,
-      marker: null
+      marker: null,
+      address: "Please select place on map"
     };
   },
   mounted() {
     this.checkLoadScript();
+  },
+  beforeDestroy() {
+    this.removeMapListeners();
   },
   methods: {
     checkLoadScript() {
@@ -49,7 +59,8 @@ export default {
 
       this.map = new this.googleMaps.Map(this.$refs.map, {
         center: { lat: -34.397, lng: 150.644 },
-        zoom: 15
+        zoom: 15,
+        disableDefaultUI: true
       });
 
       this.setCurrentPositionToMap();
@@ -78,46 +89,120 @@ export default {
         this.isMapReady = true;
       });
 
-      this.googleMaps.event.addListener(this.map, "click", event => {
+      this.googleMaps.event.addListener(this.map, "click", async event => {
         const position = event.latLng;
+        const coordinates = {
+          lat: position.lat(),
+          lng: position.lng()
+        };
 
-        if (!this.marker) {
-          this.addMarker(position);
-          this.getGeoJSON(position);
-          return;
-        }
-
-        this.changeMarkerPosition(position);
-        this.getGeoJSON(position);
+        await this.onSetSalonAddress(coordinates);
       });
     },
-    addMarker(position) {
+    removeMapListeners() {
+      if (!this.googleMaps || !this.map) {
+        return;
+      }
+
+      this.googleMaps.event.clearListeners(this.map, "click");
+    },
+    async onSetSalonAddress(coordinates) {
+      if (!this.marker) {
+        this.addMarker(coordinates);
+        this.getGeoJson(coordinates);
+        await this.getAddressFromCoordinates(coordinates);
+        return;
+      }
+
+      this.changeMarkerPosition(coordinates);
+      this.getGeoJson(coordinates);
+      await this.getAddressFromCoordinates(coordinates);
+    },
+    addMarker(coordinates) {
       if (!this.googleMaps || !this.map) {
         return;
       }
 
       this.marker = new this.googleMaps.Marker({
-        position,
+        position: coordinates,
         map: this.map
       });
-      this.map.panTo(position);
+      this.map.panTo(coordinates);
     },
-    changeMarkerPosition(position) {
+    changeMarkerPosition(coordinates) {
       if (!this.marker) {
         return;
       }
 
-      this.marker.setPosition(position);
-      this.map.panTo(position);
+      this.marker.setPosition(coordinates);
+      this.map.panTo(coordinates);
     },
-    getGeoJSON(position) {
+    getGeoJson(coordinates) {
       const dataMap = new this.googleMaps.Data.Feature({
-        geometry: new this.googleMaps.Data.Point(position)
+        geometry: new this.googleMaps.Data.Point(coordinates)
       });
 
       dataMap.toGeoJson(obj => {
-        console.log(obj);
+        this.$emit("onGetGeoJson", obj);
       });
+    },
+    async getAddressFromCoordinates(coordinates) {
+      const _addressFormatter = addressData => {
+        if (!Array.isArray(addressData) || !addressData.length) {
+          return;
+        }
+
+        const streetNumberObj = addressData.find(data =>
+          data.types.includes("street_number")
+        );
+        const streetObj = addressData.find(data =>
+          data.types.includes("route")
+        );
+        const cityObj = addressData.find(data =>
+          data.types.includes("locality")
+        );
+        const countryObj = addressData.find(data =>
+          data.types.includes("country")
+        );
+
+        return {
+          streetNumber: streetNumberObj ? streetNumberObj.short_name : "",
+          street: streetObj ? streetObj.short_name : "",
+          city: cityObj ? cityObj.short_name : "",
+          country: countryObj ? countryObj.short_name : ""
+        };
+      };
+
+      const _setAddressTitleToMap = addressObj => {
+        if (!addressObj || !Object.keys(addressObj).length) {
+          return "Unknown address";
+        }
+
+        const street = addressObj.street.length ? `${addressObj.street},` : "";
+        const streetNumber = addressObj.streetNumber.length
+          ? `${addressObj.streetNumber},`
+          : "";
+        const city = addressObj.city.length ? `${addressObj.city},` : "";
+        const country = addressObj.country.length
+          ? `${addressObj.country},`
+          : "";
+
+        return street + streetNumber + city + country;
+      };
+
+      try {
+        const {
+          results
+        } = await this.googleMapsService.getAddressDataFromCoordinates(
+          coordinates
+        );
+
+        const addressData = results[0]?.address_components;
+        const formattedAddress = _addressFormatter(addressData);
+        this.address = _setAddressTitleToMap(formattedAddress);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };
@@ -143,8 +228,8 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 0 17px;
-  min-width: 48px;
-  width: 35%;
+  min-width: 35%;
+  max-width: 95%;
   height: 40px;
   font-family: Roboto, Arial, sans-serif;
   color: #565656;
@@ -152,5 +237,15 @@ export default {
   font-weight: 500;
   background-color: #ffffff;
   box-shadow: 0 1px 4px -1px rgba(#000000, 0.3);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
