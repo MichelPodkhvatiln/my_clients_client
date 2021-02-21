@@ -4,22 +4,31 @@
       <div class="field">
         <label class="label">Salon name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="My awesome salon" />
+          <input
+            class="input"
+            type="text"
+            v-model="formData.name"
+            placeholder="My awesome salon"
+          />
         </div>
       </div>
     </div>
 
     <div class="add-salon__map">
-      <google-map />
+      <google-map @setMapMarker="onSetMapMarker" />
     </div>
 
     <footer class="add-salon__footer">
       <div class="buttons">
-        <button class="button is-success">
+        <button
+          class="button is-success"
+          @click="onCreateBtnClick"
+          :disabled="!canCreateSalon"
+        >
           Create
         </button>
 
-        <button class="button is-danger" @click="onCancelClick">
+        <button class="button is-danger" @click="onCancelBtnClick">
           Cancel
         </button>
       </div>
@@ -34,8 +43,27 @@ export default {
   components: {
     GoogleMap
   },
+  data() {
+    return {
+      formData: {
+        name: "",
+        locationInfo: null
+      }
+    };
+  },
+  computed: {
+    canCreateSalon() {
+      return this.formData.name.trim().length && this.formData.locationInfo;
+    }
+  },
   methods: {
-    onCancelClick() {
+    onSetMapMarker(locationInfo) {
+      this.formData.locationInfo = locationInfo;
+    },
+    onCreateBtnClick() {
+      console.log(this.formData);
+    },
+    onCancelBtnClick() {
       this.$emit("onCancelCreate");
     }
   }

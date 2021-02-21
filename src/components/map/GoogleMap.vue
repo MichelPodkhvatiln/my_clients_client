@@ -2,7 +2,7 @@
   <div class="map-wrapper">
     <transition name="fade">
       <div v-if="isMapReady" class="map-address-block">
-        {{ address }}
+        {{ addressTitle }}
       </div>
     </transition>
 
@@ -24,7 +24,10 @@ export default {
       isMapReady: false,
       map: null,
       marker: null,
-      address: "Please select place on map"
+      locationInfo: {
+        address: null,
+        location: null
+      }
     };
   },
   mounted() {
@@ -32,6 +35,13 @@ export default {
   },
   beforeDestroy() {
     this.removeMapListeners();
+  },
+  computed: {
+    addressTitle() {
+      return this.locationInfo.address
+        ? this.locationInfo.address
+        : "Please select place on map";
+    }
   },
   methods: {
     checkLoadScript() {
@@ -61,7 +71,7 @@ export default {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 15,
         disableDefaultUI: true,
-        zoomControl: true,
+        zoomControl: true
       });
 
       this.setCurrentPositionToMap();
@@ -110,14 +120,14 @@ export default {
     async onSetSalonAddress(coordinates) {
       if (!this.marker) {
         this.addMarker(coordinates);
-        this.getGeoJson(coordinates);
-        await this.getAddressFromCoordinates(coordinates);
-        return;
+      } else {
+        this.changeMarkerPosition(coordinates);
       }
 
-      this.changeMarkerPosition(coordinates);
       this.getGeoJson(coordinates);
       await this.getAddressFromCoordinates(coordinates);
+
+      this.$emit("setMapMarker", this.locationInfo);
     },
     addMarker(coordinates) {
       if (!this.googleMaps || !this.map) {
@@ -144,7 +154,7 @@ export default {
       });
 
       dataMap.toGeoJson(obj => {
-        this.$emit("onGetGeoJson", obj);
+        this.locationInfo.location = obj.geometry;
       });
     },
     async getAddressFromCoordinates(coordinates) {
@@ -200,7 +210,7 @@ export default {
 
         const addressData = results[0]?.address_components;
         const formattedAddress = _addressFormatter(addressData);
-        this.address = _setAddressTitleToMap(formattedAddress);
+        this.locationInfo.address = _setAddressTitleToMap(formattedAddress);
       } catch (error) {
         console.error(error);
       }
