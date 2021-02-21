@@ -12,7 +12,8 @@ export default {
   data() {
     return {
       googleMaps: null,
-      map: null
+      map: null,
+      marker: null
     };
   },
   mounted() {
@@ -48,6 +49,7 @@ export default {
       });
 
       this.setCurrentPositionToMap();
+      this.initMapListeners();
     },
     setCurrentPositionToMap() {
       if (!navigator.geolocation || !this.map) {
@@ -61,6 +63,52 @@ export default {
         };
 
         this.map.setCenter(coordinates);
+      });
+    },
+    initMapListeners() {
+      if (!this.googleMaps || !this.map) {
+        return;
+      }
+
+      this.googleMaps.event.addListener(this.map, "click", event => {
+        const position = event.latLng;
+
+        if (!this.marker) {
+          this.addMarker(position);
+          this.getGeoJSON(position);
+          return;
+        }
+
+        this.changeMarkerPosition(position);
+        this.getGeoJSON(position);
+      });
+    },
+    addMarker(position) {
+      if (!this.googleMaps || !this.map) {
+        return;
+      }
+
+      this.marker = new this.googleMaps.Marker({
+        position,
+        map: this.map
+      });
+      this.map.panTo(position);
+    },
+    changeMarkerPosition(position) {
+      if (!this.marker) {
+        return;
+      }
+
+      this.marker.setPosition(position);
+      this.map.panTo(position);
+    },
+    getGeoJSON(position) {
+      const dataMap = new this.googleMaps.Data.Feature({
+        geometry: new this.googleMaps.Data.Point(position)
+      });
+
+      dataMap.toGeoJson(obj => {
+        console.log(obj);
       });
     }
   }
