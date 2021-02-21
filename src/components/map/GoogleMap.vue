@@ -1,5 +1,8 @@
 <template>
   <div class="map-wrapper">
+    <div v-if="isMapReady" class="map-address-block">
+      Some address text
+    </div>
     <div ref="map" class="map"></div>
   </div>
 </template>
@@ -11,6 +14,7 @@ export default {
   name: "GoogleMap",
   data() {
     return {
+      isMapReady: false,
       googleMaps: null,
       map: null,
       marker: null
@@ -70,6 +74,10 @@ export default {
         return;
       }
 
+      this.googleMaps.event.addListenerOnce(this.map, "idle", () => {
+        this.isMapReady = true;
+      });
+
       this.googleMaps.event.addListener(this.map, "click", event => {
         const position = event.latLng;
 
@@ -123,5 +131,26 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
+}
+
+.map-address-block {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 17px;
+  min-width: 48px;
+  width: 35%;
+  height: 40px;
+  font-family: Roboto, Arial, sans-serif;
+  color: #565656;
+  font-size: 18px;
+  font-weight: 500;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px -1px rgba(#000000, 0.3);
 }
 </style>
