@@ -8,6 +8,24 @@ export default {
   getters: {
     salonsList(state) {
       return state.salonsList;
+    },
+    salonListInfoForCards(state) {
+      if (!state.salonsList.length) {
+        return [];
+      }
+
+      return state.salonsList.map(salon => {
+        return {
+          id: salon._id,
+          name: salon.name,
+          locationInfo: {
+            address: salon.locationInfo.address,
+            location: {
+              coordinates: salon.locationInfo.location.coordinates
+            }
+          }
+        };
+      });
     }
   },
   mutations: {
