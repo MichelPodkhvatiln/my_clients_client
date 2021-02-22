@@ -12,7 +12,7 @@
         </button>
       </div>
     </header>
-    <component :is="activeComponentName" @onCancelCreate="toggleAddMode" />
+    <component :is="activeComponentName" @onBack="toggleAddMode" />
   </section>
 </template>
 

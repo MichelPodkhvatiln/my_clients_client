@@ -37,7 +37,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import GoogleMap from "@/components/map/GoogleMap";
+
 export default {
   name: "AddSalon",
   components: {
@@ -57,14 +59,26 @@ export default {
     }
   },
   methods: {
+    ...mapActions("salonModule", ["createSalon"]),
     onSetMapMarker(locationInfo) {
       this.formData.locationInfo = locationInfo;
     },
-    onCreateBtnClick() {
-      console.log(this.formData);
+    async onCreateBtnClick() {
+      try {
+        const data = {
+          name: this.formData.name,
+          locationInfo: this.formData.locationInfo
+        };
+
+        await this.createSalon(data);
+
+        this.$emit("onBack");
+      } catch (error) {
+        console.error(error);
+      }
     },
     onCancelBtnClick() {
-      this.$emit("onCancelCreate");
+      this.$emit("onBack");
     }
   }
 };
