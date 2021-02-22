@@ -21,7 +21,10 @@ export default {
           locationInfo: {
             address: salon.locationInfo.address,
             location: {
-              coordinates: salon.locationInfo.location.coordinates
+              coordinates: {
+                lat: salon.locationInfo.location.coordinates[1],
+                lng: salon.locationInfo.location.coordinates[0]
+              }
             }
           }
         };

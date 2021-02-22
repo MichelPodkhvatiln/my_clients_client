@@ -6,16 +6,24 @@ export class GoogleMapsService {
 
   constructor() {
     this._apiKey = process.env.VUE_APP_GOOGLE_MAPS_API_KEY;
-    this._baseGeocodingUrl = "https://maps.googleapis.com/maps/api/geocode/";
+    this._baseGeocodingUrl = "https://maps.googleapis.com/maps/api";
   }
 
   async getAddressDataFromCoordinates({ lat, lng }) {
     const address = `${lat},${lng}`;
 
-    const requestUrl = `${this._baseGeocodingUrl}json?latlng=${address}&key=${this._apiKey}&language=en`;
+    const requestUrl = `${this._baseGeocodingUrl}/geocode/json?latlng=${address}&key=${this._apiKey}&language=en`;
 
     const { data } = await axios.get(requestUrl);
 
     return data;
+  }
+
+  createStaticMapImgSrc({ lat, lng }) {
+    const address = `${lat},${lng}`;
+    const size = "400x300&scale=2";
+    const markers = `markers=color:red%7C${address}`;
+
+    return `${this._baseGeocodingUrl}/staticmap?center=${address}&zoom=15&size=${size}&${markers}&key=${this._apiKey}&language=en`;
   }
 }

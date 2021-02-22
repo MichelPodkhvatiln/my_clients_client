@@ -8,10 +8,7 @@
           :key="salon.id"
         >
           <div class="image-block">
-            <img
-              src="https://bulma.io/images/placeholders/1280x960.png"
-              alt="Placeholder image"
-            />
+            <img :src="getImgSrc(salon)" alt="Placeholder image" />
           </div>
           <div class="info-block">
             <p class="title is-4">
@@ -49,6 +46,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { HalfCircleSpinner } from "epic-spinners";
+import { GoogleMapsService } from "@/services/googleMaps.service";
+
+const googleService = new GoogleMapsService();
 
 export default {
   name: "SalonList",
@@ -69,7 +69,16 @@ export default {
     ...mapGetters("salonModule", ["salonListInfoForCards"])
   },
   methods: {
-    ...mapActions("salonModule", ["resetState", "getSalonList"])
+    ...mapActions("salonModule", ["resetState", "getSalonList"]),
+    getImgSrc(salon) {
+      if (!salon) {
+        return "";
+      }
+
+      const coordinates = salon.locationInfo.location.coordinates;
+
+      return googleService.createStaticMapImgSrc(coordinates);
+    }
   }
 };
 </script>
