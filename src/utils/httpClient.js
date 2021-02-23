@@ -8,7 +8,7 @@ const apiURL =
 const config = {
   baseURL: apiURL,
   timeout: 1000000,
-  //mode: "cors",
+  mode: "cors",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json"
