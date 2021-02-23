@@ -46,8 +46,7 @@ export default {
     async getSalonList({ commit }) {
       try {
         const { data } = await services.salon.getList();
-        const salonsList = data.salonsList;
-        commit("setSalonsList", salonsList);
+        commit("setSalonsList", data);
       } catch (error) {
         return Promise.reject(error);
       }
@@ -55,6 +54,13 @@ export default {
     async createSalon({}, { name, locationInfo }) {
       try {
         await services.salon.createSalon({ name, locationInfo });
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async deleteSalon({}, id) {
+      try {
+        await services.salon.deleteSalon(id);
       } catch (error) {
         return Promise.reject(error);
       }

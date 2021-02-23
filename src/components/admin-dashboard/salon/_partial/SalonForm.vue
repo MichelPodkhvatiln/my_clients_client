@@ -1,16 +1,14 @@
 <template>
-  <section class="add-salon">
-    <div class="add-salon__form">
-      <div class="field">
-        <label class="label">Salon name</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            v-model="formData.name"
-            placeholder="My awesome salon"
-          />
-        </div>
+  <section class="salon-form__wrapper">
+    <div class="field salon-form__name">
+      <label class="label">Salon name</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          v-model="formData.name"
+          placeholder="My awesome salon"
+        />
       </div>
     </div>
 
@@ -41,9 +39,15 @@ import { mapActions } from "vuex";
 import GoogleMap from "@/components/map/GoogleMap";
 
 export default {
-  name: "AddSalon",
+  name: "SalonForm",
   components: {
     GoogleMap
+  },
+  props: {
+    salonData: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -85,12 +89,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.add-salon {
+.salon-form__wrapper {
   width: 100%;
-  max-width: 100%;
+  height: 100%;
 }
 
-.add-salon__form {
+.salon-form__name {
   margin-bottom: 15px;
 }
 

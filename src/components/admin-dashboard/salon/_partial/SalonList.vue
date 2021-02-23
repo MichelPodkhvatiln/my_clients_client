@@ -23,7 +23,7 @@
               <button class="button is-link">
                 Edit
               </button>
-              <button class="button is-danger">
+              <button class="button is-danger" @click="deleteSalon(salon.id)">
                 Delete
               </button>
             </div>
@@ -69,7 +69,7 @@ export default {
     ...mapGetters("salonModule", ["salonListInfoForCards"])
   },
   methods: {
-    ...mapActions("salonModule", ["resetState", "getSalonList"]),
+    ...mapActions("salonModule", ["resetState", "getSalonList", "deleteSalon"]),
     getImgSrc(salon) {
       if (!salon) {
         return "";

@@ -7,43 +7,43 @@
         </h1>
       </div>
       <div class="salon-config__header--buttons">
-        <button v-if="!isAddMode" class="button is-info" @click="toggleAddMode">
+        <button v-if="isListMode" class="button is-info" @click="toggleMode">
           Add new salon
         </button>
       </div>
     </header>
-    <component :is="activeComponentName" @onBack="toggleAddMode" />
+    <component :is="activeComponentName" @onBack="toggleMode" />
   </section>
 </template>
 
 <script>
-import AddSalon from "@/components/admin-dashboard/salon/_partial/AddSalon.vue";
+import SalonForm from "@/components/admin-dashboard/salon/_partial/SalonForm.vue";
 import SalonList from "@/components/admin-dashboard/salon/_partial/SalonList.vue";
 
 export default {
   name: "SalonConfig",
   components: {
-    AddSalon,
+    SalonForm,
     SalonList
   },
   data() {
     return {
-      isAddMode: false
+      isListMode: true
     };
   },
   computed: {
     activeComponentName() {
-      return this.isAddMode ? "AddSalon" : "SalonList";
+      return this.isListMode ? "SalonList" : "SalonForm";
     },
     headerTitle() {
-      return this.isAddMode ? "Create salon" : "Salon List";
+      return this.isListMode ? "Salon List" : "Config salon";
     }
   },
 
   methods: {
-    toggleAddMode() {
+    toggleMode() {
       //TODO confirm modal on canceling
-      this.isAddMode = !this.isAddMode;
+      this.isListMode = !this.isListMode;
     }
   }
 };
