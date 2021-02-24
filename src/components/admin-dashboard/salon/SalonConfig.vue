@@ -7,7 +7,7 @@
         </h1>
       </div>
       <div class="salon-config__header--buttons">
-        <button v-if="isListMode" class="button is-info" @click="toggleMode">
+        <button v-if="isListMode" class="button is-link" @click="toggleMode">
           Add new salon
         </button>
       </div>

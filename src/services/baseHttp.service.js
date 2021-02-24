@@ -29,11 +29,11 @@ class BaseHttpService {
   }
 
   put(url, data = {}) {
-    return BaseHttpService.httpClient.get(url, data);
+    return BaseHttpService.httpClient.put(url, data);
   }
 
   patch(url, data = {}) {
-    return BaseHttpService.httpClient.get(url, data);
+    return BaseHttpService.httpClient.patch(url, data);
   }
 
   delete(url) {

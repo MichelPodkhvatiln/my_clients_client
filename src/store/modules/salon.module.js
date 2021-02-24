@@ -38,6 +38,15 @@ export default {
 
       state.salonsList.splice(index, 1);
     },
+    updateSalon(state, { id, data }) {
+      const index = state.salonsList.findIndex(salon => salon._id === id);
+
+      if (index === -1) {
+        return;
+      }
+
+      state.salonsList.splice(index, 1, data);
+    },
     setEditingSalonId(state, payload) {
       state.editingSalonId = payload;
     }
@@ -64,6 +73,14 @@ export default {
       try {
         const { data } = await services.salon.createSalon({ name, location });
         commit("addSalon", data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async updateSalon({ commit }, { id, formData }) {
+      try {
+        const { data } = await services.salon.updateSalon(id, formData);
+        commit("updateSalon", { id, data });
       } catch (error) {
         return Promise.reject(error);
       }

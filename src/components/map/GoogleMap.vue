@@ -17,6 +17,11 @@ import { GoogleMapsService } from "@/services/googleMaps.service";
 
 export default {
   name: "GoogleMap",
+  props: {
+    editingCoordinates: {
+      type: Object
+    }
+  },
   data() {
     return {
       googleMaps: null,
@@ -58,7 +63,7 @@ export default {
       const script = document.createElement("script");
 
       script.onload = async () => {
-        this.initMap();
+        await this.initMap();
       };
 
       script.id = "google-map-script";
@@ -66,19 +71,32 @@ export default {
 
       document.head.appendChild(script);
     },
-    initMap() {
+    async initMap() {
       // eslint-disable-next-line no-undef
       this.googleMaps = google.maps;
 
+      let center;
+
+      if (this.editingCoordinates) {
+        center = this.editingCoordinates;
+      } else {
+        center = { lat: -34.397, lng: 150.644 };
+      }
+
       this.map = new this.googleMaps.Map(this.$refs.map, {
-        center: { lat: -34.397, lng: 150.644 },
+        center,
         zoom: 15,
         disableDefaultUI: true,
         zoomControl: true
       });
 
-      this.setCurrentPositionToMap();
       this.initMapListeners();
+
+      if (this.editingCoordinates) {
+        await this.onSetSalonAddress(this.editingCoordinates);
+      } else {
+        this.setCurrentPositionToMap();
+      }
     },
     setCurrentPositionToMap() {
       if (!navigator.geolocation || !this.map) {

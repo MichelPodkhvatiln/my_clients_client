@@ -13,18 +13,32 @@
     </div>
 
     <div class="add-salon__map">
-      <google-map @setMapMarker="onSetMapMarker" />
+      <google-map
+        :editingCoordinates="editingCoordinates"
+        @setMapMarker="onSetMapMarker"
+      />
     </div>
 
     <footer class="add-salon__footer">
       <div class="buttons">
-        <button
-          class="button is-success"
-          @click="onCreateBtnClick"
-          :disabled="!canCreateSalon"
-        >
-          Create
-        </button>
+        <template v-if="editingSalonData">
+          <button
+            class="button is-success"
+            @click="onEditBtnClick"
+            :disabled="!canEditSalon"
+          >
+            Save changes
+          </button>
+        </template>
+        <template v-else>
+          <button
+            class="button is-success"
+            @click="onCreateBtnClick"
+            :disabled="!canCreateSalon"
+          >
+            Create
+          </button>
+        </template>
 
         <button class="button is-danger" @click="onCancelBtnClick">
           Cancel
@@ -43,12 +57,6 @@ export default {
   components: {
     GoogleMap
   },
-  props: {
-    salonData: {
-      type: Object,
-      default: () => {}
-    }
-  },
   data() {
     return {
       formData: {
@@ -62,7 +70,7 @@ export default {
       return;
     }
 
-    console.log(this.editingSalonData);
+    this.formData.name = this.editingSalonData.name;
   },
   beforeDestroy() {
     if (!this.editingSalonData) {
@@ -75,10 +83,35 @@ export default {
     ...mapGetters("salonModule", ["editingSalonData"]),
     canCreateSalon() {
       return this.formData.name.trim().length && this.formData.location;
+    },
+    canEditSalon() {
+      if (!this.formData.location) {
+        return false;
+      }
+
+      const isValidName =
+        this.formData.name.trim().length &&
+        this.formData.name !== this.editingSalonData.name;
+      const isChangedLocation =
+        this.formData.location.address !==
+        this.editingSalonData.location.address;
+
+      return isValidName || isChangedLocation;
+    },
+    editingCoordinates() {
+      if (!this.editingSalonData) {
+        return undefined;
+      }
+
+      return this.editingSalonData.location.coordinates;
     }
   },
   methods: {
-    ...mapActions("salonModule", ["createSalon", "resetEditingSalonId"]),
+    ...mapActions("salonModule", [
+      "createSalon",
+      "updateSalon",
+      "resetEditingSalonId"
+    ]),
     onSetMapMarker(location) {
       this.formData.location = location;
     },
@@ -90,6 +123,20 @@ export default {
         };
 
         await this.createSalon(data);
+
+        this.$emit("onBack");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async onEditBtnClick() {
+      try {
+        const formData = {
+          name: this.formData.name,
+          location: this.formData.location
+        };
+
+        await this.updateSalon({ id: this.editingSalonData._id, formData });
 
         this.$emit("onBack");
       } catch (error) {

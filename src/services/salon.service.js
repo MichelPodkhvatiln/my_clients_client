@@ -27,6 +27,10 @@ export class SalonService extends BaseHttpService {
     return this.post(this.endpoints.create, { name, location });
   }
 
+  updateSalon(id, data) {
+    return this.patch(this.endpoints.update.replace("{:id}", String(id)), data);
+  }
+
   deleteSalon(id) {
     return this.delete(this.endpoints.delete.replace("{:id}", String(id)));
   }
