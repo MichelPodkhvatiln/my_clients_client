@@ -23,11 +23,20 @@ export default {
       state.salonsList = [];
       state.editingSalonId = null;
     },
-    setSalonsList(state, payload) {
-      state.salonsList = payload;
+    setSalonsList(state, salonsList) {
+      state.salonsList = salonsList;
     },
-    addSalon(state, payload) {
-      state.salonsList.push(payload);
+    addSalon(state, salon) {
+      state.salonsList.push(salon);
+    },
+    removeSalon(state, salonId) {
+      const index = state.salonsList.findIndex(salon => salon._id === salonId);
+
+      if (index === -1) {
+        return;
+      }
+
+      state.salonsList.splice(index, 1);
     },
     setEditingSalonId(state, payload) {
       state.editingSalonId = payload;
@@ -59,9 +68,10 @@ export default {
         return Promise.reject(error);
       }
     },
-    async deleteSalon({}, id) {
+    async deleteSalon({ commit }, id) {
       try {
         await services.salon.deleteSalon(id);
+        commit("removeSalon", id);
       } catch (error) {
         return Promise.reject(error);
       }

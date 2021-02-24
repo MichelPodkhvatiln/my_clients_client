@@ -20,10 +20,10 @@
           </div>
           <footer class="btn-block">
             <div class="buttons">
-              <button class="button is-link" @click="onEditClick(salon.id)">
+              <button class="button is-link" @click="onEditClick(salon._id)">
                 Edit
               </button>
-              <button class="button is-danger" @click="deleteSalon(salon.id)">
+              <button class="button is-danger" @click="deleteSalon(salon._id)">
                 Delete
               </button>
             </div>
