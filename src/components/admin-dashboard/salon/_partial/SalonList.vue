@@ -1,21 +1,21 @@
 <template>
   <div class="salon-list">
-    <template v-if="salonListInfoForCards.length">
-      <div class="salon-list__cards">
-        <section
-          class="box"
-          v-for="salon in salonListInfoForCards"
-          :key="salon.id"
-        >
+    <template v-if="!isLoading">
+      <div v-if="salonsList.length" class="salon-list__cards">
+        <section class="box" v-for="salon in salonsList" :key="salon._id">
           <div class="image-block">
-            <img :src="getImgSrc(salon)" alt="Placeholder image" />
+            <img
+              :src="getImgSrc(salon)"
+              loading="lazy"
+              alt="Placeholder image"
+            />
           </div>
           <div class="info-block">
             <p class="title is-4">
               {{ salon.name }}
             </p>
             <p class="subtitle is-6">
-              {{ salon.locationInfo.address }}
+              {{ salon.location.address }}
             </p>
           </div>
           <footer class="btn-block">
@@ -55,8 +55,14 @@ export default {
   components: {
     HalfCircleSpinner
   },
+  props: {
+    isLoading: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
-    ...mapGetters("salonModule", ["salonListInfoForCards"])
+    ...mapGetters("salonModule", ["salonsList"])
   },
   methods: {
     ...mapActions("salonModule", ["deleteSalon", "setEditingSalonId"]),
@@ -65,9 +71,13 @@ export default {
         return "";
       }
 
-      const coordinates = salon.locationInfo.location.coordinates;
+      const coordinates = salon.location.coordinates;
+      const size = {
+        width: 350,
+        height: 330
+      };
 
-      return googleService.createStaticMapImgSrc(coordinates);
+      return googleService.createStaticMapImgSrc(coordinates, size);
     },
     onEditClick(salonId) {
       this.setEditingSalonId(salonId);
@@ -84,7 +94,9 @@ export default {
 
 .salon-list__cards {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 350px));
+  grid-template-rows: repeat(auto-fill, minmax(300px, 450px));
 }
 
 .salon-list__loader {
@@ -96,21 +108,30 @@ export default {
 }
 
 .box {
-  padding: 0;
-  margin: 10px;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 0 0 60px 0;
   border-radius: 5px;
 }
 
 .image-block {
+  min-height: 330px;
+  max-height: 330px;
+  background-color: #d9d9d9;
   border-radius: 5px;
   overflow: hidden;
 }
 
 .btn-block {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 15px 20px;
+  padding: 10px;
 }
 
 .info-block {

@@ -12,7 +12,12 @@
         </button>
       </div>
     </header>
-    <salon-list v-if="isListMode" @onEdit="toggleMode" @onBack="toggleMode" />
+    <salon-list
+      v-if="isListMode"
+      :isLoading="isLoading"
+      @onEdit="toggleMode"
+      @onBack="toggleMode"
+    />
     <salon-form v-else @onBack="toggleMode" />
   </section>
 </template>
@@ -30,7 +35,8 @@ export default {
   },
   data() {
     return {
-      isListMode: true
+      isListMode: true,
+      isLoading: true
     };
   },
   async mounted() {
@@ -38,6 +44,8 @@ export default {
       await this.getSalonList();
     } catch (error) {
       console.error(error);
+    } finally {
+      this.isLoading = false;
     }
   },
   beforeDestroy() {
@@ -48,7 +56,6 @@ export default {
       return this.isListMode ? "Salon List" : "Config salon";
     }
   },
-
   methods: {
     ...mapActions("salonModule", ["resetState", "getSalonList"]),
     toggleMode() {
