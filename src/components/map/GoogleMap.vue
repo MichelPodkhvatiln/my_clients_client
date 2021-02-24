@@ -24,9 +24,12 @@ export default {
       isMapReady: false,
       map: null,
       marker: null,
-      locationInfo: {
+      location: {
         address: null,
-        location: null
+        coordinates: {
+          lat: null,
+          lng: null
+        }
       }
     };
   },
@@ -38,8 +41,8 @@ export default {
   },
   computed: {
     addressTitle() {
-      return this.locationInfo.address
-        ? this.locationInfo.address
+      return this.location.address
+        ? this.location.address
         : "Please select place on map";
     }
   },
@@ -124,10 +127,13 @@ export default {
         this.changeMarkerPosition(coordinates);
       }
 
-      this.getGeoJson(coordinates);
-      await this.getAddressFromCoordinates(coordinates);
-
-      this.$emit("setMapMarker", this.locationInfo);
+      try {
+        await this.getAddressFromCoordinates(coordinates);
+        this.setLocationCoordinates(coordinates);
+        this.$emit("setMapMarker", this.location);
+      } catch (error) {
+        console.error(error);
+      }
     },
     addMarker(coordinates) {
       if (!this.googleMaps || !this.map) {
@@ -147,15 +153,6 @@ export default {
 
       this.marker.setPosition(coordinates);
       this.map.panTo(coordinates);
-    },
-    getGeoJson(coordinates) {
-      const dataMap = new this.googleMaps.Data.Feature({
-        geometry: new this.googleMaps.Data.Point(coordinates)
-      });
-
-      dataMap.toGeoJson(obj => {
-        this.locationInfo.location = obj.geometry;
-      });
     },
     async getAddressFromCoordinates(coordinates) {
       const _addressFormatter = addressData => {
@@ -210,10 +207,18 @@ export default {
 
         const addressData = results[0]?.address_components;
         const formattedAddress = _addressFormatter(addressData);
-        this.locationInfo.address = _setAddressTitleToMap(formattedAddress);
+        this.location.address = _setAddressTitleToMap(formattedAddress);
       } catch (error) {
         console.error(error);
       }
+    },
+    setLocationCoordinates(coordinates) {
+      if (!coordinates) {
+        return;
+      }
+
+      this.location.coordinates.lat = coordinates.lat;
+      this.location.coordinates.lng = coordinates.lng;
     }
   }
 };

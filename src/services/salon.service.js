@@ -23,8 +23,8 @@ export class SalonService extends BaseHttpService {
     return this.get(this.endpoints.getList);
   }
 
-  createSalon({ name, locationInfo }) {
-    return this.post(this.endpoints.create, { name, locationInfo });
+  createSalon({ name, location }) {
+    return this.post(this.endpoints.create, { name, location });
   }
 
   deleteSalon(id) {

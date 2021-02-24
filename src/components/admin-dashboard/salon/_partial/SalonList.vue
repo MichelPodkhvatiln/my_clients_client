@@ -20,7 +20,7 @@
           </div>
           <footer class="btn-block">
             <div class="buttons">
-              <button class="button is-link">
+              <button class="button is-link" @click="onEditClick(salon.id)">
                 Edit
               </button>
               <button class="button is-danger" @click="deleteSalon(salon.id)">
@@ -55,21 +55,11 @@ export default {
   components: {
     HalfCircleSpinner
   },
-  async mounted() {
-    try {
-      await this.getSalonList();
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  beforeDestroy() {
-    this.resetState();
-  },
   computed: {
     ...mapGetters("salonModule", ["salonListInfoForCards"])
   },
   methods: {
-    ...mapActions("salonModule", ["resetState", "getSalonList", "deleteSalon"]),
+    ...mapActions("salonModule", ["deleteSalon", "setEditingSalonId"]),
     getImgSrc(salon) {
       if (!salon) {
         return "";
@@ -78,6 +68,10 @@ export default {
       const coordinates = salon.locationInfo.location.coordinates;
 
       return googleService.createStaticMapImgSrc(coordinates);
+    },
+    onEditClick(salonId) {
+      this.setEditingSalonId(salonId);
+      this.$emit("onEdit");
     }
   }
 };

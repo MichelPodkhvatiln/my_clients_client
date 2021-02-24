@@ -3,45 +3,45 @@ import { services } from "@/utils/services";
 export default {
   namespaced: true,
   state: {
-    salonsList: []
+    salonsList: [],
+    editingSalonId: null
   },
   getters: {
     salonsList(state) {
       return state.salonsList;
     },
-    salonListInfoForCards(state) {
+    editingSalonData(state) {
       if (!state.salonsList.length) {
-        return [];
+        return undefined;
       }
 
-      return state.salonsList.map(salon => {
-        return {
-          id: salon._id,
-          name: salon.name,
-          locationInfo: {
-            address: salon.locationInfo.address,
-            location: {
-              coordinates: {
-                lat: salon.locationInfo.location.coordinates[1],
-                lng: salon.locationInfo.location.coordinates[0]
-              }
-            }
-          }
-        };
-      });
+      return state.salonsList.find(salon => salon._id === state.editingSalonId);
     }
   },
   mutations: {
     resetState(state) {
       state.salonsList = [];
+      state.editingSalonId = null;
     },
     setSalonsList(state, payload) {
       state.salonsList = payload;
+    },
+    addSalon(state, payload) {
+      state.salonsList.push(payload);
+    },
+    setEditingSalonId(state, payload) {
+      state.editingSalonId = payload;
     }
   },
   actions: {
     resetState({ commit }) {
       commit("resetState");
+    },
+    setEditingSalonId({ commit }, id) {
+      commit("setEditingSalonId", id);
+    },
+    resetEditingSalonId({ commit }) {
+      commit("setEditingSalonId", null);
     },
     async getSalonList({ commit }) {
       try {
@@ -51,9 +51,10 @@ export default {
         return Promise.reject(error);
       }
     },
-    async createSalon({}, { name, locationInfo }) {
+    async createSalon({ commit }, { name, location }) {
       try {
-        await services.salon.createSalon({ name, locationInfo });
+        const { data } = await services.salon.createSalon({ name, location });
+        commit("addSalon", data);
       } catch (error) {
         return Promise.reject(error);
       }

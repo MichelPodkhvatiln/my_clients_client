@@ -12,11 +12,13 @@
         </button>
       </div>
     </header>
-    <component :is="activeComponentName" @onBack="toggleMode" />
+    <salon-list v-if="isListMode" @onEdit="toggleMode" @onBack="toggleMode" />
+    <salon-form v-else @onBack="toggleMode" />
   </section>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import SalonForm from "@/components/admin-dashboard/salon/_partial/SalonForm.vue";
 import SalonList from "@/components/admin-dashboard/salon/_partial/SalonList.vue";
 
@@ -31,18 +33,25 @@ export default {
       isListMode: true
     };
   },
+  async mounted() {
+    try {
+      await this.getSalonList();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  beforeDestroy() {
+    this.resetState();
+  },
   computed: {
-    activeComponentName() {
-      return this.isListMode ? "SalonList" : "SalonForm";
-    },
     headerTitle() {
       return this.isListMode ? "Salon List" : "Config salon";
     }
   },
 
   methods: {
+    ...mapActions("salonModule", ["resetState", "getSalonList"]),
     toggleMode() {
-      //TODO confirm modal on canceling
       this.isListMode = !this.isListMode;
     }
   }
