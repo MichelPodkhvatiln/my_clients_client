@@ -5,5 +5,11 @@ export const endpoints = {
   },
   user: {
     getUser: "/user/get-user"
+  },
+  salon: {
+    getList: "/salon/get-list",
+    create: "/salon/create",
+    update: "/salon/update/{:id}",
+    delete: "/salon/delete/{:id}"
   }
 };
