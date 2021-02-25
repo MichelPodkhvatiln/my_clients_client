@@ -1,7 +1,7 @@
 export const endpoints = {
   auth: {
     login: "/auth/login",
-    signUp: "/auth/signup"
+    signUp: "/auth/sign-up"
   },
   user: {
     getUser: "/user/get-user"
