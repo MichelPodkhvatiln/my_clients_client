@@ -8,11 +8,22 @@
     <div class="auth-form__body">
       <template v-if="isSignUp">
         <div class="field">
-          <label class="label">Username</label>
+          <label class="label">First name</label>
           <div class="control">
             <input
               class="input"
-              v-model="form.username"
+              v-model="form.firstName"
+              type="text"
+              placeholder="e.g. Alex"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Last name</label>
+          <div class="control">
+            <input
+              class="input"
+              v-model="form.lastName"
               type="text"
               placeholder="e.g. Alex"
             />
@@ -75,7 +86,8 @@ export default {
       form: {
         email: "",
         password: "",
-        username: ""
+        firstName: "",
+        lastName: ""
       }
     };
   },
@@ -89,7 +101,10 @@ export default {
         required,
         minLength: minLength(8)
       },
-      username: {
+      firstName: {
+        required
+      },
+      lastName: {
         required
       }
     }
@@ -124,11 +139,14 @@ export default {
       return isValidEmail && isValidPassword;
     },
     canStartSignUp() {
-      const isValidUsername = !this.$v.form.username.$invalid;
+      const isValidFirstName = !this.$v.form.firstName.$invalid;
+      const isValidLastName = !this.$v.form.lastName.$invalid;
       const isValidEmail = !this.$v.form.email.$invalid;
       const isValidPassword = !this.$v.form.password.$invalid;
 
-      return isValidUsername && isValidEmail && isValidPassword;
+      return (
+        isValidFirstName && isValidLastName && isValidEmail && isValidPassword
+      );
     }
   },
   methods: {
@@ -150,9 +168,10 @@ export default {
 
       if (this.isSignUp) {
         const credentials = {
-          username: this.form.username,
           email: this.form.email,
-          password: this.form.password
+          password: this.form.password,
+          firstName: this.form.firstName,
+          lastName: this.form.lastName
         };
 
         try {
