@@ -35,7 +35,7 @@ export default {
           },
           {
             path: "/admin/services",
-            title: "Services Configuration",
+            title: "Управление услугами",
             isActive: this.currentRoute.includes("services")
           }
         ]
