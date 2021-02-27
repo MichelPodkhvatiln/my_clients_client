@@ -23,15 +23,15 @@ export class ServicesService extends BaseHttpService {
     return this.get(this.endpoints.getList);
   }
 
-  createService({ name, price, comment = "" }) {
-    return this.post(this.endpoints.create, { name, price, comment });
+  createService(data) {
+    return this.post(this.endpoints.create, data);
   }
 
   updateService(id, data) {
     return this.patch(this.endpoints.update.replace("{:id}", String(id)), data);
   }
 
-  deleteService(id) {
-    return this.delete(this.endpoints.delete.replace("{:id}", String(id)));
+  removeService(id) {
+    return this.delete(this.endpoints.remove.replace("{:id}", String(id)));
   }
 }

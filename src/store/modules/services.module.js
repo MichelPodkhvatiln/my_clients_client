@@ -14,8 +14,20 @@ export default {
     resetState(state) {
       state.servicesList = [];
     },
-    setServicesList(state, payload) {
-      state.servicesList = payload;
+    setServicesList(state, servicesList) {
+      state.servicesList = servicesList;
+    },
+    addService(state, service) {
+      state.servicesList.push(service);
+    },
+    removeService(state, id) {
+      const index = state.servicesList.findIndex(salon => salon._id === id);
+
+      if (index === -1) {
+        return;
+      }
+
+      state.servicesList.splice(index, 1);
     }
   },
   actions: {
@@ -26,6 +38,28 @@ export default {
       try {
         const { data } = await services.services.getList();
         commit("setServicesList", data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async createNewService({ commit }, payload) {
+      try {
+        const params = {
+          name: payload.name,
+          price: payload.price,
+          comment: payload.comment
+        };
+
+        const { data } = await services.services.createService(params);
+        commit("addService", data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async removeService({ commit }, id) {
+      try {
+        await services.services.removeService(id);
+        commit("removeService", id);
       } catch (error) {
         return Promise.reject(error);
       }

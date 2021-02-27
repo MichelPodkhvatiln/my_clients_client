@@ -1,13 +1,84 @@
 <template>
-  <div>
-    List item
+  <div class="box service" v-if="service">
+    <div class="service__content--main">
+      <p v-if="service.name" class="is-size-5 has-text-weight-semibold mr-1">
+        {{ service.name }}
+      </p>
+      <p v-if="service.price" class="is-size-5 has-text-danger">
+        {{ service.price }} ₴
+      </p>
+    </div>
+    <div v-if="service.comment" class="service__content--comment">
+      <p class="is-size-6 has-text-grey-dark">
+        {{ service.comment }}
+      </p>
+    </div>
+
+    <div class="service__content--buttons">
+      <div class="buttons">
+        <button class="button is-link">
+          Редактировать
+        </button>
+        <button class="button is-danger" @click="onRemoveServiceClick">
+          Удалить
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
-  name: "ServiceListItem"
+  name: "ServiceListItem",
+  props: {
+    service: {
+      type: Object
+    }
+  },
+  methods: {
+    ...mapActions("servicesModule", ["removeService"]),
+    async onRemoveServiceClick() {
+      if (!this.service._id) {
+        return;
+      }
+
+      try {
+        await this.removeService(this.service._id);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.service {
+  position: relative;
+
+  &:hover {
+    .service__content--buttons {
+      opacity: 1;
+    }
+  }
+}
+
+.service__content--main {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.service__content--buttons {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 0 15px;
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+}
+</style>
