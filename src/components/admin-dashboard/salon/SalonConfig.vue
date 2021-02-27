@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     headerTitle() {
-      return this.isListMode ? "Salon List" : "Config salon";
+      return this.isListMode ? "Salon List" : "Salon Info";
     }
   },
   methods: {
@@ -77,5 +77,6 @@ export default {
   justify-content: space-between;
   padding: 10px 0;
   margin-bottom: 15px;
+  min-height: 60px;
 }
 </style>
