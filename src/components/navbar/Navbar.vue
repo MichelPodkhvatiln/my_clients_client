@@ -24,7 +24,7 @@
         <template v-if="isUserLogIn">
           <div class="navbar-item">
             <span>
-              {{ user.username }}
+              {{ username }}
             </span>
           </div>
         </template>
@@ -83,7 +83,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("userModule", ["user", "isUserLogIn", "isAdmin"]),
+    ...mapGetters("userModule", ["username", "isUserLogIn", "isAdmin"]),
     currentRoute() {
       return this.$route.path;
     },
