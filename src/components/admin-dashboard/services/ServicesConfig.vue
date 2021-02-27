@@ -1,12 +1,29 @@
 <template>
   <section class="services-config">
-    <h1>hello</h1>
+    <div v-if="servicesList.length">
+      {{ servicesList }}
+    </div>
   </section>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
-  name: "ServicesConfig"
+  name: "ServicesConfig",
+  async beforeMount() {
+    try {
+      await this.getServicesList();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  computed: {
+    ...mapGetters("servicesModule", ["servicesList"])
+  },
+  methods: {
+    ...mapActions("servicesModule", ["getServicesList"])
+  }
 };
 </script>
 
