@@ -16,6 +16,6 @@ export const endpoints = {
     getList: "/services/get-list",
     create: "/services/create",
     update: "/services/update/{:id}",
-    delete: "/services/delete/{:id}"
+    remove: "/services/remove/{:id}"
   }
 };
