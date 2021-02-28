@@ -16,11 +16,11 @@
 
     <div class="service__content--buttons">
       <div class="buttons">
-        <button class="button is-link">
-          Редактировать
+        <button class="button is-link" @click="onEditServiceClick">
+          Edit
         </button>
         <button class="button is-danger" @click="onRemoveServiceClick">
-          Удалить
+          Remove
         </button>
       </div>
     </div>
@@ -39,6 +39,12 @@ export default {
   },
   methods: {
     ...mapActions("servicesModule", ["removeService"]),
+    onEditServiceClick() {
+      this.$modal.show("service-modal", {
+        mode: "edit",
+        serviceId: this.service._id
+      });
+    },
     async onRemoveServiceClick() {
       if (!this.service._id) {
         return;

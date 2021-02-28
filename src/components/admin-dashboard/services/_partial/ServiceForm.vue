@@ -1,27 +1,25 @@
 <template>
   <section class="p-4">
     <header class="mb-4">
-      <template v-if="isAddMode">
-        <p class="is-size-5 has-text-centered has-text-weight-semibold">
-          Добавление услуги
-        </p>
-      </template>
+      <p class="is-size-5 has-text-centered has-text-weight-semibold">
+        {{ modeText.title }}
+      </p>
     </header>
     <div class="mb-4">
       <div class="field">
-        <label class="label">Название</label>
+        <label class="label">Name</label>
         <div class="control">
           <input class="input" v-model="form.name" type="text" />
         </div>
       </div>
       <div class="field">
-        <label class="label">Стоимость</label>
+        <label class="label">Price</label>
         <div class="control">
           <input class="input" v-model="form.price" type="number" />
         </div>
       </div>
       <div class="field">
-        <label class="label">Описание</label>
+        <label class="label">Comment</label>
         <div class="control">
           <textarea class="textarea has-fixed-size" v-model="form.comment" />
         </div>
@@ -30,10 +28,10 @@
     <footer class="is-flex is-justify-content-flex-end">
       <div class="buttons">
         <button class="button is-success" @click="onSaveClick">
-          Сохранить
+          {{ modeText.submit }}
         </button>
         <button class="button is-danger" @click="onCancelClick">
-          Отмена
+          Cancel
         </button>
       </div>
     </footer>
@@ -76,10 +74,16 @@ export default {
     ...mapGetters("servicesModule", ["servicesList"]),
     isAddMode() {
       return this.mode === "add";
+    },
+    modeText() {
+      return {
+        title: this.isAddMode ? "Adding a service" : "Editing a service",
+        submit: this.isAddMode ? "Add" : "Save changes"
+      };
     }
   },
   methods: {
-    ...mapActions("servicesModule", ["createNewService"]),
+    ...mapActions("servicesModule", ["createNewService", "updateService"]),
     loadServiceData() {
       const serviceData = this.servicesList.find(
         service => service._id === this.serviceId
@@ -89,14 +93,16 @@ export default {
         return;
       }
 
-      this.formData.name = serviceData.name;
-      this.formData.price = serviceData.price;
-      this.formData.comment = serviceData?.comment ?? "";
+      this.form.name = serviceData.name;
+      this.form.price = serviceData.price;
+      this.form.comment = serviceData?.comment ?? "";
     },
     async onSaveClick() {
       try {
         if (this.isAddMode) {
           await this.createNewService(this.form);
+        } else {
+          await this.updateService({ id: this.serviceId, formData: this.form });
         }
 
         this.$modal.hide("service-modal");

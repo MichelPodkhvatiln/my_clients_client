@@ -3,12 +3,12 @@
     <header class="services-config__header">
       <div class="services-config__header--title">
         <h1 class="title">
-          Управление услугами
+          Service management
         </h1>
       </div>
       <div class="services-config__header--buttons">
         <button class="button is-link" @click="onAddServiceClick">
-          Добавить новую услугу
+          Add new service
         </button>
       </div>
     </header>
@@ -23,7 +23,7 @@
       </li>
     </ul>
 
-    <MountingPortal mountTo="body" append name="body">
+    <MountingPortal mountTo="body" append>
       <service-modal />
     </MountingPortal>
   </section>

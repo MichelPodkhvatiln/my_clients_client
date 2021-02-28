@@ -28,6 +28,15 @@ export default {
       }
 
       state.servicesList.splice(index, 1);
+    },
+    updateService(state, { id, data }) {
+      const index = state.servicesList.findIndex(salon => salon._id === id);
+
+      if (index === -1) {
+        return;
+      }
+
+      state.servicesList.splice(index, 1, data);
     }
   },
   actions: {
@@ -52,6 +61,14 @@ export default {
 
         const { data } = await services.services.createService(params);
         commit("addService", data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async updateService({ commit }, { id, formData }) {
+      try {
+        const { data } = await services.services.updateService(id, formData);
+        commit("updateService", { id, data });
       } catch (error) {
         return Promise.reject(error);
       }

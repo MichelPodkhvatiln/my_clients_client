@@ -25,17 +25,17 @@ export default {
           },
           {
             path: "/admin/salon",
-            title: "Salon Configuration",
+            title: "Salon management",
             isActive: this.currentRoute.includes("salon")
           },
           {
             path: "/admin/masters",
-            title: "Masters Configuration",
+            title: "Masters management",
             isActive: this.currentRoute.includes("masters")
           },
           {
             path: "/admin/services",
-            title: "Управление услугами",
+            title: "Service management",
             isActive: this.currentRoute.includes("services")
           }
         ]
