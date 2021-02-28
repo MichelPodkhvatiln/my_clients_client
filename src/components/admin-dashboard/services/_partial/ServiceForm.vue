@@ -27,7 +27,11 @@
     </div>
     <footer class="is-flex is-justify-content-flex-end">
       <div class="buttons">
-        <button class="button is-success" @click="onSaveClick">
+        <button
+          class="button is-success"
+          :disabled="!canSubmit"
+          @click="onSaveClick"
+        >
           {{ modeText.submit }}
         </button>
         <button class="button is-danger" @click="onCancelClick">
@@ -40,6 +44,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { required, minValue } from "vuelidate/lib/validators";
 
 export default {
   name: "ServiceForm",
@@ -70,6 +75,17 @@ export default {
 
     this.loadServiceData();
   },
+  validations: {
+    form: {
+      name: {
+        required
+      },
+      price: {
+        required,
+        minValue: minValue(1)
+      }
+    }
+  },
   computed: {
     ...mapGetters("servicesModule", ["servicesList"]),
     isAddMode() {
@@ -80,6 +96,37 @@ export default {
         title: this.isAddMode ? "Adding a service" : "Editing a service",
         submit: this.isAddMode ? "Add" : "Save changes"
       };
+    },
+    canSubmit() {
+      return this.isAddMode ? this.canAddService : this.canSaveChanges;
+    },
+    canAddService() {
+      const isValidName = !this.$v.form.name.$invalid;
+      const isValidPrice = !this.$v.form.price.$invalid;
+
+      return isValidName && isValidPrice;
+    },
+    canSaveChanges() {
+      const isValidData =
+        !this.$v.form.name.$invalid && !this.$v.form.price.$invalid;
+
+      if (!isValidData) {
+        return false;
+      }
+
+      const serviceData = this.servicesList.find(
+        service => service._id === this.serviceId
+      );
+
+      if (!serviceData) {
+        return false;
+      }
+
+      const isChangedName = this.form.name !== serviceData.name;
+      const isPriceName = Number(this.form.price) !== serviceData.price;
+      const isChangedComment = this.form.comment !== serviceData.comment;
+
+      return isChangedName || isPriceName || isChangedComment;
     }
   },
   methods: {
