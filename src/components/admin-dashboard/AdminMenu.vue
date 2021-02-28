@@ -21,35 +21,29 @@ export default {
           {
             path: "/admin",
             title: "Main",
-            isActive: this.isMainPage
+            isActive: this.currentRoute === "/admin"
           },
           {
             path: "/admin/salon",
-            title: "Salon Configuration",
-            isActive: this.inSalonPage
+            title: "Salon management",
+            isActive: this.currentRoute.includes("salon")
           },
           {
             path: "/admin/masters",
-            title: "Masters Configuration",
-            isActive: this.inMastersPage
+            title: "Masters management",
+            isActive: this.currentRoute.includes("masters")
+          },
+          {
+            path: "/admin/services",
+            title: "Service management",
+            isActive: this.currentRoute.includes("services")
           }
         ]
       };
     },
     currentRoute() {
       return this.$route.path;
-    },
-    isMainPage() {
-      return this.currentRoute === "/admin";
-    },
-    inSalonPage() {
-      return this.currentRoute.includes("salon");
-    },
-    inMastersPage() {
-      return this.currentRoute.includes("masters");
     }
   }
 };
 </script>
-
-<style scoped lang="scss"></style>

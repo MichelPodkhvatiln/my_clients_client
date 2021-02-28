@@ -11,5 +11,11 @@ export const endpoints = {
     create: "/salon/create",
     update: "/salon/update/{:id}",
     delete: "/salon/delete/{:id}"
+  },
+  services: {
+    getList: "/services/get-list",
+    create: "/services/create",
+    update: "/services/update/{:id}",
+    remove: "/services/remove/{:id}"
   }
 };

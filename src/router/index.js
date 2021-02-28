@@ -44,6 +44,13 @@ const routes = [
           import(
             /* webpackChunkName: "salonConfig" */ "../components/admin-dashboard/masters/MastersConfig.vue"
           )
+      },
+      {
+        path: "services",
+        component: () =>
+          import(
+            /* webpackChunkName: "servicesConfig" */ "../components/admin-dashboard/services/ServicesConfig.vue"
+          )
       }
     ]
   }

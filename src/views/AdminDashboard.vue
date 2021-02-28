@@ -36,6 +36,7 @@ export default {
   min-width: 200px;
   width: 17%;
   border-right: 1px solid #e2e2e2;
+  background-color: #fafafa;
 }
 
 .admin-dashboard__view {
