@@ -75,7 +75,6 @@ export default {
   display: flex;
   align-items: center;
   line-height: 1;
-  margin-bottom: 10px;
 }
 
 .service__content--buttons {
