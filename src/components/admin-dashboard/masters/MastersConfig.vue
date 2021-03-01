@@ -41,11 +41,14 @@ export default {
       console.error(error);
     }
   },
+  beforeDestroy() {
+    this.resetState();
+  },
   computed: {
     ...mapGetters("mastersModule", ["mastersList"])
   },
   methods: {
-    ...mapActions("mastersModule", ["getMastersList"])
+    ...mapActions("mastersModule", ["resetState", "getMastersList"])
   }
 };
 </script>

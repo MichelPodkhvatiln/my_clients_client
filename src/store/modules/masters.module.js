@@ -21,6 +21,9 @@ export default {
     }
   },
   actions: {
+    resetState({ commit }) {
+      commit("resetState");
+    },
     async getMastersList({ commit }) {
       try {
         const { data } = await services.masters.getList();
