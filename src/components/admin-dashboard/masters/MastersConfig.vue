@@ -7,10 +7,8 @@
         </h1>
       </div>
       <div class="masters-config__header--buttons">
-        <button class="button is-link button-with-icon">
+        <button class="button is-link">
           Add new master
-
-          <plus-icon class="button-icon" />
         </button>
       </div>
     </header>
@@ -29,13 +27,11 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import PlusIcon from "@/components/icons/PlusIcon.vue";
 import MasterListItem from "@/components/admin-dashboard/masters/_partial/MasterListItem.vue";
 
 export default {
   name: "MastersConfig",
   components: {
-    PlusIcon,
     MasterListItem
   },
   async beforeMount() {
@@ -77,20 +73,5 @@ export default {
   &:not(:last-child) {
     margin-bottom: 10px;
   }
-}
-
-.button-with-icon {
-  position: relative;
-  padding-right: 30px;
-}
-
-.button-icon {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  fill: #ffffff;
 }
 </style>

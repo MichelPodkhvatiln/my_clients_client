@@ -82,8 +82,12 @@ export default {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
   padding: 0 15px;
+  height: 100%;
   opacity: 0;
+  background-color: #ffffff;
   transition: opacity 0.15s ease-in;
 }
 </style>
