@@ -15,21 +15,20 @@
       </div>
     </header>
 
-    <ul class="masters-config__list">
-      <li class="masters-config__list--item">
-        <master-list-item />
-      </li>
-      <li class="masters-config__list--item">
-        <master-list-item />
-      </li>
-      <li class="masters-config__list--item">
-        <master-list-item />
+    <ul v-if="mastersList.length" class="masters-config__list">
+      <li
+        v-for="master in mastersList"
+        :key="master.id"
+        class="masters-config__list--item"
+      >
+        <master-list-item :master="master" />
       </li>
     </ul>
   </section>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import PlusIcon from "@/components/icons/PlusIcon.vue";
 import MasterListItem from "@/components/admin-dashboard/masters/_partial/MasterListItem.vue";
 
@@ -38,6 +37,19 @@ export default {
   components: {
     PlusIcon,
     MasterListItem
+  },
+  async beforeMount() {
+    try {
+      await this.getMastersList();
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  computed: {
+    ...mapGetters("mastersModule", ["mastersList"])
+  },
+  methods: {
+    ...mapActions("mastersModule", ["getMastersList"])
   }
 };
 </script>

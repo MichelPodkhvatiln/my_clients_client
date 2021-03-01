@@ -5,11 +5,11 @@
     </div>
 
     <div class="master__content--main">
-      <p class="is-size-5 has-text-weight-semibold mb-2">
-        Name
+      <p v-if="masterName" class="is-size-5 has-text-weight-semibold mb-2">
+        {{ masterName }}
       </p>
-      <p class="is-size-5 has-text-info">
-        Salon name
+      <p v-if="salonName" class="is-size-5 has-text-info">
+        {{ salonName }}
       </p>
     </div>
 
@@ -31,8 +31,38 @@ import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 
 export default {
   name: "MasterListItem",
+  props: {
+    master: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     AvatarIcon
+  },
+  computed: {
+    masterName() {
+      if (!this.master) return "";
+
+      const userInfo = this.master?.userInfo;
+
+      if (!userInfo) {
+        return "";
+      }
+
+      return `${userInfo.firstName} ${userInfo.lastName}`;
+    },
+    salonName() {
+      if (!this.master) return "";
+
+      const salonInfo = this.master?.salonInfo;
+
+      if (!salonInfo) {
+        return "";
+      }
+
+      return salonInfo.name;
+    }
   }
 };
 </script>
