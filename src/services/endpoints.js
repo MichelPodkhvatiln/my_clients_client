@@ -17,5 +17,10 @@ export const endpoints = {
     create: "/services/create",
     update: "/services/update/{:id}",
     remove: "/services/remove/{:id}"
+  },
+  masters: {
+    getList: "/masters/get-list",
+    getMaster: "/masters/get-master/{:id}",
+    create: "/masters/create"
   }
 };
