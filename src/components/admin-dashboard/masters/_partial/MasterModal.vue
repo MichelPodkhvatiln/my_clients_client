@@ -3,7 +3,7 @@
     name="master-modal"
     :minWidth="600"
     height="auto"
-    :clickToClose="true"
+    :clickToClose="false"
     @before-open="beforeOpen"
   >
     <section class="master-form">
@@ -81,13 +81,26 @@
         </template>
 
         <template v-if="activeTab === 3">
-          Friends
+          <div class="field">
+            hello
+          </div>
         </template>
 
         <!--        <template v-if="masterInfo">-->
         <!--          {{ masterInfo }}-->
         <!--        </template>-->
       </div>
+
+      <footer class="master-form__footer">
+        <div class="buttons">
+          <button class="button is-success">
+            Save changes
+          </button>
+          <button class="button is-danger" @click="onCancelClick">
+            Cancel
+          </button>
+        </div>
+      </footer>
     </section>
   </modal>
 </template>
@@ -149,6 +162,9 @@ export default {
     changeActiveTab(tabId) {
       this.activeTab = tabId;
     },
+    onCancelClick() {
+      this.$modal.hide("master-modal");
+    },
     onChangeSalon(evt) {
       const value = evt.target.value;
 
@@ -160,7 +176,22 @@ export default {
 
 <style scoped lang="scss">
 .master-form {
+  position: relative;
+  padding-bottom: 60px;
   min-height: 400px;
+}
+
+.master-form__footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  background-color: red;
+  padding: 10px 15px;
 }
 
 .block {
