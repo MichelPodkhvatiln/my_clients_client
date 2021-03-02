@@ -22,17 +22,23 @@
         <master-list-item :master="master" />
       </li>
     </ul>
+
+    <MountingPortal mountTo="body" append>
+      <master-modal />
+    </MountingPortal>
   </section>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import MasterListItem from "@/components/admin-dashboard/masters/_partial/MasterListItem.vue";
+import MasterModal from "@/components/admin-dashboard/masters/_partial/MasterModal.vue";
 
 export default {
   name: "MastersConfig",
   components: {
-    MasterListItem
+    MasterListItem,
+    MasterModal
   },
   async beforeMount() {
     try {

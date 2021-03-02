@@ -15,7 +15,7 @@
 
     <div class="master__content--buttons">
       <div class="buttons">
-        <button class="button is-link">
+        <button class="button is-link" @click="onEditClick">
           Edit
         </button>
         <button class="button is-danger">
@@ -62,6 +62,15 @@ export default {
       }
 
       return salonInfo.name;
+    }
+  },
+  methods: {
+    onEditClick() {
+      if (!this.master) {
+        return;
+      }
+
+      this.$modal.show("master-modal", { id: this.master.id });
     }
   }
 };

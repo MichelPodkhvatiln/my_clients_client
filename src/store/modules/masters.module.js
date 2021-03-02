@@ -31,6 +31,15 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    async getMasterById({}, id) {
+      try {
+        const { data } = await services.masters.getMaster(id);
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   }
 };

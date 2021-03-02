@@ -61,10 +61,14 @@ export default {
     resetEditingSalonId({ commit }) {
       commit("setEditingSalonId", null);
     },
-    async getSalonList({ commit }) {
+    async getSalonList({ commit }, withReturn = false) {
       try {
         const { data } = await services.salon.getList();
-        commit("setSalonsList", data);
+        if (withReturn) {
+          return data;
+        } else {
+          commit("setSalonsList", data);
+        }
       } catch (error) {
         return Promise.reject(error);
       }
