@@ -35,28 +35,48 @@
           <div class="field">
             <label class="label">First name</label>
             <div class="control">
-              <input class="input" type="text" placeholder="First name" />
+              <input
+                class="input"
+                type="text"
+                v-model="editedData.editableMasterInfo.firstName"
+                placeholder="First name"
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">Last name</label>
             <div class="control">
-              <input class="input" type="text" placeholder="Last name" />
+              <input
+                class="input"
+                type="text"
+                v-model="editedData.editableMasterInfo.lastName"
+                placeholder="Last name"
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">Email</label>
             <div class="control">
-              <input class="input" type="email" placeholder="Email" />
+              <input
+                class="input"
+                type="email"
+                v-model="editedData.editableMasterInfo.email"
+                placeholder="Email"
+              />
             </div>
           </div>
 
           <div class="field">
             <label class="label">New password</label>
             <div class="control">
-              <input class="input" type="password" placeholder="New password" />
+              <input
+                class="input"
+                type="password"
+                v-model="editedData.editableMasterInfo.newPassword"
+                placeholder="New password"
+              />
             </div>
           </div>
         </template>
@@ -78,17 +98,74 @@
               </select>
             </div>
           </div>
-        </template>
-
-        <template v-if="activeTab === 3">
           <div class="field">
-            hello
+            <span class="is-5">
+              Days:
+            </span>
+            <br />
+
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="1"
+              />
+              Monday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="2"
+              />
+              Tuesday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="3"
+              />
+              Wednesday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="4"
+              />
+              Thursday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="5"
+              />
+              Friday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="6"
+              />
+              Saturday
+            </label>
+            <label class="checkbox">
+              <input
+                type="checkbox"
+                v-model.number="editedData.masterDays"
+                value="7"
+              />
+              Sunday
+            </label>
           </div>
         </template>
 
-        <!--        <template v-if="masterInfo">-->
-        <!--          {{ masterInfo }}-->
-        <!--        </template>-->
+        <template v-if="activeTab === 3">
+          {{ editedData.masterDays }}
+        </template>
       </div>
 
       <footer class="master-form__footer">
@@ -117,7 +194,14 @@ export default {
         salonsInfo: null
       },
       editedData: {
-        newSalonId: null
+        editableMasterInfo: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          newPassword: ""
+        },
+        newSalonId: null,
+        masterDays: []
       },
       activeTab: 1 //1, 2, 3
     };
@@ -145,6 +229,23 @@ export default {
     ...mapActions("salonModule", ["getSalonList"]),
     async beforeOpen(event) {
       const params = event.params;
+
+      this.initialData = {
+        masterInfo: null,
+        salonsInfo: null
+      };
+
+      this.editedData = {
+        editableMasterInfo: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          newPassword: ""
+        },
+        newSalonId: null,
+        masterDays: []
+      };
+
       this.activeTab = 1;
 
       if (!params?.id) {
@@ -155,6 +256,11 @@ export default {
       try {
         this.initialData.masterInfo = await this.getMasterById(params.id);
         this.initialData.salonsInfo = await this.getSalonList(true);
+
+        //TODO make more clearly server response
+        this.editedData.editableMasterInfo.firstName = this.initialData.masterInfo.user.profile.firstName;
+        this.editedData.editableMasterInfo.lastName = this.initialData.masterInfo.user.profile.lastName;
+        this.editedData.editableMasterInfo.email = this.initialData.masterInfo.user.email;
       } catch (error) {
         console.error(error);
       }
@@ -190,7 +296,6 @@ export default {
   align-items: center;
   justify-content: flex-end;
   height: 60px;
-  background-color: red;
   padding: 10px 15px;
 }
 
@@ -203,6 +308,12 @@ export default {
 
   select {
     width: 100%;
+  }
+}
+
+.checkbox {
+  &:not(:last-child) {
+    margin-right: 10px;
   }
 }
 </style>
