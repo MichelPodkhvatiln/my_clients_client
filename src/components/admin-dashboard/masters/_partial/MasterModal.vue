@@ -47,6 +47,13 @@
           </div>
 
           <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" type="email" placeholder="Email" />
+            </div>
+          </div>
+
+          <div class="field">
             <label class="label">New password</label>
             <div class="control">
               <input class="input" type="password" placeholder="New password" />
@@ -56,7 +63,7 @@
 
         <template v-if="activeTab === 2">
           <div class="field">
-            <label class="label">Selected salon</label>
+            <label class="label">Master salon</label>
             <div class="select">
               <select @change="onChangeSalon">
                 <option value="null">None</option>
@@ -71,8 +78,6 @@
               </select>
             </div>
           </div>
-
-          <!--          {{ salonsWithStatus }}-->
         </template>
 
         <template v-if="activeTab === 3">
@@ -98,7 +103,9 @@ export default {
         masterInfo: null,
         salonsInfo: null
       },
-
+      editedData: {
+        newSalonId: null
+      },
       activeTab: 1 //1, 2, 3
     };
   },
@@ -125,6 +132,7 @@ export default {
     ...mapActions("salonModule", ["getSalonList"]),
     async beforeOpen(event) {
       const params = event.params;
+      this.activeTab = 1;
 
       if (!params?.id) {
         event.cancel();
@@ -144,7 +152,7 @@ export default {
     onChangeSalon(evt) {
       const value = evt.target.value;
 
-      console.log(value);
+      this.editedData.newSalonId = value;
     }
   }
 };
