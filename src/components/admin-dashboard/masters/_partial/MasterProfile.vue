@@ -195,7 +195,6 @@ export default {
           email: "",
           newPassword: ""
         },
-        newSalonId: null,
         masterDays: [],
         masterServices: []
       }
@@ -207,7 +206,7 @@ export default {
         return [];
       }
 
-      const masterSalonId = this.initialData.masterInfo?.salon?._id;
+      const masterSalonId = this.initialData.masterInfo?.salonInfo?.id;
 
       return this.initialData.salonsInfo.map(salon => {
         const isSelected = salon._id === masterSalonId;
@@ -266,22 +265,14 @@ export default {
     }
   },
   async beforeMount() {
-    const userId = this.$route.params.masterId;
+    const masterId = this.$route.params.masterId;
 
     if (!userId) return;
 
     this.isLoading = true;
 
     try {
-      this.initialData.masterInfo = await this.getMasterById(userId);
-      this.initialData.salonsInfo = await this.getSalonList(true);
-      this.initialData.servicesInfo = await this.getServicesList(true);
-
-      //TODO make more clearly server response
-      this.editedData.editableMasterInfo.firstName = this.initialData.masterInfo.user.profile.firstName;
-      this.editedData.editableMasterInfo.lastName = this.initialData.masterInfo.user.profile.lastName;
-      this.editedData.editableMasterInfo.email = this.initialData.masterInfo.user.email;
-      this.editedData.masterServices = this.initialData.masterInfo.services;
+      await this.getMasterInfo(masterId);
     } catch (error) {
       console.error(error);
     }
@@ -298,8 +289,29 @@ export default {
     changeActiveTab(tabId) {
       this.activeTab = tabId;
     },
+    async getMasterInfo(masterId) {
+      try {
+        this.initialData.masterInfo = await this.getMasterById(masterId);
+        this.initialData.salonsInfo = await this.getSalonList(true);
+        this.initialData.servicesInfo = await this.getServicesList(true);
+
+        this.setMasterInfoData();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    setMasterInfoData() {
+      this.editedData.editableMasterInfo = {
+        firstName: this.initialData.masterInfo.userInfo.firstName,
+        lastName: this.initialData.masterInfo.userInfo.lastName,
+        email: this.initialData.masterInfo.userInfo.email,
+        salonInfo: this.initialData.masterInfo.salonInfo.id
+      };
+      this.editedData.workDays = this.initialData.masterInfo.workDays;
+      this.editedData.masterServices = this.initialData.masterInfo.services;
+    },
     onChangeSalon(evt) {
-      this.editedData.newSalonId = evt.target.value;
+      console.log(evt.target.value);
     }
   }
 };
