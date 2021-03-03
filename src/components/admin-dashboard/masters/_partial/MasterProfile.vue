@@ -3,7 +3,7 @@
     <header class="master-profile__header">
       <div class="master-profile__header--title">
         <h1 class="title">
-          Masters profile
+          Masters configuration
         </h1>
       </div>
       <div class="master-profile__header--buttons">
@@ -18,19 +18,19 @@
           :class="{ 'is-active': this.activeTab === 1 }"
           @click.prevent="changeActiveTab(1)"
         >
-          <a>Profile</a>
+          <a>Profile configuration</a>
         </li>
         <li
           :class="{ 'is-active': this.activeTab === 2 }"
           @click.prevent="changeActiveTab(2)"
         >
-          <a>Salon</a>
+          <a>Salon configuration</a>
         </li>
         <li
           :class="{ 'is-active': this.activeTab === 3 }"
           @click.prevent="changeActiveTab(3)"
         >
-          <a>Services</a>
+          <a>Services configuration</a>
         </li>
       </ul>
     </div>

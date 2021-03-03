@@ -15,8 +15,8 @@
 
     <div class="master__content--buttons">
       <div class="buttons">
-        <button class="button is-link" @click="onProfileClick">
-          Profile
+        <button class="button is-link" @click="onEditClick">
+          Edit
         </button>
         <button class="button is-danger">
           Remove
@@ -65,7 +65,7 @@ export default {
     }
   },
   methods: {
-    onProfileClick() {
+    onEditClick() {
       if (!this.master) {
         return;
       }
