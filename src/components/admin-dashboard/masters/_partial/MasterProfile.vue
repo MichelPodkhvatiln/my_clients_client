@@ -101,7 +101,6 @@
           <label class="label">Master salon</label>
           <div class="select">
             <select @change="onChangeSalon">
-              <option value="null">None</option>
               <option
                 v-for="salon in salonsWithStatus"
                 :key="salon._id"
@@ -129,17 +128,6 @@
             {{ checkboxValue.title }}
           </label>
         </div>
-
-        <div class="field is-flex is-justify-content-flex-end">
-          <div class="buttons">
-            <button class="button is-success">
-              Save
-            </button>
-            <button class="button is-danger">
-              Cancel
-            </button>
-          </div>
-        </div>
       </template>
       <template v-if="activeTab === 3">
         <div class="field is-flex is-flex-direction-column">
@@ -157,17 +145,6 @@
             />
             {{ serviceInfo.title }}
           </label>
-        </div>
-
-        <div class="field is-flex is-justify-content-flex-end">
-          <div class="buttons">
-            <button class="button is-success">
-              Save
-            </button>
-            <button class="button is-danger">
-              Cancel
-            </button>
-          </div>
         </div>
       </template>
     </div>
@@ -267,7 +244,7 @@ export default {
   async beforeMount() {
     const masterId = this.$route.params.masterId;
 
-    if (!userId) return;
+    if (!masterId) return;
 
     this.isLoading = true;
 
@@ -280,7 +257,7 @@ export default {
     this.isLoading = false;
   },
   methods: {
-    ...mapActions("mastersModule", ["getMasterById"]),
+    ...mapActions("mastersModule", ["getMasterById", "changeMasterSalon"]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
     onBackClick() {
@@ -295,23 +272,35 @@ export default {
         this.initialData.salonsInfo = await this.getSalonList(true);
         this.initialData.servicesInfo = await this.getServicesList(true);
 
-        this.setMasterInfoData();
+        this.setMasterInfoData(this.initialData.masterInfo);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    setMasterInfoData() {
+    setMasterInfoData(masterInfo) {
       this.editedData.editableMasterInfo = {
-        firstName: this.initialData.masterInfo.userInfo.firstName,
-        lastName: this.initialData.masterInfo.userInfo.lastName,
-        email: this.initialData.masterInfo.userInfo.email,
-        salonInfo: this.initialData.masterInfo.salonInfo.id
+        firstName: masterInfo.userInfo.firstName,
+        lastName: masterInfo.userInfo.lastName,
+        email: masterInfo.userInfo.email,
+        salonInfo: masterInfo.salonInfo.id
       };
-      this.editedData.workDays = this.initialData.masterInfo.workDays;
-      this.editedData.masterServices = this.initialData.masterInfo.services;
+      this.editedData.workDays = masterInfo.workDays;
+      this.editedData.masterServices = masterInfo.services;
     },
-    onChangeSalon(evt) {
-      console.log(evt.target.value);
+    async onChangeSalon(evt) {
+      const masterId = this.$route.params.masterId;
+      const salonId = evt.target.value;
+
+      const params = {
+        masterId,
+        salonId
+      };
+
+      try {
+        this.initialData.masterInfo = await this.changeMasterSalon(params);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };

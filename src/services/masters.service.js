@@ -30,4 +30,8 @@ export class MastersService extends BaseHttpService {
   create(data) {
     return this.post(this.endpoints.create, data);
   }
+
+  changeSalon(data) {
+    return this.post(this.endpoints.changeSalon, data);
+  }
 }
