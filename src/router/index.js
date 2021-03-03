@@ -46,6 +46,13 @@ const routes = [
           )
       },
       {
+        path: "masters/:masterId",
+        component: () =>
+          import(
+            /* webpackChunkName: "masterProfile" */ "../components/admin-dashboard/masters/_partial/MasterProfile.vue"
+          )
+      },
+      {
         path: "services",
         component: () =>
           import(

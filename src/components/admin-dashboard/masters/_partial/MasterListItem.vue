@@ -15,8 +15,8 @@
 
     <div class="master__content--buttons">
       <div class="buttons">
-        <button class="button is-link" @click="onEditClick">
-          Edit
+        <button class="button is-link" @click="onProfileClick">
+          Profile
         </button>
         <button class="button is-danger">
           Remove
@@ -65,12 +65,14 @@ export default {
     }
   },
   methods: {
-    onEditClick() {
+    onProfileClick() {
       if (!this.master) {
         return;
       }
 
-      this.$modal.show("master-modal", { id: this.master.id });
+      this.$router.push(`/admin/masters/${this.master.id}`);
+
+      // this.$modal.show("master-modal", { id: this.master.id });
     }
   }
 };
