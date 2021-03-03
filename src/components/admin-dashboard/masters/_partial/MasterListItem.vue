@@ -71,8 +71,6 @@ export default {
       }
 
       this.$router.push(`/admin/masters/${this.master.id}`);
-
-      // this.$modal.show("master-modal", { id: this.master.id });
     }
   }
 };

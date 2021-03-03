@@ -83,6 +83,17 @@
             />
           </div>
         </div>
+
+        <div class="field is-flex is-justify-content-flex-end">
+          <div class="buttons">
+            <button class="button is-success">
+              Save
+            </button>
+            <button class="button is-danger">
+              Cancel
+            </button>
+          </div>
+        </div>
       </template>
 
       <template v-if="activeTab === 2">
@@ -102,16 +113,13 @@
             </select>
           </div>
         </div>
-        <div class="field">
-          <span class="is-5">
-            Days:
-          </span>
-          <br />
+        <div class="field is-flex is-flex-direction-column">
+          <label class="label">Days:</label>
 
           <label
             v-for="checkboxValue in checkboxDaysValues"
             :key="checkboxValue.value"
-            class="checkbox mr-2"
+            class="checkbox mb-2"
           >
             <input
               type="checkbox"
@@ -120,6 +128,46 @@
             />
             {{ checkboxValue.title }}
           </label>
+        </div>
+
+        <div class="field is-flex is-justify-content-flex-end">
+          <div class="buttons">
+            <button class="button is-success">
+              Save
+            </button>
+            <button class="button is-danger">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </template>
+      <template v-if="activeTab === 3">
+        <div class="field is-flex is-flex-direction-column">
+          <label class="label">Master services:</label>
+
+          <label
+            v-for="serviceInfo in servicesInfoList"
+            :key="serviceInfo.value"
+            class="checkbox mb-2"
+          >
+            <input
+              type="checkbox"
+              v-model.number="editedData.masterServices"
+              :value="serviceInfo.value"
+            />
+            {{ serviceInfo.title }}
+          </label>
+        </div>
+
+        <div class="field is-flex is-justify-content-flex-end">
+          <div class="buttons">
+            <button class="button is-success">
+              Save
+            </button>
+            <button class="button is-danger">
+              Cancel
+            </button>
+          </div>
         </div>
       </template>
     </div>
@@ -137,7 +185,8 @@ export default {
       isLoading: false,
       initialData: {
         masterInfo: null,
-        salonsInfo: null
+        salonsInfo: null,
+        servicesInfo: null
       },
       editedData: {
         editableMasterInfo: {
@@ -147,7 +196,8 @@ export default {
           newPassword: ""
         },
         newSalonId: null,
-        masterDays: []
+        masterDays: [],
+        masterServices: []
       }
     };
   },
@@ -199,6 +249,20 @@ export default {
           value: 7
         }
       ];
+    },
+    servicesInfoList() {
+      const servicesInfo = this.initialData.servicesInfo;
+
+      if (!servicesInfo) {
+        return [];
+      }
+
+      return servicesInfo.map(service => {
+        return {
+          title: service.name,
+          value: service._id
+        };
+      });
     }
   },
   async beforeMount() {
@@ -211,11 +275,13 @@ export default {
     try {
       this.initialData.masterInfo = await this.getMasterById(userId);
       this.initialData.salonsInfo = await this.getSalonList(true);
+      this.initialData.servicesInfo = await this.getServicesList(true);
 
       //TODO make more clearly server response
       this.editedData.editableMasterInfo.firstName = this.initialData.masterInfo.user.profile.firstName;
       this.editedData.editableMasterInfo.lastName = this.initialData.masterInfo.user.profile.lastName;
       this.editedData.editableMasterInfo.email = this.initialData.masterInfo.user.email;
+      this.editedData.masterServices = this.initialData.masterInfo.services;
     } catch (error) {
       console.error(error);
     }
@@ -225,6 +291,7 @@ export default {
   methods: {
     ...mapActions("mastersModule", ["getMasterById"]),
     ...mapActions("salonModule", ["getSalonList"]),
+    ...mapActions("servicesModule", ["getServicesList"]),
     onBackClick() {
       this.$router.push("/admin/masters");
     },
