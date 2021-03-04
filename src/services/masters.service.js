@@ -38,4 +38,8 @@ export class MastersService extends BaseHttpService {
   changeWorkDays(data) {
     return this.post(this.endpoints.changeWorkDays, data);
   }
+
+  changeServices(data) {
+    return this.post(this.endpoints.changeServices, data);
+  }
 }

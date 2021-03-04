@@ -68,6 +68,20 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    async changeMasterServices({}, payload) {
+      try {
+        const params = {
+          masterId: payload.masterId,
+          services: payload.services
+        };
+
+        const { data } = await services.masters.changeServices(params);
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   }
 };

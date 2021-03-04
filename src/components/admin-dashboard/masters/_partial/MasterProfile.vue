@@ -141,8 +141,9 @@
           >
             <input
               type="checkbox"
-              v-model="editedData.masterServices"
               :value="serviceInfo.value"
+              :checked="isSelectedService(serviceInfo.value)"
+              @change="onServiceChange"
             />
             {{ serviceInfo.title }}
           </label>
@@ -155,7 +156,6 @@
 <script>
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
-//import throttle from "lodash.throttle";
 
 export default {
   name: "MasterProfile",
@@ -263,7 +263,8 @@ export default {
     ...mapActions("mastersModule", [
       "getMasterById",
       "changeMasterSalon",
-      "changeMasterWorkdays"
+      "changeMasterWorkdays",
+      "changeMasterServices"
     ]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
@@ -275,6 +276,9 @@ export default {
     },
     isSelectedWorkDay(value) {
       return this.editedData.workDays.includes(value);
+    },
+    isSelectedService(value) {
+      return this.editedData.masterServices.includes(value);
     },
     async getMasterInfo(masterId) {
       try {
@@ -294,8 +298,8 @@ export default {
         email: masterInfo.userInfo.email,
         salonInfo: masterInfo.salonInfo.id
       };
-      this.editedData.workDays = masterInfo.workDays;
-      this.editedData.masterServices = masterInfo.services;
+      this.editedData.workDays = masterInfo.workDays ?? [];
+      this.editedData.masterServices = masterInfo.services ?? [];
     },
     async onChangeSalon(evt) {
       const masterId = this.$route.params.masterId;
@@ -337,6 +341,32 @@ export default {
 
       this.editedData.workDays.push(value);
       _debouncedWorkDayUpdate();
+    },
+    onServiceChange(evt) {
+      const _debouncedServicesUpdate = debounce(async () => {
+        const params = {
+          masterId: this.$route.params.masterId,
+          services: this.editedData.masterServices
+        };
+
+        try {
+          this.initialData.masterInfo = await this.changeMasterServices(params);
+        } catch (error) {
+          console.error(error);
+        }
+      }, 500);
+
+      const value = evt.target.value;
+      const index = this.editedData.masterServices.indexOf(value);
+
+      if (index !== -1) {
+        this.editedData.masterServices.splice(index, 1);
+        _debouncedServicesUpdate();
+        return;
+      }
+
+      this.editedData.masterServices.push(value);
+      _debouncedServicesUpdate();
     }
   }
 };
