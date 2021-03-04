@@ -122,8 +122,9 @@
           >
             <input
               type="checkbox"
-              v-model.number="editedData.masterDays"
               :value="checkboxValue.value"
+              :checked="isSelectedWorkDay(checkboxValue.value)"
+              @change="onWorkDayChange"
             />
             {{ checkboxValue.title }}
           </label>
@@ -140,7 +141,7 @@
           >
             <input
               type="checkbox"
-              v-model.number="editedData.masterServices"
+              v-model="editedData.masterServices"
               :value="serviceInfo.value"
             />
             {{ serviceInfo.title }}
@@ -153,6 +154,8 @@
 
 <script>
 import { mapActions } from "vuex";
+import debounce from "lodash.debounce";
+//import throttle from "lodash.throttle";
 
 export default {
   name: "MasterProfile",
@@ -172,7 +175,7 @@ export default {
           email: "",
           newPassword: ""
         },
-        masterDays: [],
+        workDays: [],
         masterServices: []
       }
     };
@@ -257,7 +260,11 @@ export default {
     this.isLoading = false;
   },
   methods: {
-    ...mapActions("mastersModule", ["getMasterById", "changeMasterSalon"]),
+    ...mapActions("mastersModule", [
+      "getMasterById",
+      "changeMasterSalon",
+      "changeMasterWorkdays"
+    ]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
     onBackClick() {
@@ -265,6 +272,9 @@ export default {
     },
     changeActiveTab(tabId) {
       this.activeTab = tabId;
+    },
+    isSelectedWorkDay(value) {
+      return this.editedData.workDays.includes(value);
     },
     async getMasterInfo(masterId) {
       try {
@@ -301,6 +311,32 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },
+    onWorkDayChange(evt) {
+      const _debouncedWorkDayUpdate = debounce(async () => {
+        const params = {
+          masterId: this.$route.params.masterId,
+          workDays: this.editedData.workDays
+        };
+
+        try {
+          this.initialData.masterInfo = await this.changeMasterWorkdays(params);
+        } catch (error) {
+          console.error(error);
+        }
+      }, 500);
+
+      const value = Number(evt.target.value);
+      const index = this.editedData.workDays.indexOf(value);
+
+      if (index !== -1) {
+        this.editedData.workDays.splice(index, 1);
+        _debouncedWorkDayUpdate();
+        return;
+      }
+
+      this.editedData.workDays.push(value);
+      _debouncedWorkDayUpdate();
     }
   }
 };

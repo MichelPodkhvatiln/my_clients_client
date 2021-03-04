@@ -22,6 +22,7 @@ export const endpoints = {
     getList: "/master/get-list",
     getMaster: "/master/get-master/{:id}",
     create: "/master/create",
-    changeSalon: "/master/change-salon"
+    changeSalon: "/master/change-salon",
+    changeWorkDays: "/master/change-work-days"
   }
 };

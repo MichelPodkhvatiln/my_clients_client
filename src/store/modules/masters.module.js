@@ -54,6 +54,20 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    async changeMasterWorkdays({}, payload) {
+      try {
+        const params = {
+          masterId: payload.masterId,
+          workDays: payload.workDays
+        };
+
+        const { data } = await services.masters.changeWorkDays(params);
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   }
 };
