@@ -72,18 +72,6 @@
           </div>
         </div>
 
-        <div class="field">
-          <label class="label">New password</label>
-          <div class="control">
-            <input
-              class="input"
-              type="password"
-              v-model="editedData.editableMasterInfo.newPassword"
-              placeholder="New password"
-            />
-          </div>
-        </div>
-
         <div class="field is-flex is-justify-content-flex-end">
           <div class="buttons">
             <button class="button is-success">
@@ -172,8 +160,7 @@ export default {
         editableMasterInfo: {
           firstName: "",
           lastName: "",
-          email: "",
-          newPassword: ""
+          email: ""
         },
         workDays: [],
         masterServices: []
