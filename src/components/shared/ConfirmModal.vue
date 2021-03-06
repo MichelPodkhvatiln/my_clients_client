@@ -13,11 +13,14 @@
           </p>
         </header>
 
-        <div class="confirm-modal__body mb-2">
-          <p class="is-size-5 has-text-centered">
-            {{ text }}
-          </p>
-        </div>
+        <template v-if="text">
+          <div class="confirm-modal__body mb-2">
+            <p class="is-size-5 has-text-centered">
+              {{ text }}
+            </p>
+          </div>
+        </template>
+
         <footer class="confirm-modal__footer">
           <button v-if="onConfirm" class="button is-success" @click="onConfirm">
             Confirm
@@ -44,8 +47,8 @@ export default {
   },
   methods: {
     beforeOpen({ params }) {
-      this.title = params.title ?? "Confirm";
-      this.text = params.text ?? "You are sure?";
+      this.title = params.title ?? "You are sure?";
+      this.text = params.text;
       this.onConfirm = params.onConfirm;
       this.onCancel = params.onCancel;
     },
