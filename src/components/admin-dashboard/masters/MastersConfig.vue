@@ -7,7 +7,7 @@
         </h1>
       </div>
       <div class="masters-config__header--buttons">
-        <button class="button is-link">
+        <button class="button is-link" @click="onAddMasterClick">
           Add new master
         </button>
       </div>
@@ -22,17 +22,21 @@
         <master-list-item :master="master" />
       </li>
     </ul>
+
+    <master-add-modal />
   </section>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import MasterListItem from "@/components/admin-dashboard/masters/_partial/MasterListItem.vue";
+import MasterAddModal from "@/components/admin-dashboard/masters/_partial/MasterAddModal.vue";
 
 export default {
   name: "MastersConfig",
   components: {
-    MasterListItem
+    MasterListItem,
+    MasterAddModal
   },
   async beforeMount() {
     try {
@@ -48,7 +52,10 @@ export default {
     ...mapGetters("mastersModule", ["mastersList"])
   },
   methods: {
-    ...mapActions("mastersModule", ["resetState", "getMastersList"])
+    ...mapActions("mastersModule", ["resetState", "getMastersList"]),
+    onAddMasterClick() {
+      this.$modal.show("add-master");
+    }
   }
 };
 </script>

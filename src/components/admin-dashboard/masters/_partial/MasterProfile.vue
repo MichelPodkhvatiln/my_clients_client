@@ -95,14 +95,16 @@
               >
                 None
               </option>
-              <option
-                v-for="salon in salonsWithStatus"
-                :key="salon._id"
-                :value="salon._id"
-                :selected="salon.isSelected"
-              >
-                {{ salon.name }}
-              </option>
+              <template v-if="salonsWithStatus.length">
+                <option
+                  v-for="salon in salonsWithStatus"
+                  :key="salon._id"
+                  :value="salon._id"
+                  :selected="salon.isSelected"
+                >
+                  {{ salon.name }}
+                </option>
+              </template>
             </select>
           </div>
         </div>
