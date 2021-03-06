@@ -86,9 +86,15 @@
 
       <template v-if="activeTab === 2">
         <div class="field">
-          <label class="label">Master salon</label>
+          <label class="label">Master's salon</label>
           <div class="select">
             <select @change="onChangeSalon">
+              <option
+                value="null"
+                :selected="!initialData.masterInfo.salonInfo"
+              >
+                None
+              </option>
               <option
                 v-for="salon in salonsWithStatus"
                 :key="salon._id"
@@ -101,7 +107,7 @@
           </div>
         </div>
         <div class="field is-flex is-flex-direction-column">
-          <label class="label">Days:</label>
+          <label class="label">Work days:</label>
 
           <label
             v-for="checkboxValue in checkboxDaysValues"
@@ -283,14 +289,19 @@ export default {
         firstName: masterInfo.userInfo.firstName,
         lastName: masterInfo.userInfo.lastName,
         email: masterInfo.userInfo.email,
-        salonInfo: masterInfo.salonInfo.id
+        salonInfo: masterInfo.salonInfo?.id ?? null
       };
       this.editedData.workDays = masterInfo.workDays ?? [];
       this.editedData.masterServices = masterInfo.services ?? [];
     },
     async onChangeSalon(evt) {
+      const formattedValue =
+        evt.target.value === "null"
+          ? JSON.parse(evt.target.value)
+          : evt.target.value;
+
       const masterId = this.$route.params.masterId;
-      const salonId = evt.target.value;
+      const salonId = formattedValue;
 
       const params = {
         masterId,

@@ -5,11 +5,11 @@
     </div>
 
     <div class="master__content--main">
-      <p v-if="masterName" class="is-size-5 has-text-weight-semibold mb-2">
+      <p v-if="masterName" class="is-size-4 has-text-weight-semibold mb-2">
         {{ masterName }}
       </p>
       <p v-if="salonName" class="is-size-5 has-text-info">
-        {{ salonName }}
+        Master's salon: {{ salonName }}
       </p>
     </div>
 
@@ -55,13 +55,7 @@ export default {
     salonName() {
       if (!this.master) return "";
 
-      const salonInfo = this.master?.salonInfo;
-
-      if (!salonInfo) {
-        return "";
-      }
-
-      return salonInfo.name;
+      return this.master?.salonInfo?.name ?? "None";
     }
   },
   methods: {
