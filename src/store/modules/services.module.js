@@ -43,10 +43,14 @@ export default {
     resetState({ commit }) {
       commit("resetState");
     },
-    async getServicesList({ commit }) {
+    async getServicesList({ commit }, withReturn = false) {
       try {
         const { data } = await services.services.getList();
-        commit("setServicesList", data);
+        if (!withReturn) {
+          commit("setServicesList", data);
+        } else {
+          return data;
+        }
       } catch (error) {
         return Promise.reject(error);
       }

@@ -6,16 +6,20 @@
         <router-view />
       </main>
     </div>
+
+    <confirm-modal />
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/navbar/Navbar.vue";
+import ConfirmModal from "@/components/shared/ConfirmModal.vue";
 
 export default {
   name: "DefaultLayout",
   components: {
-    Navbar
+    Navbar,
+    ConfirmModal
   }
 };
 </script>

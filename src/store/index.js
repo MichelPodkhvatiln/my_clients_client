@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import userModule from "@/store/modules/user.module";
 import salonModule from "@/store/modules/salon.module";
 import servicesModule from "@/store/modules/services.module";
+import mastersModule from "@/store/modules/masters.module";
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   modules: {
     userModule,
     salonModule,
-    servicesModule
+    servicesModule,
+    mastersModule
   }
 });

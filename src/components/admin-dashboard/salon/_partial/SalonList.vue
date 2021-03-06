@@ -23,7 +23,10 @@
               <button class="button is-link" @click="onEditClick(salon._id)">
                 Edit
               </button>
-              <button class="button is-danger" @click="deleteSalon(salon._id)">
+              <button
+                class="button is-danger"
+                @click="onDeleteSalon(salon._id)"
+              >
                 Delete
               </button>
             </div>
@@ -82,6 +85,22 @@ export default {
     onEditClick(salonId) {
       this.setEditingSalonId(salonId);
       this.$emit("onEdit");
+    },
+    onDeleteSalon(salonId) {
+      this.$modal.show("confirm-modal", {
+        onConfirm: async () => {
+          try {
+            await this.deleteSalon(salonId);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.$modal.hide("confirm-modal");
+          }
+        },
+        onCancel: () => {
+          this.$modal.hide("confirm-modal");
+        }
+      });
     }
   }
 };
