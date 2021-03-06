@@ -18,6 +18,9 @@ export default {
     },
     setMastersList(state, mastersList) {
       state.mastersList = mastersList;
+    },
+    addMaster(state, master) {
+      state.mastersList.push(master);
     }
   },
   actions: {
@@ -37,6 +40,23 @@ export default {
         const { data } = await services.masters.getMaster(id);
 
         return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async createMaster({ commit }, payload) {
+      try {
+        const params = {
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+          email: payload.email,
+          password: payload.password,
+          salonId: payload.salonId
+        };
+
+        const { data } = await services.masters.createMaster(params);
+
+        commit("addMaster", data);
       } catch (error) {
         return Promise.reject(error);
       }

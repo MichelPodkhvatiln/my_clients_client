@@ -27,7 +27,7 @@ export class MastersService extends BaseHttpService {
     return this.get(this.endpoints.getMaster.replace("{:id}", String(id)));
   }
 
-  create(data) {
+  createMaster(data) {
     return this.post(this.endpoints.create, data);
   }
 

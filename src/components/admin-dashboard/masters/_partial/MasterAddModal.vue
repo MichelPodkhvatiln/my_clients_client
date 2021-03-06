@@ -66,8 +66,12 @@
           </div>
         </div>
         <div class="buttons is-justify-content-flex-end">
-          <button class="button is-success" :disabled="!canSubmit">
-            Add
+          <button
+            class="button is-success"
+            :disabled="!canSubmit"
+            @click="onAddMaster"
+          >
+            Add master
           </button>
           <button class="button is-danger" @click="onCancel">
             Cancel
@@ -140,6 +144,7 @@ export default {
   },
   methods: {
     ...mapActions("salonModule", ["getSalonList"]),
+    ...mapActions("mastersModule", ["createMaster"]),
     async beforeOpen() {
       this.form = {
         firstName: "",
@@ -155,14 +160,31 @@ export default {
         console.error(error);
       }
     },
-    onCancel() {
-      this.$modal.hide("add-master");
-    },
     onChangeSalon(evt) {
       this.form.salonId =
         evt.target.value === "null"
           ? JSON.parse(evt.target.value)
           : evt.target.value;
+    },
+    async onAddMaster() {
+      try {
+        const params = {
+          firstName: this.form.firstName,
+          lastName: this.form.lastName,
+          email: this.form.email,
+          password: this.form.password,
+          salonId: this.salonId
+        };
+
+        await this.createMaster(params);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.$modal.hide("add-master");
+      }
+    },
+    onCancel() {
+      this.$modal.hide("add-master");
     }
   }
 };
