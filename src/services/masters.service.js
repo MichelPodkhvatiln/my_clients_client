@@ -31,6 +31,10 @@ export class MastersService extends BaseHttpService {
     return this.post(this.endpoints.create, data);
   }
 
+  removeMaster(id) {
+    return this.delete(this.endpoints.remove.replace("{:id}", String(id)));
+  }
+
   changeSalon(data) {
     return this.post(this.endpoints.changeSalon, data);
   }

@@ -28,6 +28,7 @@
 
 <script>
 import AvatarIcon from "@/components/icons/AvatarIcon.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "MasterListItem",
@@ -59,6 +60,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("mastersModule", ["removeMaster"]),
     onEditClick() {
       if (!this.master) {
         return;
@@ -69,8 +71,15 @@ export default {
     onRemoveMasterClick() {
       this.$modal.show("confirm-modal", {
         onConfirm: async () => {
-          console.log("confirm delete master");
-          this.$modal.hide("confirm-modal");
+          if (!this.master.id) return;
+
+          try {
+            await this.removeMaster(this.master.id);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.$modal.hide("confirm-modal");
+          }
         },
         onCancel: () => {
           this.$modal.hide("confirm-modal");

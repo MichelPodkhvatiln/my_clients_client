@@ -21,6 +21,17 @@ export default {
     },
     addMaster(state, master) {
       state.mastersList.push(master);
+    },
+    removeMaster(state, masterId) {
+      const index = state.mastersList.findIndex(
+        master => master.id === masterId
+      );
+
+      if (index === -1) {
+        return;
+      }
+
+      state.mastersList.splice(index, 1);
     }
   },
   actions: {
@@ -57,6 +68,14 @@ export default {
         const { data } = await services.masters.createMaster(params);
 
         commit("addMaster", data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async removeMaster({ commit }, masterId) {
+      try {
+        await services.masters.removeMaster(masterId);
+        commit("removeMaster", masterId);
       } catch (error) {
         return Promise.reject(error);
       }
