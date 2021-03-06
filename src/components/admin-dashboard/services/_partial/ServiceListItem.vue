@@ -50,11 +50,20 @@ export default {
         return;
       }
 
-      try {
-        await this.removeService(this.service._id);
-      } catch (error) {
-        console.error(error);
-      }
+      this.$modal.show("confirm-modal", {
+        onConfirm: async () => {
+          try {
+            await this.removeService(this.service._id);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.$modal.hide("confirm-modal");
+          }
+        },
+        onCancel: () => {
+          this.$modal.hide("confirm-modal");
+        }
+      });
     }
   }
 };

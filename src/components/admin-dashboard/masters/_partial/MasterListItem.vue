@@ -18,7 +18,7 @@
         <button class="button is-link" @click="onEditClick">
           Edit
         </button>
-        <button class="button is-danger">
+        <button class="button is-danger" @click="onRemoveMasterClick">
           Remove
         </button>
       </div>
@@ -65,6 +65,17 @@ export default {
       }
 
       this.$router.push(`/admin/masters/${this.master.id}`);
+    },
+    onRemoveMasterClick() {
+      this.$modal.show("confirm-modal", {
+        onConfirm: async () => {
+          console.log("confirm delete master");
+          this.$modal.hide("confirm-modal");
+        },
+        onCancel: () => {
+          this.$modal.hide("confirm-modal");
+        }
+      });
     }
   }
 };
