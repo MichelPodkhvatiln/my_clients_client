@@ -88,6 +88,8 @@ export default {
   min-height: 60px;
 
   &:hover {
+    background-color: #f7faff;
+
     .master__content--buttons {
       opacity: 1;
     }
@@ -128,7 +130,7 @@ export default {
   padding: 0 15px;
   height: 100%;
   opacity: 0;
-  background-color: #ffffff;
+  background-color: inherit;
   transition: opacity 0.15s ease-in;
 }
 </style>

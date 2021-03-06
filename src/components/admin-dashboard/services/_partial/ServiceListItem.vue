@@ -74,6 +74,8 @@ export default {
   position: relative;
 
   &:hover {
+    background-color: #f7faff;
+
     .service__content--buttons {
       opacity: 1;
     }
@@ -96,7 +98,7 @@ export default {
   padding: 0 15px;
   height: 100%;
   opacity: 0;
-  background-color: #ffffff;
+  background-color: inherit;
   transition: opacity 0.15s ease-in;
 }
 </style>
