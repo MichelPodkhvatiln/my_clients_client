@@ -34,14 +34,14 @@ export default {
 .admin-dashboard__menu {
   padding: 10px;
   min-width: 200px;
-  width: 17%;
+  width: 16%;
   border-right: 1px solid #e2e2e2;
   background-color: #fafafa;
 }
 
 .admin-dashboard__view {
-  padding: 10px;
-  width: 83%;
-  overflow-y: auto;
+  width: 84%;
+  height: 100%;
+  //overflow-y: auto;
 }
 </style>
