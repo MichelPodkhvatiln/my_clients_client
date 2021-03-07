@@ -3,7 +3,7 @@
     <header class="salon-config__header">
       <div class="salon-config__header--title">
         <h1 class="title">
-          {{ headerTitle }}
+          Salons management
         </h1>
       </div>
       <div class="salon-config__header--buttons">
@@ -50,11 +50,6 @@ export default {
   },
   beforeDestroy() {
     this.resetState();
-  },
-  computed: {
-    headerTitle() {
-      return this.isListMode ? "Salon List" : "Salon Info";
-    }
   },
   methods: {
     ...mapActions("salonModule", ["resetState", "getSalonList"]),

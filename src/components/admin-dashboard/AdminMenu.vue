@@ -25,7 +25,7 @@ export default {
           },
           {
             path: "/admin/salon",
-            title: "Salon management",
+            title: "Salons management",
             isActive: this.currentRoute.includes("salon")
           },
           {

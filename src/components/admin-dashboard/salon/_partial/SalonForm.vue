@@ -1,5 +1,14 @@
 <template>
   <section class="container is-fluid">
+    <div>
+      <p v-if="editingSalonData" class="is-size-4 mb-4">
+        Edit salon information
+      </p>
+      <p v-else class="is-size-4 mb-4">
+        Create new salon
+      </p>
+    </div>
+
     <div class="field">
       <label class="label">Salon name</label>
       <div class="control">
