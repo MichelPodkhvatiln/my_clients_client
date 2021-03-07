@@ -1,6 +1,6 @@
 <template>
-  <section class="salon-form__wrapper">
-    <div class="field salon-form__name">
+  <section class="container is-fluid">
+    <div class="field">
       <label class="label">Salon name</label>
       <div class="control">
         <input
@@ -12,14 +12,17 @@
       </div>
     </div>
 
-    <div class="add-salon__map">
-      <google-map
-        :editingCoordinates="editingCoordinates"
-        @setMapMarker="onSetMapMarker"
-      />
+    <div class="field">
+      <label class="label">Salon address</label>
+      <div class="add-salon__map">
+        <google-map
+          :editingCoordinates="editingCoordinates"
+          @setMapMarker="onSetMapMarker"
+        />
+      </div>
     </div>
 
-    <footer class="add-salon__footer">
+    <footer class="is-flex is-justify-content-flex-end">
       <div class="buttons">
         <template v-if="editingSalonData">
           <button
@@ -151,24 +154,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.salon-form__wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.salon-form__name {
-  margin-bottom: 15px;
-}
-
 .add-salon__map {
   position: relative;
   width: 100%;
   height: 450px;
-}
-
-.add-salon__footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 15px;
 }
 </style>
