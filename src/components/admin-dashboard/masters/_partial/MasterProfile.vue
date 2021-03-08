@@ -46,26 +46,36 @@
           >
             <div>
               <template v-if="userInfo">
-                <p class="is-size-6">
-                  First name:
-                  <strong>
-                    {{ userInfo.firstName }}
-                  </strong>
-                </p>
+                <div class="is-flex is-align-items-center">
+                  <div
+                    class="master__avatar--wrapper has-background-primary mr-4"
+                  >
+                    <avatar-icon class="master__avatar--icon" />
+                  </div>
 
-                <p class="is-size-6">
-                  Last name:
-                  <strong>
-                    {{ userInfo.lastName }}
-                  </strong>
-                </p>
+                  <div>
+                    <p class="is-size-6">
+                      First name:
+                      <strong>
+                        {{ userInfo.firstName }}
+                      </strong>
+                    </p>
 
-                <p class="is-size-6">
-                  Email:
-                  <strong>
-                    {{ userInfo.email }}
-                  </strong>
-                </p>
+                    <p class="is-size-6">
+                      Last name:
+                      <strong>
+                        {{ userInfo.lastName }}
+                      </strong>
+                    </p>
+
+                    <p class="is-size-6">
+                      Email:
+                      <strong>
+                        {{ userInfo.email }}
+                      </strong>
+                    </p>
+                  </div>
+                </div>
               </template>
             </div>
 
@@ -169,12 +179,14 @@
 <script>
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
+import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
 
 export default {
   name: "MasterProfile",
   components: {
+    AvatarIcon,
     MasterInfoEditModal,
     MasterEmailEditModal
   },
@@ -475,5 +487,21 @@ export default {
   select {
     width: 100%;
   }
+}
+
+.master__avatar--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.master__avatar--icon {
+  width: 40px;
+  height: 40px;
+  fill: #ffffff;
 }
 </style>
