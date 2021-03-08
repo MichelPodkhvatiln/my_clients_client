@@ -1,18 +1,11 @@
 <template>
   <MountingPortal mountTo="body" append>
-    <modal name="master-edit-info" height="auto" @before-open="beforeOpen">
+    <modal name="master-edit-email" height="auto" @before-open="beforeOpen">
       <section class="section">
         <div class="field">
-          <label class="label">First name</label>
+          <label class="label">Email</label>
           <div class="control">
-            <input class="input" v-model="form.firstName" type="text" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Last name</label>
-          <div class="control">
-            <input class="input" v-model="form.lastName" type="text" />
+            <input class="input" v-model="form.email" type="email" />
           </div>
         </div>
 
@@ -38,15 +31,14 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required, email } from "vuelidate/lib/validators";
 
 export default {
-  name: "MasterInfoEditModal",
+  name: "MasterEmailEditModal",
   data() {
     return {
       form: {
-        firstName: "",
-        lastName: ""
+        email: ""
       },
       masterId: null,
       onSave: undefined
@@ -54,26 +46,20 @@ export default {
   },
   validations: {
     form: {
-      firstName: {
-        required
-      },
-      lastName: {
-        required
+      email: {
+        required,
+        email
       }
     }
   },
   computed: {
     isCanSubmit() {
-      const isValidFirstName = !this.$v.form.firstName.$invalid;
-      const isValidLastName = !this.$v.form.lastName.$invalid;
-
-      return isValidFirstName && isValidLastName;
+      return !this.$v.form.email.$invalid;
     }
   },
   methods: {
     beforeOpen({ params }) {
-      this.form.firstName = params.firstName ?? "";
-      this.form.lastName = params.lastName ?? "";
+      this.form.email = params.email ?? "";
       this.masterId = params.masterId ?? null;
       this.onSave = params.onSave;
     },
@@ -85,7 +71,7 @@ export default {
       await this.onSave(this.masterId, this.form);
     },
     onCancel() {
-      this.$modal.hide("master-edit-info");
+      this.$modal.hide("master-edit-email");
     }
   }
 };

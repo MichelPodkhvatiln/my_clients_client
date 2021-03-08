@@ -73,7 +73,7 @@
               <button class="button is-small is-info" @click="onChangeInfo">
                 Change info
               </button>
-              <button class="button is-small is-info">
+              <button class="button is-small is-info" @click="onChangeEmail">
                 Change email
               </button>
             </div>
@@ -162,6 +162,7 @@
     </div>
 
     <master-info-edit-modal />
+    <master-email-edit-modal />
   </section>
 </template>
 
@@ -169,11 +170,13 @@
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
+import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
 
 export default {
   name: "MasterProfile",
   components: {
-    MasterInfoEditModal
+    MasterInfoEditModal,
+    MasterEmailEditModal
   },
   data() {
     return {
@@ -334,6 +337,26 @@ export default {
               masterId,
               updatedInfo
             });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-edit-info");
+          }
+        }
+      });
+    },
+    onChangeEmail() {
+      if (!this.userInfo) {
+        return;
+      }
+
+      this.$modal.show("master-edit-email", {
+        email: this.userInfo.email,
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedEmail) => {
+          try {
+            console.log(masterId);
+            console.log(updatedEmail);
           } catch (error) {
             console.error();
           } finally {
