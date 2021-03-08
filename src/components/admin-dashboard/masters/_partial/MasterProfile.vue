@@ -70,7 +70,7 @@
             </div>
 
             <div class="buttons">
-              <button class="button is-small is-info">
+              <button class="button is-small is-info" @click="onChangeInfo">
                 Change info
               </button>
               <button class="button is-small is-info">
@@ -160,15 +160,21 @@
         </div>
       </template>
     </div>
+
+    <master-info-edit-modal />
   </section>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
+import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 
 export default {
   name: "MasterProfile",
+  components: {
+    MasterInfoEditModal
+  },
   data() {
     return {
       activeTab: 1, //1, 2, 3
@@ -311,6 +317,17 @@ export default {
       this.editedData.salonInfo = masterInfo.salonInfo?.id ?? null;
       this.editedData.workDays = masterInfo.workDays ?? [];
       this.editedData.masterServices = masterInfo.services ?? [];
+    },
+    onChangeInfo() {
+      if (!this.userInfo) {
+        return;
+      }
+
+      this.$modal.show("master-edit-info", {
+        firstName: this.userInfo.firstName,
+        lastName: this.userInfo.lastName,
+        masterId: this.initialData.masterInfo.id
+      });
     },
     async onChangeSalon(evt) {
       const formattedValue =
