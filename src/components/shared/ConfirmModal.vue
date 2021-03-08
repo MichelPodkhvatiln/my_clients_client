@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     beforeOpen({ params }) {
-      this.title = params.title ?? "You are sure?";
+      this.title = params.title ?? "Are you sure?";
       this.text = params.text;
       this.onConfirm = params.onConfirm;
       this.onCancel = params.onCancel;

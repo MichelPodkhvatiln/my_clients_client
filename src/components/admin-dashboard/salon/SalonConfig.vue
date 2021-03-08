@@ -3,7 +3,7 @@
     <header class="salon-config__header">
       <div class="salon-config__header--title">
         <h1 class="title">
-          {{ headerTitle }}
+          Salons management
         </h1>
       </div>
       <div class="salon-config__header--buttons">
@@ -51,11 +51,6 @@ export default {
   beforeDestroy() {
     this.resetState();
   },
-  computed: {
-    headerTitle() {
-      return this.isListMode ? "Salon List" : "Salon Info";
-    }
-  },
   methods: {
     ...mapActions("salonModule", ["resetState", "getSalonList"]),
     toggleMode() {
@@ -67,16 +62,26 @@ export default {
 
 <style scoped lang="scss">
 .salon-config {
+  position: relative;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 
 .salon-config__header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 15px;
   margin-bottom: 15px;
-  min-height: 60px;
+  height: 60px;
+  background-color: #fdfdfd;
+  box-shadow: 0 3px 4px 0 rgba(#000000, 0.1), 0 3px 3px -2px rgba(#000000, 0.07),
+    0 1px 8px 0 rgba(#000000, 0.006);
 }
 </style>

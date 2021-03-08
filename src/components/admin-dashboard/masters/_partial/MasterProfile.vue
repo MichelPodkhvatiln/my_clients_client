@@ -34,54 +34,78 @@
         </li>
       </ul>
     </div>
-    <div v-if="!isLoading" class="block">
+    <div v-if="!isLoading" class="container is-fluid">
       <template v-if="activeTab === 1">
-        <div class="field">
-          <label class="label">First name</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="editedData.editableMasterInfo.firstName"
-              placeholder="First name"
-            />
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Profile info</p>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label">Last name</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="editedData.editableMasterInfo.lastName"
-              placeholder="Last name"
-            />
-          </div>
-        </div>
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
+          >
+            <div>
+              <template v-if="userInfo">
+                <div class="is-flex is-align-items-center">
+                  <div
+                    class="master__avatar--wrapper has-background-primary mr-4"
+                  >
+                    <avatar-icon class="master__avatar--icon" />
+                  </div>
 
-        <div class="field">
-          <label class="label">Email</label>
-          <div class="control">
-            <input
-              class="input"
-              type="email"
-              v-model="editedData.editableMasterInfo.email"
-              placeholder="Email"
-            />
-          </div>
-        </div>
+                  <div>
+                    <p class="is-size-6">
+                      First name:
+                      <strong>
+                        {{ userInfo.firstName }}
+                      </strong>
+                    </p>
 
-        <div class="field is-flex is-justify-content-flex-end">
-          <div class="buttons">
-            <button class="button is-success">
-              Save
-            </button>
-            <button class="button is-danger">
-              Cancel
-            </button>
+                    <p class="is-size-6">
+                      Last name:
+                      <strong>
+                        {{ userInfo.lastName }}
+                      </strong>
+                    </p>
+
+                    <p class="is-size-6">
+                      Email:
+                      <strong>
+                        {{ userInfo.email }}
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <div class="buttons">
+              <button class="button is-small is-info" @click="onChangeInfo">
+                Change info
+              </button>
+              <button class="button is-small is-info" @click="onChangeEmail">
+                Change email
+              </button>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Account security</p>
+          </div>
+
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
+          >
+            <p>Password settings</p>
+            <div class="buttons">
+              <button class="button is-small is-info" @click="onChangePassword">
+                Change password
+              </button>
+            </div>
+          </div>
+        </article>
       </template>
 
       <template v-if="activeTab === 2">
@@ -146,15 +170,29 @@
         </div>
       </template>
     </div>
+
+    <master-info-edit-modal />
+    <master-email-edit-modal />
+    <master-change-password-modal />
   </section>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
+import AvatarIcon from "@/components/icons/AvatarIcon.vue";
+import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
+import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
+import MasterChangePasswordModal from "@/components/admin-dashboard/masters/_partial/MasterChangePasswordModal.vue";
 
 export default {
   name: "MasterProfile",
+  components: {
+    AvatarIcon,
+    MasterInfoEditModal,
+    MasterEmailEditModal,
+    MasterChangePasswordModal
+  },
   data() {
     return {
       activeTab: 1, //1, 2, 3
@@ -165,11 +203,7 @@ export default {
         servicesInfo: null
       },
       editedData: {
-        editableMasterInfo: {
-          firstName: "",
-          lastName: "",
-          email: ""
-        },
+        salonInfo: null,
         workDays: [],
         masterServices: []
       }
@@ -237,6 +271,17 @@ export default {
           value: service._id
         };
       });
+    },
+    userInfo() {
+      if (!this.initialData.masterInfo) {
+        return undefined;
+      }
+
+      return {
+        firstName: this.initialData.masterInfo.userInfo.firstName,
+        lastName: this.initialData.masterInfo.userInfo.lastName,
+        email: this.initialData.masterInfo.userInfo.email
+      };
     }
   },
   async beforeMount() {
@@ -257,6 +302,9 @@ export default {
   methods: {
     ...mapActions("mastersModule", [
       "getMasterById",
+      "changeMasterInfo",
+      "changeMasterEmail",
+      "changeMasterPassword",
       "changeMasterSalon",
       "changeMasterWorkdays",
       "changeMasterServices"
@@ -287,14 +335,75 @@ export default {
       }
     },
     setMasterInfoData(masterInfo) {
-      this.editedData.editableMasterInfo = {
-        firstName: masterInfo.userInfo.firstName,
-        lastName: masterInfo.userInfo.lastName,
-        email: masterInfo.userInfo.email,
-        salonInfo: masterInfo.salonInfo?.id ?? null
-      };
+      this.editedData.salonInfo = masterInfo.salonInfo?.id ?? null;
       this.editedData.workDays = masterInfo.workDays ?? [];
       this.editedData.masterServices = masterInfo.services ?? [];
+    },
+    onChangeInfo() {
+      if (!this.userInfo) {
+        return;
+      }
+
+      this.$modal.show("master-edit-info", {
+        firstName: this.userInfo.firstName,
+        lastName: this.userInfo.lastName,
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedInfo) => {
+          try {
+            this.initialData.masterInfo = await this.changeMasterInfo({
+              masterId,
+              updatedInfo
+            });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-edit-info");
+          }
+        }
+      });
+    },
+    onChangeEmail() {
+      if (!this.userInfo) {
+        return;
+      }
+
+      this.$modal.show("master-edit-email", {
+        email: this.userInfo.email,
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedData) => {
+          try {
+            this.initialData.masterInfo = await this.changeMasterEmail({
+              masterId,
+              updatedData
+            });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-edit-email");
+          }
+        }
+      });
+    },
+    onChangePassword() {
+      if (!this.initialData.masterInfo) {
+        return;
+      }
+
+      this.$modal.show("master-change-password", {
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedData) => {
+          try {
+            this.initialData.masterInfo = await this.changeMasterPassword({
+              masterId,
+              updatedData
+            });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-change-password");
+          }
+        }
+      });
     },
     async onChangeSalon(evt) {
       const formattedValue =
@@ -374,17 +483,27 @@ export default {
 
 <style scoped lang="scss">
 .master-profile {
+  position: relative;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 
 .master-profile__header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 15px;
   margin-bottom: 15px;
-  min-height: 60px;
+  height: 60px;
+  background-color: #fdfdfd;
+  box-shadow: 0 3px 4px 0 rgba(#000000, 0.1), 0 3px 3px -2px rgba(#000000, 0.07),
+    0 1px 8px 0 rgba(#000000, 0.006);
 }
 
 .select {
@@ -393,5 +512,21 @@ export default {
   select {
     width: 100%;
   }
+}
+
+.master__avatar--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.master__avatar--icon {
+  width: 40px;
+  height: 40px;
+  fill: #ffffff;
 }
 </style>
