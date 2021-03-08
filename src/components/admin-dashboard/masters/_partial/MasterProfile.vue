@@ -34,54 +34,68 @@
         </li>
       </ul>
     </div>
-    <div v-if="!isLoading" class="block">
+    <div v-if="!isLoading" class="container is-fluid">
       <template v-if="activeTab === 1">
-        <div class="field">
-          <label class="label">First name</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="editedData.editableMasterInfo.firstName"
-              placeholder="First name"
-            />
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Profile info</p>
           </div>
-        </div>
 
-        <div class="field">
-          <label class="label">Last name</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              v-model="editedData.editableMasterInfo.lastName"
-              placeholder="Last name"
-            />
-          </div>
-        </div>
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
+          >
+            <div>
+              <template v-if="userInfo">
+                <p class="is-size-6">
+                  First name:
+                  <strong>
+                    {{ userInfo.firstName }}
+                  </strong>
+                </p>
 
-        <div class="field">
-          <label class="label">Email</label>
-          <div class="control">
-            <input
-              class="input"
-              type="email"
-              v-model="editedData.editableMasterInfo.email"
-              placeholder="Email"
-            />
-          </div>
-        </div>
+                <p class="is-size-6">
+                  Last name:
+                  <strong>
+                    {{ userInfo.lastName }}
+                  </strong>
+                </p>
 
-        <div class="field is-flex is-justify-content-flex-end">
-          <div class="buttons">
-            <button class="button is-success">
-              Save
-            </button>
-            <button class="button is-danger">
-              Cancel
-            </button>
+                <p class="is-size-6">
+                  Email:
+                  <strong>
+                    {{ userInfo.email }}
+                  </strong>
+                </p>
+              </template>
+            </div>
+
+            <div class="buttons">
+              <button class="button is-small is-info">
+                Change info
+              </button>
+              <button class="button is-small is-info">
+                Change email
+              </button>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Account security</p>
+          </div>
+
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
+          >
+            <p>Password settings</p>
+            <div class="buttons">
+              <button class="button is-small is-info">
+                Change password
+              </button>
+            </div>
+          </div>
+        </article>
       </template>
 
       <template v-if="activeTab === 2">
@@ -165,11 +179,7 @@ export default {
         servicesInfo: null
       },
       editedData: {
-        editableMasterInfo: {
-          firstName: "",
-          lastName: "",
-          email: ""
-        },
+        salonInfo: null,
         workDays: [],
         masterServices: []
       }
@@ -237,6 +247,17 @@ export default {
           value: service._id
         };
       });
+    },
+    userInfo() {
+      if (!this.initialData.masterInfo) {
+        return undefined;
+      }
+
+      return {
+        firstName: this.initialData.masterInfo.userInfo.firstName,
+        lastName: this.initialData.masterInfo.userInfo.lastName,
+        email: this.initialData.masterInfo.userInfo.email
+      };
     }
   },
   async beforeMount() {
@@ -287,12 +308,7 @@ export default {
       }
     },
     setMasterInfoData(masterInfo) {
-      this.editedData.editableMasterInfo = {
-        firstName: masterInfo.userInfo.firstName,
-        lastName: masterInfo.userInfo.lastName,
-        email: masterInfo.userInfo.email,
-        salonInfo: masterInfo.salonInfo?.id ?? null
-      };
+      this.editedData.salonInfo = masterInfo.salonInfo?.id ?? null;
       this.editedData.workDays = masterInfo.workDays ?? [];
       this.editedData.masterServices = masterInfo.services ?? [];
     },
@@ -374,17 +390,27 @@ export default {
 
 <style scoped lang="scss">
 .master-profile {
+  position: relative;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
 
 .master-profile__header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 15px;
   margin-bottom: 15px;
-  min-height: 60px;
+  height: 60px;
+  background-color: #fdfdfd;
+  box-shadow: 0 3px 4px 0 rgba(#000000, 0.1), 0 3px 3px -2px rgba(#000000, 0.07),
+    0 1px 8px 0 rgba(#000000, 0.006);
 }
 
 .select {
