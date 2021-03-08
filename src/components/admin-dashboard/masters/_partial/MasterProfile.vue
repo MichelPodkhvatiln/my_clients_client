@@ -284,6 +284,7 @@ export default {
   methods: {
     ...mapActions("mastersModule", [
       "getMasterById",
+      "changeMasterInfo",
       "changeMasterSalon",
       "changeMasterWorkdays",
       "changeMasterServices"
@@ -326,7 +327,19 @@ export default {
       this.$modal.show("master-edit-info", {
         firstName: this.userInfo.firstName,
         lastName: this.userInfo.lastName,
-        masterId: this.initialData.masterInfo.id
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedInfo) => {
+          try {
+            this.initialData.masterInfo = await this.changeMasterInfo({
+              masterId,
+              updatedInfo
+            });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-edit-info");
+          }
+        }
       });
     },
     async onChangeSalon(evt) {

@@ -80,6 +80,21 @@ export default {
         return Promise.reject(error);
       }
     },
+    async changeMasterInfo({}, payload) {
+      try {
+        const masterId = payload.masterId;
+        const updatedInfo = payload.updatedInfo;
+
+        const { data } = await services.masters.changeInfo(
+          masterId,
+          updatedInfo
+        );
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async changeMasterSalon({}, payload) {
       try {
         const params = {

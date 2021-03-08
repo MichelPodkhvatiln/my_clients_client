@@ -23,6 +23,7 @@ export const endpoints = {
     getMaster: "/master/get-master/{:id}",
     create: "/master/create",
     remove: "/master/remove/{:id}",
+    changeInfo: "/master/change-info/{:id}",
     changeSalon: "/master/change-salon",
     changeWorkDays: "/master/change-work-days",
     changeServices: "/master/change-services"

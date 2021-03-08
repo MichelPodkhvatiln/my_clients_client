@@ -20,7 +20,11 @@
           class="is-flex is-justify-content-flex-end is-align-items-center"
         >
           <div class="buttons">
-            <button class="button is-success" :disabled="!isCanSubmit">
+            <button
+              class="button is-success"
+              :disabled="!isCanSubmit"
+              @click="onSaveClick"
+            >
               Save changes
             </button>
             <button class="button is-danger" @click="onCancel">
@@ -44,7 +48,8 @@ export default {
         firstName: "",
         lastName: ""
       },
-      masterId: null
+      masterId: null,
+      onSave: undefined
     };
   },
   validations: {
@@ -70,6 +75,14 @@ export default {
       this.form.firstName = params.firstName ?? "";
       this.form.lastName = params.lastName ?? "";
       this.masterId = params.masterId ?? null;
+      this.onSave = params.onSave;
+    },
+    async onSaveClick() {
+      if (!this.isCanSubmit) {
+        return;
+      }
+
+      await this.onSave(this.masterId, this.form);
     },
     onCancel() {
       this.$modal.hide("master-edit-info");
