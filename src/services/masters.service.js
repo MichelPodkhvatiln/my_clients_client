@@ -49,6 +49,13 @@ export class MastersService extends BaseHttpService {
     );
   }
 
+  changePassword(id, data) {
+    return this.patch(
+      this.endpoints.changePassword.replace("{:id}", String(id)),
+      data
+    );
+  }
+
   changeSalon(data) {
     return this.post(this.endpoints.changeSalon, data);
   }

@@ -100,7 +100,7 @@
           >
             <p>Password settings</p>
             <div class="buttons">
-              <button class="button is-small is-info">
+              <button class="button is-small is-info" @click="onChangePassword">
                 Change password
               </button>
             </div>
@@ -173,6 +173,7 @@
 
     <master-info-edit-modal />
     <master-email-edit-modal />
+    <master-change-password-modal />
   </section>
 </template>
 
@@ -182,13 +183,15 @@ import debounce from "lodash.debounce";
 import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
+import MasterChangePasswordModal from "@/components/admin-dashboard/masters/_partial/MasterChangePasswordModal.vue";
 
 export default {
   name: "MasterProfile",
   components: {
     AvatarIcon,
     MasterInfoEditModal,
-    MasterEmailEditModal
+    MasterEmailEditModal,
+    MasterChangePasswordModal
   },
   data() {
     return {
@@ -301,6 +304,7 @@ export default {
       "getMasterById",
       "changeMasterInfo",
       "changeMasterEmail",
+      "changeMasterPassword",
       "changeMasterSalon",
       "changeMasterWorkdays",
       "changeMasterServices"
@@ -376,6 +380,27 @@ export default {
             console.error();
           } finally {
             this.$modal.hide("master-edit-email");
+          }
+        }
+      });
+    },
+    onChangePassword() {
+      if (!this.initialData.masterInfo) {
+        return;
+      }
+
+      this.$modal.show("master-change-password", {
+        masterId: this.initialData.masterInfo.id,
+        onSave: async (masterId, updatedData) => {
+          try {
+            this.initialData.masterInfo = await this.changeMasterPassword({
+              masterId,
+              updatedData
+            });
+          } catch (error) {
+            console.error();
+          } finally {
+            this.$modal.hide("master-change-password");
           }
         }
       });

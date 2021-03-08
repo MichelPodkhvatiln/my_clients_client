@@ -110,6 +110,21 @@ export default {
         return Promise.reject(error);
       }
     },
+    async changeMasterPassword({}, payload) {
+      try {
+        const masterId = payload.masterId;
+        const updatedData = payload.updatedData;
+
+        const { data } = await services.masters.changePassword(
+          masterId,
+          updatedData
+        );
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async changeMasterSalon({}, payload) {
       try {
         const params = {
