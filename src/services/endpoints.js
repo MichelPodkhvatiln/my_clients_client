@@ -24,6 +24,7 @@ export const endpoints = {
     create: "/master/create",
     remove: "/master/remove/{:id}",
     changeInfo: "/master/change-info/{:id}",
+    changeEmail: "/master/change-email/{:id}",
     changeSalon: "/master/change-salon",
     changeWorkDays: "/master/change-work-days",
     changeServices: "/master/change-services"

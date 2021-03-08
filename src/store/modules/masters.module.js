@@ -95,6 +95,21 @@ export default {
         return Promise.reject(error);
       }
     },
+    async changeMasterEmail({}, payload) {
+      try {
+        const masterId = payload.masterId;
+        const updatedData = payload.updatedData;
+
+        const { data } = await services.masters.changeEmail(
+          masterId,
+          updatedData
+        );
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async changeMasterSalon({}, payload) {
       try {
         const params = {
