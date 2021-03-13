@@ -34,170 +34,186 @@
         </li>
       </ul>
     </div>
-    <div v-if="!isLoading" class="container is-fluid">
-      <template v-if="activeTab === 1">
-        <article class="message is-dark">
-          <div class="message-header">
-            <p>Profile info</p>
-          </div>
+    <template v-if="!isLoading">
+      <div class="container is-fluid">
+        <template v-if="activeTab === 1">
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Profile info</p>
+            </div>
 
-          <div
-            class="message-body is-flex is-align-items-center is-justify-content-space-between"
-          >
-            <div>
-              <template v-if="userInfo">
-                <div class="is-flex is-align-items-center">
-                  <div
-                    class="master__avatar--wrapper has-background-primary mr-4"
-                  >
-                    <avatar-icon class="master__avatar--icon" />
+            <div
+              class="message-body is-flex is-align-items-center is-justify-content-space-between"
+            >
+              <div>
+                <template v-if="userInfo">
+                  <div class="is-flex is-align-items-center">
+                    <div
+                      class="master__avatar--wrapper has-background-primary mr-4"
+                    >
+                      <avatar-icon class="master__avatar--icon" />
+                    </div>
+
+                    <div>
+                      <p class="is-size-6">
+                        First name:
+                        <strong>
+                          {{ userInfo.firstName }}
+                        </strong>
+                      </p>
+
+                      <p class="is-size-6">
+                        Last name:
+                        <strong>
+                          {{ userInfo.lastName }}
+                        </strong>
+                      </p>
+
+                      <p class="is-size-6">
+                        Email:
+                        <strong>
+                          {{ userInfo.email }}
+                        </strong>
+                      </p>
+                    </div>
                   </div>
-
-                  <div>
-                    <p class="is-size-6">
-                      First name:
-                      <strong>
-                        {{ userInfo.firstName }}
-                      </strong>
-                    </p>
-
-                    <p class="is-size-6">
-                      Last name:
-                      <strong>
-                        {{ userInfo.lastName }}
-                      </strong>
-                    </p>
-
-                    <p class="is-size-6">
-                      Email:
-                      <strong>
-                        {{ userInfo.email }}
-                      </strong>
-                    </p>
-                  </div>
-                </div>
-              </template>
-            </div>
-
-            <div class="buttons">
-              <button class="button is-small is-info" @click="onChangeInfo">
-                Change info
-              </button>
-              <button class="button is-small is-info" @click="onChangeEmail">
-                Change email
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <article class="message is-dark">
-          <div class="message-header">
-            <p>Account security</p>
-          </div>
-
-          <div
-            class="message-body is-flex is-align-items-center is-justify-content-space-between"
-          >
-            <p>Password settings</p>
-            <div class="buttons">
-              <button class="button is-small is-info" @click="onChangePassword">
-                Change password
-              </button>
-            </div>
-          </div>
-        </article>
-      </template>
-
-      <template v-if="activeTab === 2">
-        <article class="message is-dark">
-          <div class="message-header">
-            <p>Master's salon</p>
-          </div>
-
-          <div
-            class="message-body is-flex is-align-items-center is-justify-content-space-between"
-          >
-            <p>Current master's salon:</p>
-
-            <div class="select">
-              <select @change="onChangeSalon">
-                <option
-                  value="null"
-                  :selected="!initialData.masterInfo.salonInfo"
-                >
-                  None
-                </option>
-                <template v-if="salonsWithStatus.length">
-                  <option
-                    v-for="salon in salonsWithStatus"
-                    :key="salon._id"
-                    :value="salon._id"
-                    :selected="salon.isSelected"
-                  >
-                    {{ salon.name }}
-                  </option>
                 </template>
-              </select>
+              </div>
+
+              <div class="buttons">
+                <button class="button is-small is-info" @click="onChangeInfo">
+                  Change info
+                </button>
+                <button class="button is-small is-info" @click="onChangeEmail">
+                  Change email
+                </button>
+              </div>
             </div>
-          </div>
-        </article>
+          </article>
 
-        <article class="message is-dark">
-          <div class="message-header">
-            <p>Work days</p>
-          </div>
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Account security</p>
+            </div>
 
-          <div
-            class="message-body is-flex is-align-items-center is-justify-content-space-between"
-          >
             <div
-              v-for="checkboxValue in checkboxDaysValues"
-              :key="checkboxValue.value"
-              class="field"
+              class="message-body is-flex is-align-items-center is-justify-content-space-between"
             >
-              <input
-                class="is-checkradio is-info"
-                :id="checkboxValue.title"
-                type="checkbox"
-                :value="checkboxValue.value"
-                :checked="isSelectedWorkDay(checkboxValue.value)"
-                @change="onWorkDayChange"
-              />
-              <label :for="checkboxValue.title">
-                {{ checkboxValue.title }}
-              </label>
+              <p>Password settings</p>
+              <div class="buttons">
+                <button
+                  class="button is-small is-info"
+                  @click="onChangePassword"
+                >
+                  Change password
+                </button>
+              </div>
             </div>
-          </div>
-        </article>
-      </template>
-      <template v-if="activeTab === 3">
-        <article class="message is-dark">
-          <div class="message-header">
-            <p>Master's services</p>
-          </div>
+          </article>
+        </template>
 
-          <div class="message-body is-flex is-flex-direction-column">
-            <div
-              v-for="serviceInfo in servicesInfoList"
-              :key="serviceInfo.value"
-              class="field"
-            >
-              <input
-                class="is-checkradio is-info"
-                :id="serviceInfo.value"
-                type="checkbox"
-                :value="serviceInfo.value"
-                :checked="isSelectedService(serviceInfo.value)"
-                @change="onServiceChange"
-              />
-              <label :for="serviceInfo.value">
-                {{ serviceInfo.title }}
-              </label>
+        <template v-if="activeTab === 2">
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Master's salon</p>
             </div>
-          </div>
-        </article>
-      </template>
-    </div>
+
+            <div
+              class="message-body is-flex is-align-items-center is-justify-content-space-between"
+            >
+              <p>Current master's salon:</p>
+
+              <div class="select">
+                <select @change="onChangeSalon">
+                  <option
+                    value="null"
+                    :selected="!initialData.masterInfo.salonInfo"
+                  >
+                    None
+                  </option>
+                  <template v-if="salonsWithStatus.length">
+                    <option
+                      v-for="salon in salonsWithStatus"
+                      :key="salon._id"
+                      :value="salon._id"
+                      :selected="salon.isSelected"
+                    >
+                      {{ salon.name }}
+                    </option>
+                  </template>
+                </select>
+              </div>
+            </div>
+          </article>
+
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Work days</p>
+            </div>
+
+            <div
+              class="message-body is-flex is-align-items-center is-justify-content-space-between"
+            >
+              <div
+                v-for="checkboxValue in checkboxDaysValues"
+                :key="checkboxValue.value"
+                class="field"
+              >
+                <input
+                  class="is-checkradio is-info"
+                  :id="checkboxValue.title"
+                  type="checkbox"
+                  :value="checkboxValue.value"
+                  :checked="isSelectedWorkDay(checkboxValue.value)"
+                  @change="onWorkDayChange"
+                />
+                <label :for="checkboxValue.title">
+                  {{ checkboxValue.title }}
+                </label>
+              </div>
+            </div>
+          </article>
+        </template>
+        <template v-if="activeTab === 3">
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Master's services</p>
+            </div>
+
+            <div class="message-body is-flex is-flex-direction-column">
+              <div
+                v-for="serviceInfo in servicesInfoList"
+                :key="serviceInfo.value"
+                class="field"
+              >
+                <input
+                  class="is-checkradio is-info"
+                  :id="serviceInfo.value"
+                  type="checkbox"
+                  :value="serviceInfo.value"
+                  :checked="isSelectedService(serviceInfo.value)"
+                  @change="onServiceChange"
+                />
+                <label :for="serviceInfo.value">
+                  {{ serviceInfo.title }}
+                </label>
+              </div>
+            </div>
+          </article>
+        </template>
+      </div>
+    </template>
+    <template v-else>
+      <div
+        class="loader-container container is-fluid is-flex is-align-items-center is-justify-content-center"
+      >
+        <half-circle-spinner
+          :animation-duration="1000"
+          :size="60"
+          color="#00d1b2"
+        />
+      </div>
+    </template>
 
     <master-info-edit-modal />
     <master-email-edit-modal />
@@ -208,6 +224,7 @@
 <script>
 import { mapActions } from "vuex";
 import debounce from "lodash.debounce";
+import { HalfCircleSpinner } from "epic-spinners";
 import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
@@ -216,6 +233,7 @@ import MasterChangePasswordModal from "@/components/admin-dashboard/masters/_par
 export default {
   name: "MasterProfile",
   components: {
+    HalfCircleSpinner,
     AvatarIcon,
     MasterInfoEditModal,
     MasterEmailEditModal,
@@ -510,6 +528,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.loader-container {
+  height: calc(100vh - 170px);
+}
+
 .master-profile {
   position: relative;
   width: 100%;
