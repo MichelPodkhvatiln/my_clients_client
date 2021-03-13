@@ -171,23 +171,49 @@
         </article>
       </template>
       <template v-if="activeTab === 3">
-        <div class="field is-flex is-flex-direction-column">
-          <label class="label">Master services:</label>
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Master's services</p>
+          </div>
 
-          <label
-            v-for="serviceInfo in servicesInfoList"
-            :key="serviceInfo.value"
-            class="checkbox"
-          >
-            <input
-              type="checkbox"
-              :value="serviceInfo.value"
-              :checked="isSelectedService(serviceInfo.value)"
-              @change="onServiceChange"
-            />
-            {{ serviceInfo.title }}
-          </label>
-        </div>
+          <div class="message-body is-flex is-flex-direction-column">
+            <div
+              v-for="serviceInfo in servicesInfoList"
+              :key="serviceInfo.value"
+              class="field"
+            >
+              <input
+                class="is-checkradio is-info"
+                :id="serviceInfo.value"
+                type="checkbox"
+                :value="serviceInfo.value"
+                :checked="isSelectedService(serviceInfo.value)"
+                @change="onServiceChange"
+              />
+              <label :for="serviceInfo.value">
+                {{ serviceInfo.title }}
+              </label>
+            </div>
+          </div>
+        </article>
+
+        <!--        <div class="field is-flex is-flex-direction-column">-->
+        <!--          <label class="label">Master services:</label>-->
+
+        <!--          <label-->
+        <!--            v-for="serviceInfo in servicesInfoList"-->
+        <!--            :key="serviceInfo.value"-->
+        <!--            class="checkbox"-->
+        <!--          >-->
+        <!--            <input-->
+        <!--              type="checkbox"-->
+        <!--              :value="serviceInfo.value"-->
+        <!--              :checked="isSelectedService(serviceInfo.value)"-->
+        <!--              @change="onServiceChange"-->
+        <!--            />-->
+        <!--            {{ serviceInfo.title }}-->
+        <!--          </label>-->
+        <!--        </div>-->
       </template>
     </div>
 
