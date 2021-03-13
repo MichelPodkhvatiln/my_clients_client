@@ -109,46 +109,66 @@
       </template>
 
       <template v-if="activeTab === 2">
-        <div class="field">
-          <label class="label">Master's salon</label>
-          <div class="select">
-            <select @change="onChangeSalon">
-              <option
-                value="null"
-                :selected="!initialData.masterInfo.salonInfo"
-              >
-                None
-              </option>
-              <template v-if="salonsWithStatus.length">
-                <option
-                  v-for="salon in salonsWithStatus"
-                  :key="salon._id"
-                  :value="salon._id"
-                  :selected="salon.isSelected"
-                >
-                  {{ salon.name }}
-                </option>
-              </template>
-            </select>
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Master's salon</p>
           </div>
-        </div>
-        <div class="field is-flex is-flex-direction-column">
-          <label class="label">Work days:</label>
 
-          <label
-            v-for="checkboxValue in checkboxDaysValues"
-            :key="checkboxValue.value"
-            class="checkbox mb-2"
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
           >
-            <input
-              type="checkbox"
-              :value="checkboxValue.value"
-              :checked="isSelectedWorkDay(checkboxValue.value)"
-              @change="onWorkDayChange"
-            />
-            {{ checkboxValue.title }}
-          </label>
-        </div>
+            <p>Current master's salon:</p>
+
+            <div class="select">
+              <select @change="onChangeSalon">
+                <option
+                  value="null"
+                  :selected="!initialData.masterInfo.salonInfo"
+                >
+                  None
+                </option>
+                <template v-if="salonsWithStatus.length">
+                  <option
+                    v-for="salon in salonsWithStatus"
+                    :key="salon._id"
+                    :value="salon._id"
+                    :selected="salon.isSelected"
+                  >
+                    {{ salon.name }}
+                  </option>
+                </template>
+              </select>
+            </div>
+          </div>
+        </article>
+
+        <article class="message is-dark">
+          <div class="message-header">
+            <p>Work days</p>
+          </div>
+
+          <div
+            class="message-body is-flex is-align-items-center is-justify-content-space-between"
+          >
+            <div
+              v-for="checkboxValue in checkboxDaysValues"
+              :key="checkboxValue.value"
+              class="field"
+            >
+              <input
+                class="is-checkradio is-info"
+                :id="checkboxValue.title"
+                type="checkbox"
+                :value="checkboxValue.value"
+                :checked="isSelectedWorkDay(checkboxValue.value)"
+                @change="onWorkDayChange"
+              />
+              <label :for="checkboxValue.title">
+                {{ checkboxValue.title }}
+              </label>
+            </div>
+          </div>
+        </article>
       </template>
       <template v-if="activeTab === 3">
         <div class="field is-flex is-flex-direction-column">
@@ -157,7 +177,7 @@
           <label
             v-for="serviceInfo in servicesInfoList"
             :key="serviceInfo.value"
-            class="checkbox mb-2"
+            class="checkbox"
           >
             <input
               type="checkbox"
@@ -507,7 +527,8 @@ export default {
 }
 
 .select {
-  width: 250px;
+  width: 100%;
+  max-width: 450px;
 
   select {
     width: 100%;
