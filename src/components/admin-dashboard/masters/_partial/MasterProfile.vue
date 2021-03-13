@@ -196,24 +196,6 @@
             </div>
           </div>
         </article>
-
-        <!--        <div class="field is-flex is-flex-direction-column">-->
-        <!--          <label class="label">Master services:</label>-->
-
-        <!--          <label-->
-        <!--            v-for="serviceInfo in servicesInfoList"-->
-        <!--            :key="serviceInfo.value"-->
-        <!--            class="checkbox"-->
-        <!--          >-->
-        <!--            <input-->
-        <!--              type="checkbox"-->
-        <!--              :value="serviceInfo.value"-->
-        <!--              :checked="isSelectedService(serviceInfo.value)"-->
-        <!--              @change="onServiceChange"-->
-        <!--            />-->
-        <!--            {{ serviceInfo.title }}-->
-        <!--          </label>-->
-        <!--        </div>-->
       </template>
     </div>
 
