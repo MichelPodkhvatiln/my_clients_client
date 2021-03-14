@@ -155,7 +155,7 @@
               class="message-body is-flex is-align-items-center is-justify-content-space-between"
             >
               <div
-                v-for="checkboxValue in checkboxDaysValues"
+                v-for="checkboxValue in daysValues"
                 :key="checkboxValue.value"
                 class="field"
               >
@@ -170,6 +170,42 @@
                 <label :for="checkboxValue.title">
                   {{ checkboxValue.title }}
                 </label>
+              </div>
+            </div>
+          </article>
+
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Available record times</p>
+            </div>
+
+            <div class="message-body">
+              <div class="is-flex is-flex-direction-column">
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select day:</p>
+
+                  <div class="select">
+                    <select>
+                      <option
+                        v-for="day in daysValues"
+                        :key="day.value"
+                        :value="day.value"
+                      >
+                        {{ day.title }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select time:</p>
+
+                  <time-picker />
+                </div>
               </div>
             </div>
           </article>
@@ -229,6 +265,7 @@ import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
 import MasterChangePasswordModal from "@/components/admin-dashboard/masters/_partial/MasterChangePasswordModal.vue";
+import TimePicker from "@/components/shared/TimePicker.vue";
 
 export default {
   name: "MasterProfile",
@@ -237,7 +274,8 @@ export default {
     AvatarIcon,
     MasterInfoEditModal,
     MasterEmailEditModal,
-    MasterChangePasswordModal
+    MasterChangePasswordModal,
+    TimePicker
   },
   data() {
     return {
@@ -272,7 +310,7 @@ export default {
         };
       });
     },
-    checkboxDaysValues() {
+    daysValues() {
       return [
         {
           title: "Monday",
@@ -558,7 +596,7 @@ export default {
 
 .select {
   width: 100%;
-  max-width: 450px;
+  max-width: 300px;
 
   select {
     width: 100%;
