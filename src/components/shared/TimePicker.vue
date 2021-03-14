@@ -1,5 +1,15 @@
 <template>
-  <vue-timepicker class="timepicker" />
+  <vue-timepicker
+    class="timepicker"
+    :minute-interval="minuteInterval"
+    :hour-range="hourRange"
+    :disabled="disabled"
+    hour-label="Hour"
+    minute-label="Minute"
+    hide-disabled-hours
+    close-on-complete
+    @change="onChangeTime"
+  />
 </template>
 
 <script>
@@ -10,6 +20,33 @@ export default {
   name: "TimePicker",
   components: {
     VueTimepicker
+  },
+  props: {
+    hourRange: {
+      type: Array,
+      default: () => [[0, 24]]
+    },
+    minuteInterval: {
+      type: Number,
+      default: 1
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    onChangeTime(eventData) {
+      const hourValue = eventData.data.hh;
+      const minuteValue = eventData.data.mm;
+
+      if (!hourValue.length || !minuteValue.length) {
+        this.$emit("onSetTime", "");
+        return;
+      }
+
+      this.$emit("onSetTime", eventData.displayTime);
+    }
   }
 };
 </script>
@@ -26,9 +63,11 @@ export default {
       outline: none;
       transition: 0.2s ease-out;
 
-      &:hover,
-      &:focus {
-        border-color: #00d1b2;
+      &:not(:disabled) {
+        &:hover,
+        &:focus {
+          border-color: #3273dc;
+        }
       }
     }
 
@@ -54,7 +93,7 @@ export default {
       }
 
       .active {
-        background-color: #00d1b2 !important;
+        background-color: #3273dc !important;
       }
     }
   }

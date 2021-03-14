@@ -187,7 +187,10 @@
                   <p>Select day:</p>
 
                   <div class="select">
-                    <select>
+                    <select @change="onSelectTimesDay">
+                      <option value="null">
+                        Select day
+                      </option>
                       <option
                         v-for="day in daysValues"
                         :key="day.value"
@@ -204,7 +207,21 @@
                 >
                   <p>Select time:</p>
 
-                  <time-picker />
+                  <time-picker
+                    :hour-range="[[9, 18]]"
+                    :minute-interval="15"
+                    :disabled="!canSelectAvailableTime"
+                    @onSetTime="onSetTime"
+                  />
+                </div>
+
+                <div class="buttons is-flex is-justify-content-flex-end">
+                  <button
+                    class="button is-small is-success"
+                    :disabled="!canAddAvailableTime"
+                  >
+                    Add time
+                  </button>
                 </div>
               </div>
             </div>
@@ -290,6 +307,10 @@ export default {
         salonInfo: null,
         workDays: [],
         masterServices: []
+      },
+      recordTimes: {
+        selectedTime: "",
+        selectedDay: null
       }
     };
   },
@@ -366,6 +387,14 @@ export default {
         lastName: this.initialData.masterInfo.userInfo.lastName,
         email: this.initialData.masterInfo.userInfo.email
       };
+    },
+    canSelectAvailableTime() {
+      return !!this.recordTimes.selectedDay;
+    },
+    canAddAvailableTime() {
+      return (
+        !!this.recordTimes.selectedDay && !!this.recordTimes.selectedTime.length
+      );
     }
   },
   async beforeMount() {
@@ -560,6 +589,19 @@ export default {
 
       this.editedData.masterServices.push(value);
       _debouncedServicesUpdate();
+    },
+    onSelectTimesDay(evt) {
+      const dayValue = evt.target.value;
+
+      if (dayValue === "null") {
+        this.recordTimes.selectedDay = null;
+        return;
+      }
+
+      this.recordTimes.selectedDay = Number(dayValue);
+    },
+    onSetTime(timeValue) {
+      this.recordTimes.selectedTime = timeValue;
     }
   }
 };
