@@ -176,7 +176,7 @@
 
           <article class="message is-dark">
             <div class="message-header">
-              <p>Available record times</p>
+              <p>Add record time</p>
             </div>
 
             <div class="message-body">
@@ -227,6 +227,16 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </article>
+
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Available record times</p>
+            </div>
+
+            <div class="message-body">
+              Test
             </div>
           </article>
         </template>
