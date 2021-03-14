@@ -188,13 +188,14 @@
 
                   <div class="select">
                     <select @change="onSelectTimesDay">
-                      <option value="null">
+                      <option value="null" :selected="isSelectedTimesDay(null)">
                         Select day
                       </option>
                       <option
                         v-for="day in daysValues"
                         :key="day.value"
                         :value="day.value"
+                        :selected="isSelectedTimesDay(day.value)"
                       >
                         {{ day.title }}
                       </option>
@@ -208,6 +209,7 @@
                   <p>Select time:</p>
 
                   <time-picker
+                    :key="recordTimes.timepickerKey"
                     :hour-range="[[9, 18]]"
                     :minute-interval="15"
                     :disabled="!canSelectAvailableTime"
@@ -219,6 +221,7 @@
                   <button
                     class="button is-small is-success"
                     :disabled="!canAddAvailableTime"
+                    @click="onAddAvailableTime"
                   >
                     Add time
                   </button>
@@ -309,6 +312,7 @@ export default {
         masterServices: []
       },
       recordTimes: {
+        timepickerKey: 0,
         selectedTime: "",
         selectedDay: null
       }
@@ -411,6 +415,11 @@ export default {
     }
 
     this.isLoading = false;
+  },
+  watch: {
+    activeTab() {
+      this.resetRecordTimes();
+    }
   },
   methods: {
     ...mapActions("mastersModule", [
@@ -602,6 +611,17 @@ export default {
     },
     onSetTime(timeValue) {
       this.recordTimes.selectedTime = timeValue;
+    },
+    isSelectedTimesDay(value) {
+      return this.recordTimes.selectedDay === value;
+    },
+    resetRecordTimes() {
+      this.recordTimes.timepickerKey++;
+      this.recordTimes.selectedDay = null;
+      this.recordTimes.selectedTime = "";
+    },
+    onAddAvailableTime() {
+      this.resetRecordTimes();
     }
   }
 };
