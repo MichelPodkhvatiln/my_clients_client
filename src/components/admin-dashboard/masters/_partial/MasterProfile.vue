@@ -236,7 +236,11 @@
             </div>
 
             <div class="message-body">
-              Test
+              <template v-if="datesInfoList.length">
+                <span v-for="dateInfo in datesInfoList" :key="dateInfo.id">
+                  {{ dateInfo }}
+                </span>
+              </template>
             </div>
           </article>
         </template>
@@ -409,6 +413,18 @@ export default {
       return (
         !!this.recordTimes.selectedDay && !!this.recordTimes.selectedTime.length
       );
+    },
+    datesInfoList() {
+      if (!this.initialData.masterInfo) return [];
+
+      return this.initialData.masterInfo.datesInfo.map(dateInfo => {
+        return {
+          id: dateInfo._id,
+          day: dateInfo.day,
+          time: dateInfo.time,
+          hasRecord: !!dateInfo.recordInfo
+        };
+      });
     }
   },
   async beforeMount() {
