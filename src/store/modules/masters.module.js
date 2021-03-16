@@ -1,5 +1,3 @@
-//import { services } from "@/utils/services";
-
 import { services } from "@/utils/services";
 
 export default {
@@ -161,6 +159,21 @@ export default {
         };
 
         const { data } = await services.masters.changeServices(params);
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async addMasterDateInfo({}, payload) {
+      try {
+        const params = {
+          masterId: payload.masterId,
+          day: payload.day,
+          time: payload.time
+        };
+
+        const { data } = await services.masters.addDateInfo(params);
 
         return data;
       } catch (error) {

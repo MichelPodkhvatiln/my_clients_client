@@ -28,6 +28,7 @@ export const endpoints = {
     changePassword: "/master/change-password/{:id}",
     changeSalon: "/master/change-salon",
     changeWorkDays: "/master/change-work-days",
-    changeServices: "/master/change-services"
+    changeServices: "/master/change-services",
+    addDateInfo: "/master/add-date-info"
   }
 };

@@ -439,7 +439,8 @@ export default {
       "changeMasterPassword",
       "changeMasterSalon",
       "changeMasterWorkdays",
-      "changeMasterServices"
+      "changeMasterServices",
+      "addMasterDateInfo"
     ]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
@@ -630,8 +631,19 @@ export default {
       this.recordTimes.selectedDay = null;
       this.recordTimes.selectedTime = "";
     },
-    onAddAvailableTime() {
-      this.resetRecordTimes();
+    async onAddAvailableTime() {
+      try {
+        const params = {
+          masterId: this.$route.params.masterId,
+          day: this.recordTimes.selectedDay,
+          time: this.recordTimes.selectedTime
+        };
+
+        this.initialData.masterInfo = await this.addMasterDateInfo(params);
+        this.resetRecordTimes();
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };
