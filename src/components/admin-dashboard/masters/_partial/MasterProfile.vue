@@ -155,7 +155,7 @@
               class="message-body is-flex is-align-items-center is-justify-content-space-between"
             >
               <div
-                v-for="checkboxValue in checkboxDaysValues"
+                v-for="checkboxValue in daysValues"
                 :key="checkboxValue.value"
                 class="field"
               >
@@ -171,6 +171,128 @@
                   {{ checkboxValue.title }}
                 </label>
               </div>
+            </div>
+          </article>
+
+          <article class="message is-dark">
+            <div class="message-header">
+              <p>Add record time</p>
+            </div>
+
+            <div class="message-body">
+              <div class="is-flex is-flex-direction-column">
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select day:</p>
+
+                  <div class="select">
+                    <select @change="onSelectTimesDay">
+                      <option value="null" :selected="isSelectedTimesDay(null)">
+                        Select day
+                      </option>
+                      <option
+                        v-for="day in daysValues"
+                        :key="day.value"
+                        :value="day.value"
+                        :selected="isSelectedTimesDay(day.value)"
+                      >
+                        {{ day.title }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select time:</p>
+
+                  <time-picker
+                    :key="recordTimes.timepickerKey"
+                    :hour-range="[[9, 18]]"
+                    :minute-interval="15"
+                    :disabled="!canSelectAvailableTime"
+                    @onSetTime="onSetTime"
+                  />
+                </div>
+
+                <div class="buttons is-flex is-justify-content-flex-end">
+                  <button
+                    class="button is-small is-success"
+                    :disabled="!canAddAvailableTime"
+                    @click="onAddAvailableTime"
+                  >
+                    Add time
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="message is-dark mb-5">
+            <div class="message-header">
+              <p>Available record times</p>
+            </div>
+
+            <div class="message-body times-overview">
+              <div class="is-flex is-flex-direction-column">
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select day:</p>
+
+                  <div class="select">
+                    <select @change="onSelectTimesDayView">
+                      <option
+                        value="null"
+                        :selected="isSelectedTimesDayView(null)"
+                      >
+                        Select day
+                      </option>
+                      <option
+                        v-for="day in daysValues"
+                        :key="day.value"
+                        :value="day.value"
+                        :selected="isSelectedTimesDayView(day.value)"
+                      >
+                        {{ day.title }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <template v-if="datesInfoList.length">
+                <div class="field is-grouped is-grouped-multiline">
+                  <div
+                    v-for="dateInfo in datesInfoList"
+                    :key="dateInfo.id"
+                    class="control"
+                  >
+                    <div class="tags has-addons">
+                      <a
+                        class="tag"
+                        :class="{
+                          'is-link': !dateInfo.hasRecord,
+                          'is-danger': dateInfo.hasRecord
+                        }"
+                      >
+                        {{ dateInfo.time }}
+                      </a>
+                      <a
+                        class="tag is-delete"
+                        @click.prevent="onRemoveMasterDateInfo(dateInfo.id)"
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <span class="is-size-6">
+                  Please, select day or add new time record.
+                </span>
+              </template>
             </div>
           </article>
         </template>
@@ -229,6 +351,7 @@ import AvatarIcon from "@/components/icons/AvatarIcon.vue";
 import MasterInfoEditModal from "@/components/admin-dashboard/masters/_partial/MasterInfoEditModal.vue";
 import MasterEmailEditModal from "@/components/admin-dashboard/masters/_partial/MasterEmailEditModal.vue";
 import MasterChangePasswordModal from "@/components/admin-dashboard/masters/_partial/MasterChangePasswordModal.vue";
+import TimePicker from "@/components/shared/TimePicker.vue";
 
 export default {
   name: "MasterProfile",
@@ -237,11 +360,13 @@ export default {
     AvatarIcon,
     MasterInfoEditModal,
     MasterEmailEditModal,
-    MasterChangePasswordModal
+    MasterChangePasswordModal,
+    TimePicker
   },
   data() {
     return {
       activeTab: 1, //1, 2, 3
+      activeTimesDay: null,
       isLoading: false,
       initialData: {
         masterInfo: null,
@@ -252,6 +377,11 @@ export default {
         salonInfo: null,
         workDays: [],
         masterServices: []
+      },
+      recordTimes: {
+        timepickerKey: 0,
+        selectedTime: "",
+        selectedDay: null
       }
     };
   },
@@ -272,7 +402,7 @@ export default {
         };
       });
     },
-    checkboxDaysValues() {
+    daysValues() {
       return [
         {
           title: "Monday",
@@ -328,6 +458,27 @@ export default {
         lastName: this.initialData.masterInfo.userInfo.lastName,
         email: this.initialData.masterInfo.userInfo.email
       };
+    },
+    canSelectAvailableTime() {
+      return !!this.recordTimes.selectedDay;
+    },
+    canAddAvailableTime() {
+      return (
+        !!this.recordTimes.selectedDay && !!this.recordTimes.selectedTime.length
+      );
+    },
+    datesInfoList() {
+      if (!this.initialData.masterInfo || !this.activeTimesDay) return [];
+
+      return this.initialData.masterInfo.datesInfo
+        .filter(dateInfo => dateInfo.day === this.activeTimesDay)
+        .map(dateInfo => {
+          return {
+            id: dateInfo._id,
+            time: dateInfo.time,
+            hasRecord: !!dateInfo.recordInfo
+          };
+        });
     }
   },
   async beforeMount() {
@@ -345,6 +496,11 @@ export default {
 
     this.isLoading = false;
   },
+  watch: {
+    activeTab() {
+      this.resetRecordTimes();
+    }
+  },
   methods: {
     ...mapActions("mastersModule", [
       "getMasterById",
@@ -353,7 +509,9 @@ export default {
       "changeMasterPassword",
       "changeMasterSalon",
       "changeMasterWorkdays",
-      "changeMasterServices"
+      "changeMasterServices",
+      "addMasterDateInfo",
+      "removeMasterDateInfo"
     ]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
@@ -522,6 +680,66 @@ export default {
 
       this.editedData.masterServices.push(value);
       _debouncedServicesUpdate();
+    },
+    onSelectTimesDay(evt) {
+      const dayValue = evt.target.value;
+
+      if (dayValue === "null") {
+        this.recordTimes.selectedDay = null;
+        return;
+      }
+
+      this.recordTimes.selectedDay = Number(dayValue);
+    },
+    onSelectTimesDayView(evt) {
+      const dayValue = evt.target.value;
+
+      if (dayValue === "null") {
+        this.activeTimesDay = null;
+        return;
+      }
+
+      this.activeTimesDay = Number(dayValue);
+    },
+    onSetTime(timeValue) {
+      this.recordTimes.selectedTime = timeValue;
+    },
+    isSelectedTimesDay(value) {
+      return this.recordTimes.selectedDay === value;
+    },
+    isSelectedTimesDayView(value) {
+      return this.activeTimesDay === value;
+    },
+    resetRecordTimes() {
+      this.recordTimes.timepickerKey++;
+      this.recordTimes.selectedDay = null;
+      this.recordTimes.selectedTime = "";
+    },
+    async onAddAvailableTime() {
+      try {
+        const params = {
+          masterId: this.$route.params.masterId,
+          day: this.recordTimes.selectedDay,
+          time: this.recordTimes.selectedTime
+        };
+
+        this.initialData.masterInfo = await this.addMasterDateInfo(params);
+        this.resetRecordTimes();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async onRemoveMasterDateInfo(dateInfoId) {
+      try {
+        const params = {
+          masterId: this.$route.params.masterId,
+          dateInfoId
+        };
+
+        this.initialData.masterInfo = await this.removeMasterDateInfo(params);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };
@@ -558,7 +776,7 @@ export default {
 
 .select {
   width: 100%;
-  max-width: 450px;
+  max-width: 300px;
 
   select {
     width: 100%;
@@ -579,5 +797,9 @@ export default {
   width: 40px;
   height: 40px;
   fill: #ffffff;
+}
+
+.times-overview {
+  min-height: 250px;
 }
 </style>
