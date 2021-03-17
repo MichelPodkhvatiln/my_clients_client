@@ -236,6 +236,33 @@
             </div>
 
             <div class="message-body">
+              <div class="is-flex is-flex-direction-column">
+                <div
+                  class="is-flex is-align-items-center is-justify-content-space-between mb-2"
+                >
+                  <p>Select day:</p>
+
+                  <div class="select">
+                    <select @change="onSelectTimesDayView">
+                      <option
+                        value="null"
+                        :selected="isSelectedTimesDayView(null)"
+                      >
+                        Select day
+                      </option>
+                      <option
+                        v-for="day in daysValues"
+                        :key="day.value"
+                        :value="day.value"
+                        :selected="isSelectedTimesDayView(day.value)"
+                      >
+                        {{ day.title }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
               <template v-if="datesInfoList.length">
                 <span v-for="dateInfo in datesInfoList" :key="dateInfo.id">
                   {{ dateInfo }}
@@ -314,6 +341,7 @@ export default {
   data() {
     return {
       activeTab: 1, //1, 2, 3
+      activeTimesDay: null,
       isLoading: false,
       initialData: {
         masterInfo: null,
@@ -415,16 +443,18 @@ export default {
       );
     },
     datesInfoList() {
-      if (!this.initialData.masterInfo) return [];
+      if (!this.initialData.masterInfo || !this.activeTimesDay) return [];
 
-      return this.initialData.masterInfo.datesInfo.map(dateInfo => {
-        return {
-          id: dateInfo._id,
-          day: dateInfo.day,
-          time: dateInfo.time,
-          hasRecord: !!dateInfo.recordInfo
-        };
-      });
+      return this.initialData.masterInfo.datesInfo
+        .filter(dateInfo => dateInfo.day === this.activeTimesDay)
+        .map(dateInfo => {
+          return {
+            id: dateInfo._id,
+            day: dateInfo.day,
+            time: dateInfo.time,
+            hasRecord: !!dateInfo.recordInfo
+          };
+        });
     }
   },
   async beforeMount() {
@@ -636,11 +666,24 @@ export default {
 
       this.recordTimes.selectedDay = Number(dayValue);
     },
+    onSelectTimesDayView(evt) {
+      const dayValue = evt.target.value;
+
+      if (dayValue === "null") {
+        this.activeTimesDay = null;
+        return;
+      }
+
+      this.activeTimesDay = Number(dayValue);
+    },
     onSetTime(timeValue) {
       this.recordTimes.selectedTime = timeValue;
     },
     isSelectedTimesDay(value) {
       return this.recordTimes.selectedDay === value;
+    },
+    isSelectedTimesDayView(value) {
+      return this.activeTimesDay === value;
     },
     resetRecordTimes() {
       this.recordTimes.timepickerKey++;
