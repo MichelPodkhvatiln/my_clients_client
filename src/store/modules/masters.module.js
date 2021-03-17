@@ -179,6 +179,20 @@ export default {
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    async removeMasterDateInfo({}, payload) {
+      try {
+        const params = {
+          masterId: payload.masterId,
+          dateInfoId: payload.dateInfoId
+        };
+
+        const { data } = await services.masters.removeDateInfo(params);
+
+        return data;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     }
   }
 };

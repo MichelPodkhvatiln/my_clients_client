@@ -71,4 +71,8 @@ export class MastersService extends BaseHttpService {
   addDateInfo(data) {
     return this.post(this.endpoints.addDateInfo, data);
   }
+
+  removeDateInfo(data) {
+    return this.post(this.endpoints.removeDateInfo, data);
+  }
 }

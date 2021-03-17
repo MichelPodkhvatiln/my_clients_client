@@ -280,7 +280,10 @@
                       >
                         {{ dateInfo.time }}
                       </a>
-                      <a class="tag is-delete"></a>
+                      <a
+                        class="tag is-delete"
+                        @click.prevent="onRemoveMasterDateInfo(dateInfo.id)"
+                      ></a>
                     </div>
                   </div>
                 </div>
@@ -507,7 +510,8 @@ export default {
       "changeMasterSalon",
       "changeMasterWorkdays",
       "changeMasterServices",
-      "addMasterDateInfo"
+      "addMasterDateInfo",
+      "removeMasterDateInfo"
     ]),
     ...mapActions("salonModule", ["getSalonList"]),
     ...mapActions("servicesModule", ["getServicesList"]),
@@ -721,6 +725,18 @@ export default {
 
         this.initialData.masterInfo = await this.addMasterDateInfo(params);
         this.resetRecordTimes();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async onRemoveMasterDateInfo(dateInfoId) {
+      try {
+        const params = {
+          masterId: this.$route.params.masterId,
+          dateInfoId
+        };
+
+        this.initialData.masterInfo = await this.removeMasterDateInfo(params);
       } catch (error) {
         console.error(error);
       }

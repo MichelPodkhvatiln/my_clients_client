@@ -29,6 +29,7 @@ export const endpoints = {
     changeSalon: "/master/change-salon",
     changeWorkDays: "/master/change-work-days",
     changeServices: "/master/change-services",
-    addDateInfo: "/master/add-date-info"
+    addDateInfo: "/master/add-date-info",
+    removeDateInfo: "/master/remove-date-info"
   }
 };
