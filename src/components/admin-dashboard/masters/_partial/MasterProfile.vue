@@ -230,12 +230,12 @@
             </div>
           </article>
 
-          <article class="message is-dark">
+          <article class="message is-dark mb-5">
             <div class="message-header">
               <p>Available record times</p>
             </div>
 
-            <div class="message-body">
+            <div class="message-body times-overview">
               <div class="is-flex is-flex-direction-column">
                 <div
                   class="is-flex is-align-items-center is-justify-content-space-between mb-2"
@@ -264,8 +264,30 @@
               </div>
 
               <template v-if="datesInfoList.length">
-                <span v-for="dateInfo in datesInfoList" :key="dateInfo.id">
-                  {{ dateInfo }}
+                <div class="field is-grouped is-grouped-multiline">
+                  <div
+                    v-for="dateInfo in datesInfoList"
+                    :key="dateInfo.id"
+                    class="control"
+                  >
+                    <div class="tags has-addons">
+                      <a
+                        class="tag"
+                        :class="{
+                          'is-link': !dateInfo.hasRecord,
+                          'is-danger': dateInfo.hasRecord
+                        }"
+                      >
+                        {{ dateInfo.time }}
+                      </a>
+                      <a class="tag is-delete"></a>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <span class="is-size-6">
+                  Please, select day or add new time record.
                 </span>
               </template>
             </div>
@@ -450,7 +472,6 @@ export default {
         .map(dateInfo => {
           return {
             id: dateInfo._id,
-            day: dateInfo.day,
             time: dateInfo.time,
             hasRecord: !!dateInfo.recordInfo
           };
@@ -760,5 +781,9 @@ export default {
   width: 40px;
   height: 40px;
   fill: #ffffff;
+}
+
+.times-overview {
+  min-height: 250px;
 }
 </style>
