@@ -73,7 +73,7 @@ export default {
       linkList: [
         {
           path: "/",
-          title: "Home"
+          title: "Main"
         },
         {
           path: "/about",
