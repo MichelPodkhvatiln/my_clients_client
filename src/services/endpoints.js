@@ -21,6 +21,7 @@ export const endpoints = {
   },
   masters: {
     getList: "/master/get-list",
+    getSalonMasters: "/master/get-salon-masters/{:salonId}",
     getMaster: "/master/get-master/{:id}",
     create: "/master/create",
     remove: "/master/remove/{:id}",

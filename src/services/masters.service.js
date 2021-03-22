@@ -23,6 +23,12 @@ export class MastersService extends BaseHttpService {
     return this.get(this.endpoints.getList);
   }
 
+  getListBySalon(salonId) {
+    return this.get(
+      this.endpoints.getSalonMasters.replace("{:salonId}", String(salonId))
+    );
+  }
+
   getMaster(id) {
     return this.get(this.endpoints.getMaster.replace("{:id}", String(id)));
   }
