@@ -4,7 +4,7 @@
       <template v-if="!isLoading">
         <div v-if="salonsList.length" class="columns is-multiline">
           <div v-for="salon in salonsList" :key="salon._id" class="column is-3">
-            <div class="box salon__card">
+            <div class="box salon__card" @click="startRecordProcess(salon._id)">
               <figure class="salon__card--map">
                 <img
                   :src="getImgSrc(salon)"
@@ -92,6 +92,9 @@ export default {
       };
 
       return googleService.createStaticMapImgSrc(coordinates, size);
+    },
+    startRecordProcess(salonId) {
+      this.$router.push({ name: "Record", params: { salonId } });
     }
   }
 };
@@ -117,6 +120,7 @@ export default {
   width: 100%;
   padding: 0;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .salon__card {

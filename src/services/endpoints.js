@@ -8,6 +8,7 @@ export const endpoints = {
   },
   salon: {
     getList: "/salon/get-list",
+    getById: "/salon/get/{:id}",
     create: "/salon/create",
     update: "/salon/update/{:id}",
     delete: "/salon/delete/{:id}"

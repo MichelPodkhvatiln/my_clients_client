@@ -73,6 +73,17 @@ export default {
         return Promise.reject(error);
       }
     },
+    async getSalonById({}, { salonId, withReturn = true }) {
+      try {
+        const { data } = await services.salon.getSalonById(salonId);
+
+        if (withReturn) {
+          return data;
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async createSalon({ commit }, { name, location }) {
       try {
         const { data } = await services.salon.createSalon({ name, location });
