@@ -42,6 +42,18 @@
           </div>
         </div>
 
+        <div class="field">
+          <label class="label">Дата посещения</label>
+          <date-picker
+            :value="recordDate"
+            :disabled="!formData.master"
+            :disabled-date="disabledDate"
+            placeholder="Выберете дату посещения"
+            @clear="onClearDate"
+            @pick="onSelectDate"
+          />
+        </div>
+
         {{ formData }}
       </div>
     </div>
@@ -50,9 +62,15 @@
 
 <script>
 import { mapActions } from "vuex";
+import moment from "moment";
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
 
 export default {
   name: "RecordForm",
+  components: {
+    DatePicker
+  },
   props: {
     salonId: {
       type: String,
@@ -68,7 +86,8 @@ export default {
       masterInfo: null,
       formData: {
         master: null,
-        service: null
+        service: null,
+        date: null
       }
     };
   },
@@ -127,6 +146,9 @@ export default {
             value: service._id
           };
         });
+    },
+    recordDate() {
+      return this.formData.date;
     }
   },
   methods: {
@@ -158,9 +180,30 @@ export default {
       }
 
       this.formData.service = value;
+    },
+    disabledDate(date) {
+      if (!date) return true;
+
+      const mastersWorkDays = this.masterInfo.workDays;
+      const day = moment(date).format("d");
+      const formattedDay = Number(day) + 1;
+
+      return !mastersWorkDays.includes(formattedDay);
+    },
+    onSelectDate(date) {
+      this.formData.date = date;
+    },
+    onClearDate() {
+      this.formData.date = null;
     }
   }
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+::v-deep {
+  .mx-datepicker {
+    width: 100%;
+  }
+}
+</style>
