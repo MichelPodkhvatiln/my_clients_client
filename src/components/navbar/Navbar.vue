@@ -17,7 +17,7 @@
           :class="{ 'is-active': isAdminPages }"
           to="/admin"
         >
-          Admin Dashboard
+          Консоль администратора
         </router-link>
       </div>
       <div class="navbar-end">
@@ -73,11 +73,15 @@ export default {
       linkList: [
         {
           path: "/",
-          title: "Main"
+          title: "Главная"
         },
         {
           path: "/about",
-          title: "About"
+          title: "О нас"
+        },
+        {
+          path: "/record",
+          title: "Записаться"
         }
       ]
     };

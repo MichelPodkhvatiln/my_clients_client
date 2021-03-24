@@ -11,10 +11,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "main" */ "../views/Main.vue")
   },
   {
-    path: "/record/:salonId",
+    path: "/record",
     name: "Record",
     component: () =>
       import(/* webpackChunkName: "record" */ "../views/Record.vue")
+  },
+  {
+    path: "/record/:salonId",
+    name: "RecordProcess",
+    component: () =>
+      import(
+        /* webpackChunkName: "recordProcess" */ "../views/RecordProcessPage.vue"
+      )
   },
   {
     path: "/about",
