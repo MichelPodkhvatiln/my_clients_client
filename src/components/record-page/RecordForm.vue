@@ -45,6 +45,7 @@
         <div class="field">
           <label class="label">Дата посещения</label>
           <date-picker
+            :lang="lang"
             :value="recordDate"
             :disabled="!formData.master"
             :disabled-date="disabledDate"
@@ -80,6 +81,12 @@ export default {
   data() {
     return {
       isLoading: false,
+      lang: {
+        formatLocale: {
+          firstDayOfWeek: 1
+        },
+        monthBeforeYear: false
+      },
       salonInfo: null,
       servicesInfo: [],
       mastersList: [],
@@ -184,11 +191,16 @@ export default {
     disabledDate(date) {
       if (!date) return true;
 
+      const dayCodeValues = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
       const mastersWorkDays = this.masterInfo.workDays;
-      const day = moment(date).format("d");
-      const formattedDay = Number(day) + 1;
 
-      return !mastersWorkDays.includes(formattedDay);
+      const dayCode = moment(date).format("dd");
+
+      const dayIndex = dayCodeValues.findIndex(day => day === dayCode);
+
+      if (dayIndex < 0) return true;
+
+      return !mastersWorkDays.includes(dayIndex + 1);
     },
     onSelectDate(date) {
       this.formData.date = date;
