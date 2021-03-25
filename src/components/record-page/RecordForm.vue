@@ -45,7 +45,6 @@
         <div class="field">
           <label class="label">Дата посещения</label>
           <date-picker
-            :lang="lang"
             :value="recordDate"
             :disabled="!formData.master"
             :disabled-date="disabledDate"
@@ -53,6 +52,27 @@
             @clear="onClearDate"
             @pick="onSelectDate"
           />
+        </div>
+
+        <div class="field">
+          <label class="label">Время</label>
+          <div class="select is-fullwidth">
+            <select
+              :disabled="!formData.day || !recordTimes.length"
+              @click="onRecordTimeSelect"
+            >
+              <option value="null">
+                Выберите время
+              </option>
+              <option
+                v-for="recordTime in recordTimes"
+                :key="recordTime.value"
+                :value="recordTime.value"
+              >
+                {{ recordTime.title }}
+              </option>
+            </select>
+          </div>
         </div>
 
         {{ formData }}
@@ -81,20 +101,16 @@ export default {
   data() {
     return {
       isLoading: false,
-      lang: {
-        formatLocale: {
-          firstDayOfWeek: 1
-        },
-        monthBeforeYear: false
-      },
+      masterInfo: null,
       salonInfo: null,
       servicesInfo: [],
       mastersList: [],
-      masterInfo: null,
       formData: {
         master: null,
         service: null,
-        date: null
+        date: null,
+        day: null,
+        time: null
       }
     };
   },
@@ -156,6 +172,20 @@ export default {
     },
     recordDate() {
       return this.formData.date;
+    },
+    recordTimes() {
+      if (!this.formData.day) return [];
+
+      return this.masterInfo.datesInfo
+        .filter(
+          dateInfo => dateInfo.day === this.formData.day && !dateInfo.recordInfo
+        )
+        .map(dateInfo => {
+          return {
+            title: dateInfo.time,
+            value: dateInfo._id
+          };
+        });
     }
   },
   methods: {
@@ -204,9 +234,29 @@ export default {
     },
     onSelectDate(date) {
       this.formData.date = date;
+
+      const dayCodeValues = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+      const dayCode = moment(date).format("dd");
+
+      const dayIndex = dayCodeValues.findIndex(day => day === dayCode);
+
+      if (dayIndex < 0) return;
+
+      this.formData.day = dayIndex + 1;
     },
     onClearDate() {
       this.formData.date = null;
+      this.formData.day = null;
+    },
+    onRecordTimeSelect(evt) {
+      const value = evt.target.value;
+
+      if (value === "null") {
+        this.formData.time = null;
+        return;
+      }
+
+      this.formData.time = value;
     }
   }
 };
