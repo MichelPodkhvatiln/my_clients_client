@@ -33,5 +33,8 @@ export const endpoints = {
     changeServices: "/master/change-services",
     addDateInfo: "/master/add-date-info",
     removeDateInfo: "/master/remove-date-info"
+  },
+  record: {
+    addRecord: "/record/add-record"
   }
 };
