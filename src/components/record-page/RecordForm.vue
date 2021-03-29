@@ -75,14 +75,48 @@
           </div>
         </div>
 
+        <template v-if="!isUserLogIn">
+          <div class="field">
+            <label class="label">Имя</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                v-model="userForm.firstName"
+                placeholder="Введите свое имя"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Фамилия</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                v-model="userForm.lastName"
+                placeholder="Введите свою фамилию"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Телефон</label>
+            <div class="control">
+              <vue-tel-input @input="onPhoneInput" />
+            </div>
+          </div>
+        </template>
+
         {{ formData }}
+        {{ userForm }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
@@ -111,6 +145,11 @@ export default {
         date: null,
         day: null,
         time: null
+      },
+      userForm: {
+        firstName: "",
+        lastName: "",
+        phone: ""
       }
     };
   },
@@ -138,6 +177,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("userModule", ["isUserLogIn"]),
     salonName() {
       if (!this.salonInfo) return "";
 
@@ -257,6 +297,13 @@ export default {
       }
 
       this.formData.time = value;
+    },
+    onPhoneInput(_, phoneObject) {
+      if (phoneObject.valid) {
+        this.userForm.phone = phoneObject.number;
+      } else {
+        this.userForm.phone = "";
+      }
     }
   }
 };
