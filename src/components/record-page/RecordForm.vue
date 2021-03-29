@@ -107,6 +107,9 @@
             </div>
           </div>
         </template>
+        <button class="button" @click="onSubmit">
+          Submit
+        </button>
 
         {{ formData }}
         {{ userForm }}
@@ -210,6 +213,29 @@ export default {
           };
         });
     },
+    selectedMasterUserInfo() {
+      if (!this.masterInfo) return;
+
+      return {
+        firstName: this.masterInfo?.userInfo.firstName,
+        lastName: this.masterInfo?.userInfo.lastName
+      };
+    },
+    selectedServiceInfo() {
+      if (!this.servicesInfo) return;
+
+      const serviceInfo = this.servicesInfo.find(
+        service => service._id === this.formData.service
+      );
+
+      if (!serviceInfo) return;
+
+      return {
+        name: serviceInfo.name,
+        price: serviceInfo.price,
+        comment: serviceInfo.comment
+      };
+    },
     recordDate() {
       return this.formData.date;
     },
@@ -232,6 +258,7 @@ export default {
     ...mapActions("salonModule", ["getSalonById"]),
     ...mapActions("servicesModule", ["getServicesList"]),
     ...mapActions("mastersModule", ["getSalonMastersList", "getMasterById"]),
+    ...mapActions("recordModule", ["addRecord"]),
     async onMasterSelect(evt) {
       const value = evt.target.value;
 
@@ -304,6 +331,27 @@ export default {
       } else {
         this.userForm.phone = "";
       }
+    },
+    async onSubmit() {
+      const recordData = {
+        salonInfo: {
+          name: this.salonName
+        },
+        masterInfo: {
+          firstName: this.selectedMasterUserInfo?.firstName,
+          lastName: this.selectedMasterUserInfo?.lastName
+        },
+        serviceInfo: this.selectedServiceInfo
+          ? { ...this.selectedServiceInfo }
+          : undefined,
+        userInfo: {
+          firstName: this.userForm.firstName,
+          lastName: this.userForm.lastName,
+          phone: this.userForm.phone
+        }
+      };
+
+      await this.addRecord(recordData);
     }
   }
 };
