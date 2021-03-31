@@ -217,6 +217,7 @@ export default {
       if (!this.masterInfo) return;
 
       return {
+        masterId: this.masterInfo?.id,
         firstName: this.masterInfo?.userInfo.firstName,
         lastName: this.masterInfo?.userInfo.lastName
       };
@@ -242,16 +243,18 @@ export default {
     recordTimes() {
       if (!this.formData.day) return [];
 
-      return this.masterInfo.datesInfo
-        .filter(
-          dateInfo => dateInfo.day === this.formData.day && !dateInfo.recordInfo
-        )
-        .map(dateInfo => {
-          return {
-            title: dateInfo.time,
-            value: dateInfo._id
-          };
-        });
+      return (
+        this.masterInfo.datesInfo
+          // .filter(
+          //   dateInfo => dateInfo.day === this.formData.day && !dateInfo.recordInfo
+          // )
+          .map(dateInfo => {
+            return {
+              title: dateInfo.time,
+              value: dateInfo._id
+            };
+          })
+      );
     }
   },
   methods: {
@@ -334,10 +337,12 @@ export default {
     },
     async onSubmit() {
       const recordData = {
+        dateInfoId: this.formData.time,
         salonInfo: {
           name: this.salonName
         },
         masterInfo: {
+          masterId: this.selectedMasterUserInfo?.masterId,
           firstName: this.selectedMasterUserInfo?.firstName,
           lastName: this.selectedMasterUserInfo?.lastName
         },
@@ -348,7 +353,10 @@ export default {
           firstName: this.userForm.firstName,
           lastName: this.userForm.lastName,
           phone: this.userForm.phone
-        }
+        },
+        date: moment(this.formData.date)
+          .utcOffset(0, true)
+          .toDate()
       };
 
       await this.addRecord(recordData);
