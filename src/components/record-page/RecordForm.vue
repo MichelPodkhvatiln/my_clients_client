@@ -243,18 +243,33 @@ export default {
     recordTimes() {
       if (!this.formData.day) return [];
 
-      return (
-        this.masterInfo.datesInfo
-          // .filter(
-          //   dateInfo => dateInfo.day === this.formData.day && !dateInfo.recordInfo
-          // )
-          .map(dateInfo => {
-            return {
-              title: dateInfo.time,
-              value: dateInfo._id
-            };
-          })
-      );
+      const allowedDatesInfo = [];
+
+      this.masterInfo.datesInfo.forEach(dateInfo => {
+        if (!dateInfo.recordInfo) {
+          allowedDatesInfo.push({
+            title: dateInfo.time,
+            value: dateInfo._id
+          });
+          return;
+        }
+
+        const isAlreadyDateSelect = dateInfo.recordInfo.find(record => {
+          const recordDate = moment(record.date).format("YYYY-MM-DD");
+          const selectedDate = moment(this.formData.date).format("YYYY-MM-DD");
+
+          return moment(recordDate).isSame(selectedDate);
+        });
+
+        if (isAlreadyDateSelect) return;
+
+        allowedDatesInfo.push({
+          title: dateInfo.time,
+          value: dateInfo._id
+        });
+      });
+
+      return allowedDatesInfo;
     }
   },
   methods: {
