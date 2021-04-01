@@ -74,6 +74,12 @@ const routes = [
           )
       }
     ]
+  },
+  {
+    path: "/success",
+    name: "SuccessPage",
+    component: () =>
+      import(/* webpackChunkName: "successPage" */ "../views/SuccessPage.vue")
   }
 ];
 

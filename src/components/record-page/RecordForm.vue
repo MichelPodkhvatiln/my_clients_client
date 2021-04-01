@@ -107,12 +107,11 @@
             </div>
           </div>
         </template>
-        <button class="button" @click="onSubmit">
-          Submit
-        </button>
-
-        {{ formData }}
-        {{ userForm }}
+        <div class="buttons is-flex is-justify-content-flex-end">
+          <button class="button is-success" @click="onSubmit">
+            Записаться
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -180,7 +179,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("userModule", ["isUserLogIn"]),
+    ...mapGetters("userModule", ["isUserLogIn", "user"]),
     salonName() {
       if (!this.salonInfo) return "";
 
@@ -365,16 +364,30 @@ export default {
           ? { ...this.selectedServiceInfo }
           : undefined,
         userInfo: {
-          firstName: this.userForm.firstName,
-          lastName: this.userForm.lastName,
-          phone: this.userForm.phone
+          firstName: this.isUserLogIn
+            ? this.user.profile.firstName
+            : this.userForm.firstName,
+          lastName: this.isUserLogIn
+            ? this.user.profile.lastName
+            : this.userForm.lastName,
+          phone: this.isUserLogIn
+            ? this.user.profile.phone
+            : this.userForm.phone
         },
         date: moment(this.formData.date)
           .utcOffset(0, true)
           .toDate()
       };
 
-      await this.addRecord(recordData);
+      try {
+        await this.addRecord(recordData);
+        await this.$router.push({
+          name: "SuccessPage",
+          params: { infoText: "Запись прошла успешно!" }
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 };
