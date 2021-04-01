@@ -23,6 +23,10 @@ export class SalonService extends BaseHttpService {
     return this.get(this.endpoints.getList);
   }
 
+  getSalonById(salonId) {
+    return this.get(this.endpoints.getById.replace("{:id}", String(salonId)));
+  }
+
   createSalon({ name, location }) {
     return this.post(this.endpoints.create, { name, location });
   }

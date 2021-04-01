@@ -8,6 +8,7 @@ export const endpoints = {
   },
   salon: {
     getList: "/salon/get-list",
+    getById: "/salon/get/{:id}",
     create: "/salon/create",
     update: "/salon/update/{:id}",
     delete: "/salon/delete/{:id}"
@@ -20,6 +21,7 @@ export const endpoints = {
   },
   masters: {
     getList: "/master/get-list",
+    getSalonMasters: "/master/get-salon-masters/{:salonId}",
     getMaster: "/master/get-master/{:id}",
     create: "/master/create",
     remove: "/master/remove/{:id}",
@@ -31,5 +33,8 @@ export const endpoints = {
     changeServices: "/master/change-services",
     addDateInfo: "/master/add-date-info",
     removeDateInfo: "/master/remove-date-info"
+  },
+  record: {
+    addRecord: "/record/add-record"
   }
 };

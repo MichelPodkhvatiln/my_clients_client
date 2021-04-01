@@ -44,6 +44,17 @@ export default {
         return Promise.reject(error);
       }
     },
+    async getSalonMastersList({}, { salonId, withReturn = true }) {
+      try {
+        const { data } = await services.masters.getListBySalon(salonId);
+
+        if (withReturn) {
+          return data;
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     async getMasterById({}, id) {
       try {
         const { data } = await services.masters.getMaster(id);

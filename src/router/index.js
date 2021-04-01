@@ -7,8 +7,22 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
+    name: "Main",
+    component: () => import(/* webpackChunkName: "main" */ "../views/Main.vue")
+  },
+  {
+    path: "/record",
+    name: "Record",
+    component: () =>
+      import(/* webpackChunkName: "record" */ "../views/Record.vue")
+  },
+  {
+    path: "/record/:salonId",
+    name: "RecordProcess",
+    component: () =>
+      import(
+        /* webpackChunkName: "recordProcess" */ "../views/RecordProcessPage.vue"
+      )
   },
   {
     path: "/about",
@@ -60,6 +74,12 @@ const routes = [
           )
       }
     ]
+  },
+  {
+    path: "/success",
+    name: "SuccessPage",
+    component: () =>
+      import(/* webpackChunkName: "successPage" */ "../views/SuccessPage.vue")
   }
 ];
 

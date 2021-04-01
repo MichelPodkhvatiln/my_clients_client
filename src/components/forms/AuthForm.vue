@@ -54,6 +54,15 @@
           />
         </div>
       </div>
+
+      <template v-if="isSignUp">
+        <div class="field">
+          <label class="label">Телефон</label>
+          <div class="control">
+            <vue-tel-input @input="onPhoneInput" />
+          </div>
+        </div>
+      </template>
     </div>
     <footer class="auth-form__footer">
       <div class="buttons">
@@ -87,7 +96,8 @@ export default {
         email: "",
         password: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        phone: ""
       }
     };
   },
@@ -171,7 +181,8 @@ export default {
           email: this.form.email,
           password: this.form.password,
           firstName: this.form.firstName,
-          lastName: this.form.lastName
+          lastName: this.form.lastName,
+          phone: this.form.phone
         };
 
         try {
@@ -180,6 +191,13 @@ export default {
         } catch (error) {
           console.error(error);
         }
+      }
+    },
+    onPhoneInput(_, phoneObject) {
+      if (phoneObject.valid) {
+        this.form.phone = phoneObject.number;
+      } else {
+        this.form.phone = "";
       }
     }
   }
