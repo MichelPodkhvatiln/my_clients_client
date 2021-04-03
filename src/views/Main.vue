@@ -10,14 +10,18 @@
           </h1>
 
           <figure class="main-page__image mb-4">
-            <img src="images/grizzly_main.jpg" alt="Salon logo" />
+            <img
+              src="images/grizzly_main.jpg"
+              loading="lazy"
+              alt="Salon logo"
+            />
           </figure>
         </div>
       </div>
       <div class="columns">
         <div class="column is-3 is-offset-2">
           <figure class="main-page__image mb-4">
-            <img src="images/main_small.jpg" alt="Work image" />
+            <img src="images/main_small.jpg" loading="lazy" alt="Work image" />
           </figure>
         </div>
         <div class="column is-5">

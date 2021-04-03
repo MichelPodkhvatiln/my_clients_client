@@ -65,28 +65,40 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "salonConfig" */ "../components/admin-dashboard/salon/SalonConfig.vue"
-          )
+          ),
+        meta: {
+          title: "Управление салонами"
+        }
       },
       {
         path: "masters",
         component: () =>
           import(
             /* webpackChunkName: "salonConfig" */ "../components/admin-dashboard/masters/MastersConfig.vue"
-          )
+          ),
+        meta: {
+          title: "Управление мастерами"
+        }
       },
       {
         path: "masters/:masterId",
         component: () =>
           import(
             /* webpackChunkName: "masterProfile" */ "../components/admin-dashboard/masters/_partial/MasterProfile.vue"
-          )
+          ),
+        meta: {
+          title: "Настройка мастера"
+        }
       },
       {
         path: "services",
         component: () =>
           import(
             /* webpackChunkName: "servicesConfig" */ "../components/admin-dashboard/services/ServicesConfig.vue"
-          )
+          ),
+        meta: {
+          title: "Управление сервисами"
+        }
       }
     ]
   },
