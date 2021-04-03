@@ -173,7 +173,7 @@ export default {
           lastName: this.form.lastName,
           email: this.form.email,
           password: this.form.password,
-          salonId: this.salonId
+          salonId: this.form.salonId
         };
 
         await this.createMaster(params);
