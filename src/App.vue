@@ -18,6 +18,7 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 
 export default {
   name: "App",
+  title: "Main page",
   components: {
     DefaultLayout,
     HalfCircleSpinner
@@ -51,10 +52,6 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  overflow: hidden !important;
-}
-
 .loading-block {
   display: flex;
   align-items: center;

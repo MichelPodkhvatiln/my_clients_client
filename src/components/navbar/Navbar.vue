@@ -17,15 +17,13 @@
           :class="{ 'is-active': isAdminPages }"
           to="/admin"
         >
-          Консоль администратора
+          Кабинет администратора
         </router-link>
       </div>
       <div class="navbar-end">
         <template v-if="isUserLogIn">
           <div class="navbar-item">
-            <span>
-              {{ username }}
-            </span>
+            <span> Здравствуйте, {{ username }}! </span>
           </div>
         </template>
 
@@ -33,16 +31,16 @@
           <template v-if="!isUserLogIn">
             <div class="buttons">
               <button class="button is-light" @click="onSignInClick">
-                Sing In
+                Войти
               </button>
               <button class="button is-primary" @click="onSignUpClick">
-                Sing Up
+                Регистрация
               </button>
             </div>
           </template>
           <template v-else>
             <button class="button is-light" @click="onLogOutClick">
-              Log Out
+              Выйти
             </button>
           </template>
         </div>

@@ -3,3 +3,22 @@
 // Bulma Import
 @import "~bulma";
 @import "~bulma-checkradio";
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;700&family=Roboto&display=swap");
+
+html {
+  overflow: hidden !important;
+}
+
+body {
+  font-family: "Open Sans", "sans-serif";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", "sans-serif";
+}

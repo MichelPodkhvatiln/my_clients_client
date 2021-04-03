@@ -8,13 +8,19 @@ const routes = [
   {
     path: "/",
     name: "Main",
-    component: () => import(/* webpackChunkName: "main" */ "../views/Main.vue")
+    component: () => import(/* webpackChunkName: "main" */ "../views/Main.vue"),
+    meta: {
+      title: "Главная"
+    }
   },
   {
     path: "/record",
     name: "Record",
     component: () =>
-      import(/* webpackChunkName: "record" */ "../views/Record.vue")
+      import(/* webpackChunkName: "record" */ "../views/Record.vue"),
+    meta: {
+      title: "Записаться"
+    }
   },
   {
     path: "/record/:salonId",
@@ -22,13 +28,19 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "recordProcess" */ "../views/RecordProcessPage.vue"
-      )
+      ),
+    meta: {
+      title: "Записаться"
+    }
   },
   {
     path: "/about",
     name: "About",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    meta: {
+      title: "О нас"
+    }
   },
   {
     path: "/admin",
@@ -44,6 +56,9 @@ const routes = [
       import(
         /* webpackChunkName: "adminDashboard" */ "../views/AdminDashboard.vue"
       ),
+    meta: {
+      title: "Кабинет администратора"
+    },
     children: [
       {
         path: "salon",
@@ -79,7 +94,10 @@ const routes = [
     path: "/success",
     name: "SuccessPage",
     component: () =>
-      import(/* webpackChunkName: "successPage" */ "../views/SuccessPage.vue")
+      import(/* webpackChunkName: "successPage" */ "../views/SuccessPage.vue"),
+    meta: {
+      title: "Успех"
+    }
   }
 ];
 
@@ -87,6 +105,12 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.afterEach(to => {
+  Vue.nextTick(() => {
+    document.title = to.meta.title ? to.meta.title : "default title";
+  });
 });
 
 export default router;
