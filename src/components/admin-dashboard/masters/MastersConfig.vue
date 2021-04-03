@@ -59,11 +59,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .masters-config {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .masters-config__header {

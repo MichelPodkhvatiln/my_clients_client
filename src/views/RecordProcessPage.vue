@@ -1,5 +1,5 @@
 <template>
-  <section class="record-process-page__wrapper">
+  <section class="page-wrapper">
     <record-form v-if="salonId" :salon-id="salonId" />
     <span v-else>Invalid salon!</span>
   </section>
@@ -27,14 +27,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
-.record-process-page__wrapper {
-  position: absolute;
-  top: 0;
-  left: -32px; //remove is-fluid class padding
-  right: -32px; //remove is-fluid class padding
-  height: 100%;
-  overflow-y: auto;
-}
-</style>

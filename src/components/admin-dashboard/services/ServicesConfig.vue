@@ -58,11 +58,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .services-config {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .services-config__header {

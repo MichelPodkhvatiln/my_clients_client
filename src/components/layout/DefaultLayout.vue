@@ -6,6 +6,15 @@
         <router-view />
       </main>
     </div>
+    <footer class="page-footer">
+      <span class="page-footer__info-text">
+        Copyright &#169;2021 Michel Podkhvatilin
+      </span>
+
+      <span class="page-footer__info-text">
+        DDMA 2021
+      </span>
+    </footer>
 
     <confirm-modal />
   </div>
@@ -40,5 +49,19 @@ export default {
   width: 100%;
   max-height: 100%;
   min-height: 100%;
+}
+
+.page-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 15px;
+  height: 50px;
+  width: 100%;
+  background-color: #363636;
+}
+
+.page-footer__info-text {
+  color: #ffffff;
 }
 </style>

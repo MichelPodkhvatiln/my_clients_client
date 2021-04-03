@@ -61,11 +61,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .salon-config {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .salon-config__header {

@@ -1,5 +1,5 @@
 <template>
-  <div class="main-page__wrapper">
+  <div class="page-wrapper">
     <div class="container">
       <div class="columns pt-4">
         <div class="column is-8 is-offset-2">
@@ -40,15 +40,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.main-page__wrapper {
-  position: absolute;
-  top: 0;
-  left: -32px; //remove is-fluid class padding
-  right: -32px; //remove is-fluid class padding
-  height: 100%;
-  overflow-y: auto;
-}
-
 .main-page__image {
   width: 100%;
 

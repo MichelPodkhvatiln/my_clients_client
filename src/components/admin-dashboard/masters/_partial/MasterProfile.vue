@@ -746,6 +746,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .loader-container {
   height: calc(100vh - 170px);
 }
@@ -755,6 +757,8 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .master-profile__header {

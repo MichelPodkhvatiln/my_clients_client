@@ -1,5 +1,5 @@
 <template>
-  <div class="page__wrapper">
+  <div class="page-wrapper">
     <div class="container">
       <div class="columns pt-4 is-flex is-flex-direction-column">
         <div class="column is-8 is-offset-2">
@@ -61,15 +61,6 @@ export default {
 a {
   outline: none;
   text-decoration: none;
-}
-
-.page__wrapper {
-  position: absolute;
-  top: 0;
-  left: -32px; //remove is-fluid class padding
-  right: -32px; //remove is-fluid class padding
-  height: 100%;
-  overflow-y: auto;
 }
 
 .custom-link {
