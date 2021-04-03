@@ -3,12 +3,12 @@
     <header class="services-config__header">
       <div class="services-config__header--title">
         <h1 class="title">
-          Service management
+          Управление сервисами
         </h1>
       </div>
       <div class="services-config__header--buttons">
         <button class="button is-link" @click="onAddServiceClick">
-          Add new service
+          Добавить новый сервис
         </button>
       </div>
     </header>

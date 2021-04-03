@@ -23,10 +23,10 @@
 
         <footer class="confirm-modal__footer">
           <button v-if="onConfirm" class="button is-success" @click="onConfirm">
-            Confirm
+            Подтвердить
           </button>
           <button v-if="onCancel" class="button is-danger" @click="onCancel">
-            Cancel
+            Отмена
           </button>
         </footer>
       </section>
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     beforeOpen({ params }) {
-      this.title = params.title ?? "Are you sure?";
+      this.title = params.title ?? "Вы уверены?";
       this.text = params.text;
       this.onConfirm = params.onConfirm;
       this.onCancel = params.onCancel;

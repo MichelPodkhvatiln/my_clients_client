@@ -18,11 +18,6 @@ export default {
     linkList() {
       return {
         general: [
-          // {
-          //   path: "/admin",
-          //   title: "Main",
-          //   isActive: this.currentRoute === "/admin"
-          // },
           {
             path: "/admin/salon",
             title: "Управление салонами",
