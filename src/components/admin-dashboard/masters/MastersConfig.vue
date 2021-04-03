@@ -3,12 +3,12 @@
     <header class="masters-config__header">
       <div class="masters-config__header--title">
         <h1 class="title">
-          Masters management
+          Управление мастерами
         </h1>
       </div>
       <div class="masters-config__header--buttons">
         <button class="button is-link" @click="onAddMasterClick">
-          Add new master
+          Добавить нового мастера
         </button>
       </div>
     </header>

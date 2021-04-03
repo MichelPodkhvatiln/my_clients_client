@@ -3,7 +3,7 @@
     <modal name="add-master" height="auto" @before-open="beforeOpen">
       <section class="add-master">
         <div class="field">
-          <label class="label">First name</label>
+          <label class="label">Имя</label>
           <div class="control">
             <input
               class="input"
@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">Last name</label>
+          <label class="label">Фамилия</label>
           <div class="control">
             <input
               class="input"
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">Password</label>
+          <label class="label">Пароль</label>
           <div class="control">
             <input
               class="input"
@@ -47,7 +47,18 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">Master's salon</label>
+          <label class="label">Повторите пароль</label>
+          <div class="control">
+            <input
+              class="input"
+              v-model="form.repeatPassword"
+              type="password"
+              placeholder="********"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Салон мастера</label>
           <div class="select is-fullwidth">
             <select @change="onChangeSalon">
               <option value="null" :selected="!form.salonId">
@@ -71,10 +82,10 @@
             :disabled="!canSubmit"
             @click="onAddMaster"
           >
-            Add master
+            Добавить мастера
           </button>
           <button class="button is-danger" @click="onCancel">
-            Cancel
+            Отмена
           </button>
         </div>
       </section>
@@ -83,7 +94,7 @@
 </template>
 
 <script>
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 
 export default {
@@ -95,6 +106,7 @@ export default {
         lastName: "",
         email: "",
         password: "",
+        repeatPassword: "",
         salonId: null
       },
       salonList: []
@@ -109,6 +121,9 @@ export default {
       password: {
         required,
         minLength: minLength(8)
+      },
+      repeatPassword: {
+        sameAsPassword: sameAs("password")
       },
       firstName: {
         required
@@ -135,7 +150,9 @@ export default {
       const isValidFirstName = !this.$v.form.firstName.$invalid;
       const isValidLastName = !this.$v.form.lastName.$invalid;
       const isValidEmail = !this.$v.form.email.$invalid;
-      const isValidPassword = !this.$v.form.password.$invalid;
+      const isValidPassword =
+        !this.$v.form.password.$invalid &&
+        !this.$v.form.repeatPassword.$invalid;
 
       return (
         isValidFirstName && isValidLastName && isValidEmail && isValidPassword
