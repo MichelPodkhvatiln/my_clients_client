@@ -18,7 +18,6 @@ import DefaultLayout from "@/components/layout/DefaultLayout.vue";
 
 export default {
   name: "App",
-  title: "Main page",
   components: {
     DefaultLayout,
     HalfCircleSpinner
