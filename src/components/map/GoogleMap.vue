@@ -48,7 +48,7 @@ export default {
     addressTitle() {
       return this.location.address
         ? this.location.address
-        : "Please select place on map";
+        : "Выберете адрес на карте";
     }
   },
   methods: {

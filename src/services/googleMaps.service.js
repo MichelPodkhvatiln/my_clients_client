@@ -12,7 +12,7 @@ export class GoogleMapsService {
   async getAddressDataFromCoordinates({ lat, lng }) {
     const address = `${lat},${lng}`;
 
-    const requestUrl = `${this._baseGeocodingUrl}/geocode/json?latlng=${address}&key=${this._apiKey}&language=en`;
+    const requestUrl = `${this._baseGeocodingUrl}/geocode/json?latlng=${address}&key=${this._apiKey}&language=ru`;
 
     const { data } = await axios.get(requestUrl);
 
@@ -24,6 +24,6 @@ export class GoogleMapsService {
     const size = !width || !height ? "800x600" : `${width}x${height}`;
     const markers = `markers=color:red%7C${address}`;
 
-    return `${this._baseGeocodingUrl}/staticmap?center=${address}&zoom=15&size=${size}&${markers}&key=${this._apiKey}&language=en`;
+    return `${this._baseGeocodingUrl}/staticmap?center=${address}&zoom=15&size=${size}&${markers}&key=${this._apiKey}&language=ru`;
   }
 }

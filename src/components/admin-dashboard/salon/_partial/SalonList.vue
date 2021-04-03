@@ -32,13 +32,13 @@
                     class="button is-link"
                     @click="onEditClick(salon._id)"
                   >
-                    Edit
+                    Редактировать
                   </button>
                   <button
                     class="button is-danger"
                     @click="onDeleteSalon(salon._id)"
                   >
-                    Remove
+                    Удалить
                   </button>
                 </div>
               </div>

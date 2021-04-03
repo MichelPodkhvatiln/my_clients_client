@@ -3,12 +3,12 @@
     <header class="salon-config__header">
       <div class="salon-config__header--title">
         <h1 class="title">
-          Salons management
+          Управление салонами
         </h1>
       </div>
       <div class="salon-config__header--buttons">
         <button v-if="isListMode" class="button is-link" @click="toggleMode">
-          Add new salon
+          Добавить новый салон
         </button>
       </div>
     </header>

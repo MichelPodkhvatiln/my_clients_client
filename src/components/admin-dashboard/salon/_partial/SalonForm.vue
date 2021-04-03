@@ -2,15 +2,15 @@
   <section class="container is-fluid">
     <div>
       <p v-if="editingSalonData" class="is-size-4 mb-4">
-        Edit salon information
+        Редактирование салона
       </p>
       <p v-else class="is-size-4 mb-4">
-        Create new salon
+        Создание салона
       </p>
     </div>
 
     <div class="field">
-      <label class="label">Salon name</label>
+      <label class="label">Название салона</label>
       <div class="control">
         <input
           class="input"
@@ -22,7 +22,7 @@
     </div>
 
     <div class="field">
-      <label class="label">Salon address</label>
+      <label class="label">Адрес салона</label>
       <div class="add-salon__map">
         <google-map
           :editingCoordinates="editingCoordinates"
@@ -39,7 +39,7 @@
             @click="onEditBtnClick"
             :disabled="!canEditSalon"
           >
-            Save changes
+            Сохранить изменения
           </button>
         </template>
         <template v-else>
@@ -48,12 +48,12 @@
             @click="onCreateBtnClick"
             :disabled="!canCreateSalon"
           >
-            Create
+            Создать
           </button>
         </template>
 
         <button class="button is-danger" @click="onCancelBtnClick">
-          Cancel
+          Отмена
         </button>
       </div>
     </footer>
