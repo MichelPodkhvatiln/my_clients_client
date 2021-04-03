@@ -3,7 +3,7 @@
     <modal name="master-edit-email" height="auto" @before-open="beforeOpen">
       <section class="section">
         <div class="field">
-          <label class="label">Email</label>
+          <label class="label">Новый email</label>
           <div class="control">
             <input class="input" v-model="form.email" type="email" />
           </div>
@@ -18,10 +18,10 @@
               :disabled="!isCanSubmit"
               @click="onSaveClick"
             >
-              Save changes
+              Сохранить изменения
             </button>
             <button class="button is-danger" @click="onCancel">
-              Cancel
+              Отмена
             </button>
           </div>
         </footer>

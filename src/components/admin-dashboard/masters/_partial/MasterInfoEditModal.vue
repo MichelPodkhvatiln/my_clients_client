@@ -3,14 +3,14 @@
     <modal name="master-edit-info" height="auto" @before-open="beforeOpen">
       <section class="section">
         <div class="field">
-          <label class="label">First name</label>
+          <label class="label">Имя</label>
           <div class="control">
             <input class="input" v-model="form.firstName" type="text" />
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Last name</label>
+          <label class="label">Фамилия</label>
           <div class="control">
             <input class="input" v-model="form.lastName" type="text" />
           </div>
@@ -25,10 +25,10 @@
               :disabled="!isCanSubmit"
               @click="onSaveClick"
             >
-              Save changes
+              Сохранить изменения
             </button>
             <button class="button is-danger" @click="onCancel">
-              Cancel
+              Отмена
             </button>
           </div>
         </footer>
