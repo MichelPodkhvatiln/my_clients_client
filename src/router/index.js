@@ -34,12 +34,12 @@ const routes = [
     }
   },
   {
-    path: "/about",
-    name: "About",
+    path: "/contact",
+    name: "Contact",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "contact" */ "../views/Contact.vue"),
     meta: {
-      title: "О нас"
+      title: "Обратная связь"
     }
   },
   {

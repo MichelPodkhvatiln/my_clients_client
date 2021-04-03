@@ -74,8 +74,8 @@ export default {
           title: "Главная"
         },
         {
-          path: "/about",
-          title: "О нас"
+          path: "/contact",
+          title: "Обратная связь"
         },
         {
           path: "/record",

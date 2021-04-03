@@ -12,12 +12,6 @@
           <figure class="main-page__image mb-4">
             <img src="images/grizzly_main.jpg" alt="Salon logo" />
           </figure>
-
-          <h2
-            class="title is-2 is-uppercase has-text-centered has-text-weight-bold"
-          >
-            +380951234567
-          </h2>
         </div>
       </div>
       <div class="columns">
