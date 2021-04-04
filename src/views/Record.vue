@@ -1,7 +1,17 @@
 <template>
-  <div class="record-page__wrapper">
+  <div class="page-wrapper">
     <div class="container pt-4 pb-4">
       <template v-if="!isLoading">
+        <div class="columns">
+          <div class="column is-8 is-offset-2">
+            <h1
+              class="title is-1 is-uppercase has-text-centered has-text-weight-bold"
+            >
+              Grizzly barbershop
+            </h1>
+          </div>
+        </div>
+
         <div v-if="salonsList.length" class="columns is-multiline">
           <div v-for="salon in salonsList" :key="salon._id" class="column is-3">
             <div class="box salon__card" @click="startRecordProcess(salon._id)">
@@ -101,15 +111,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.record-page__wrapper {
-  position: absolute;
-  top: 0;
-  left: -32px; //remove is-fluid class padding
-  right: -32px; //remove is-fluid class padding
-  height: 100%;
-  overflow-y: auto;
-}
-
 .loader-container {
   height: calc(100vh - 170px);
 }

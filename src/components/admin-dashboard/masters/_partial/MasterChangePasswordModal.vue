@@ -7,14 +7,14 @@
     >
       <section class="section">
         <div class="field">
-          <label class="label">New password</label>
+          <label class="label">Новый пароль</label>
           <div class="control">
             <input class="input" v-model="form.password" type="password" />
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Confirm password</label>
+          <label class="label">Повторите пароль</label>
           <div class="control">
             <input
               class="input"
@@ -33,10 +33,10 @@
               :disabled="!isCanSubmit"
               @click="onSaveClick"
             >
-              Save changes
+              Сохранить изменения
             </button>
             <button class="button is-danger" @click="onCancel">
-              Cancel
+              Отмена
             </button>
           </div>
         </footer>

@@ -7,19 +7,19 @@
     </header>
     <div class="mb-4">
       <div class="field">
-        <label class="label">Name</label>
+        <label class="label">Название сервиса</label>
         <div class="control">
           <input class="input" v-model="form.name" type="text" />
         </div>
       </div>
       <div class="field">
-        <label class="label">Price</label>
+        <label class="label">Цена</label>
         <div class="control">
           <input class="input" v-model="form.price" type="number" />
         </div>
       </div>
       <div class="field">
-        <label class="label">Comment</label>
+        <label class="label">Описание</label>
         <div class="control">
           <textarea class="textarea has-fixed-size" v-model="form.comment" />
         </div>
@@ -35,7 +35,7 @@
           {{ modeText.submit }}
         </button>
         <button class="button is-danger" @click="onCancelClick">
-          Cancel
+          Отмена
         </button>
       </div>
     </footer>
@@ -93,8 +93,8 @@ export default {
     },
     modeText() {
       return {
-        title: this.isAddMode ? "Adding a service" : "Editing a service",
-        submit: this.isAddMode ? "Add" : "Save changes"
+        title: this.isAddMode ? "Добвление сервиса" : "Редактирование сервиса",
+        submit: this.isAddMode ? "Добавить" : "Сохранить изменения"
       };
     },
     canSubmit() {

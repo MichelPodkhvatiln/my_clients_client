@@ -9,17 +9,17 @@
         {{ masterName }}
       </p>
       <p v-if="salonName" class="is-size-5 has-text-info">
-        Master's salon: {{ salonName }}
+        Салон мастера: {{ salonName }}
       </p>
     </div>
 
     <div class="master__content--buttons">
       <div class="buttons">
         <button class="button is-link" @click="onEditClick">
-          Edit
+          Редактировать
         </button>
         <button class="button is-danger" @click="onRemoveMasterClick">
-          Remove
+          Удалить
         </button>
       </div>
     </div>

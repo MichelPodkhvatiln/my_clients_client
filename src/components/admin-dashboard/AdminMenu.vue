@@ -1,6 +1,6 @@
 <template>
   <aside class="menu">
-    <p class="menu-label">General</p>
+    <p class="menu-label">Главное меню</p>
     <ul class="menu-list">
       <li v-for="link in linkList.general" :key="link.path">
         <router-link :class="{ 'is-active': link.isActive }" :to="link.path">
@@ -19,23 +19,18 @@ export default {
       return {
         general: [
           {
-            path: "/admin",
-            title: "Main",
-            isActive: this.currentRoute === "/admin"
-          },
-          {
             path: "/admin/salon",
-            title: "Salons management",
+            title: "Управление салонами",
             isActive: this.currentRoute.includes("salon")
           },
           {
             path: "/admin/masters",
-            title: "Masters management",
+            title: "Управление мастерами",
             isActive: this.currentRoute.includes("masters")
           },
           {
             path: "/admin/services",
-            title: "Service management",
+            title: "Управление сервисами",
             isActive: this.currentRoute.includes("services")
           }
         ]

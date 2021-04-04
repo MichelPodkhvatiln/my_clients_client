@@ -1,5 +1,5 @@
 <template>
-  <div class="success-page__wrapper">
+  <div class="page-wrapper">
     <div class="container">
       {{ pageInfoText }}
     </div>
@@ -24,13 +24,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.success-page__wrapper {
-  position: absolute;
-  top: 0;
-  left: -32px; //remove is-fluid class padding
-  right: -32px; //remove is-fluid class padding
-  height: 100%;
-  overflow-y: auto;
-}
-</style>
+<style lang="scss" scoped></style>

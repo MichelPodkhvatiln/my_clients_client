@@ -8,7 +8,7 @@
     <div class="auth-form__body">
       <template v-if="isSignUp">
         <div class="field">
-          <label class="label">First name</label>
+          <label class="label">Имя</label>
           <div class="control">
             <input
               class="input"
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="field">
-          <label class="label">Last name</label>
+          <label class="label">Фамилия</label>
           <div class="control">
             <input
               class="input"
@@ -44,7 +44,19 @@
       </div>
 
       <div class="field">
-        <label class="label">Password</label>
+        <label class="label">Пароль</label>
+        <div class="control">
+          <input
+            class="input"
+            v-model="form.password"
+            type="password"
+            placeholder="********"
+          />
+        </div>
+      </div>
+
+      <div v-if="isSignUp" class="field">
+        <label class="label">Повторите пароль</label>
         <div class="control">
           <input
             class="input"
@@ -76,7 +88,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 
 export default {
   name: "AuthForm",
@@ -95,6 +107,7 @@ export default {
       form: {
         email: "",
         password: "",
+        repeatPassword: "",
         firstName: "",
         lastName: "",
         phone: ""
@@ -111,6 +124,9 @@ export default {
         required,
         minLength: minLength(8)
       },
+      repeatPassword: {
+        sameAsPassword: sameAs("password")
+      },
       firstName: {
         required
       },
@@ -122,11 +138,11 @@ export default {
   computed: {
     formMainText() {
       if (this.isSignIn) {
-        return "Sign In";
+        return "Вход";
       }
 
       if (this.isSignUp) {
-        return "Sign Up";
+        return "Регистрация";
       }
 
       return "";
@@ -152,7 +168,9 @@ export default {
       const isValidFirstName = !this.$v.form.firstName.$invalid;
       const isValidLastName = !this.$v.form.lastName.$invalid;
       const isValidEmail = !this.$v.form.email.$invalid;
-      const isValidPassword = !this.$v.form.password.$invalid;
+      const isValidPassword =
+        !this.$v.form.password.$invalid &&
+        !this.$v.form.repeatPassword.$invalid;
 
       return (
         isValidFirstName && isValidLastName && isValidEmail && isValidPassword

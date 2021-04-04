@@ -17,10 +17,10 @@
     <div class="service__content--buttons">
       <div class="buttons">
         <button class="button is-link" @click="onEditServiceClick">
-          Edit
+          Редактировать
         </button>
         <button class="button is-danger" @click="onRemoveServiceClick">
-          Remove
+          Удалить
         </button>
       </div>
     </div>

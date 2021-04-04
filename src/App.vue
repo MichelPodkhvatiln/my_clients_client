@@ -51,10 +51,6 @@ export default {
 </script>
 
 <style lang="scss">
-html {
-  overflow: hidden !important;
-}
-
 .loading-block {
   display: flex;
   align-items: center;

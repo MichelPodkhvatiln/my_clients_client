@@ -3,12 +3,12 @@
     <header class="master-profile__header">
       <div class="master-profile__header--title">
         <h1 class="title">
-          Masters configuration
+          Настройка мастера
         </h1>
       </div>
       <div class="master-profile__header--buttons">
         <button class="button is-link" @click="onBackClick">
-          Back
+          Назад
         </button>
       </div>
     </header>
@@ -18,19 +18,19 @@
           :class="{ 'is-active': this.activeTab === 1 }"
           @click.prevent="changeActiveTab(1)"
         >
-          <a>Profile configuration</a>
+          <a>Конфигурация профиля</a>
         </li>
         <li
           :class="{ 'is-active': this.activeTab === 2 }"
           @click.prevent="changeActiveTab(2)"
         >
-          <a>Salon configuration</a>
+          <a>Конфигурация салона</a>
         </li>
         <li
           :class="{ 'is-active': this.activeTab === 3 }"
           @click.prevent="changeActiveTab(3)"
         >
-          <a>Services configuration</a>
+          <a>Конфигурация сервисов</a>
         </li>
       </ul>
     </div>
@@ -39,7 +39,7 @@
         <template v-if="activeTab === 1">
           <article class="message is-dark">
             <div class="message-header">
-              <p>Profile info</p>
+              <p>Профиль</p>
             </div>
 
             <div
@@ -56,14 +56,14 @@
 
                     <div>
                       <p class="is-size-6">
-                        First name:
+                        Имя:
                         <strong>
                           {{ userInfo.firstName }}
                         </strong>
                       </p>
 
                       <p class="is-size-6">
-                        Last name:
+                        Фамилия:
                         <strong>
                           {{ userInfo.lastName }}
                         </strong>
@@ -82,10 +82,10 @@
 
               <div class="buttons">
                 <button class="button is-small is-info" @click="onChangeInfo">
-                  Change info
+                  Изменить информацию
                 </button>
                 <button class="button is-small is-info" @click="onChangeEmail">
-                  Change email
+                  Изменить email
                 </button>
               </div>
             </div>
@@ -93,19 +93,19 @@
 
           <article class="message is-dark">
             <div class="message-header">
-              <p>Account security</p>
+              <p>Безопасность</p>
             </div>
 
             <div
               class="message-body is-flex is-align-items-center is-justify-content-space-between"
             >
-              <p>Password settings</p>
+              <p>Настройки пароля</p>
               <div class="buttons">
                 <button
                   class="button is-small is-info"
                   @click="onChangePassword"
                 >
-                  Change password
+                  Изменить пароль
                 </button>
               </div>
             </div>
@@ -115,13 +115,13 @@
         <template v-if="activeTab === 2">
           <article class="message is-dark">
             <div class="message-header">
-              <p>Master's salon</p>
+              <p>Салон мастера</p>
             </div>
 
             <div
               class="message-body is-flex is-align-items-center is-justify-content-space-between"
             >
-              <p>Current master's salon:</p>
+              <p>Выбранный салон мастера:</p>
 
               <div class="select">
                 <select @change="onChangeSalon">
@@ -129,7 +129,7 @@
                     value="null"
                     :selected="!initialData.masterInfo.salonInfo"
                   >
-                    None
+                    Не выбран
                   </option>
                   <template v-if="salonsWithStatus.length">
                     <option
@@ -148,7 +148,7 @@
 
           <article class="message is-dark">
             <div class="message-header">
-              <p>Work days</p>
+              <p>Рабочие дни</p>
             </div>
 
             <div
@@ -176,7 +176,7 @@
 
           <article class="message is-dark">
             <div class="message-header">
-              <p>Add record time</p>
+              <p>Добавление время записи</p>
             </div>
 
             <div class="message-body">
@@ -184,12 +184,12 @@
                 <div
                   class="is-flex is-align-items-center is-justify-content-space-between mb-2"
                 >
-                  <p>Select day:</p>
+                  <p>Выбирете день недели:</p>
 
                   <div class="select">
                     <select @change="onSelectTimesDay">
                       <option value="null" :selected="isSelectedTimesDay(null)">
-                        Select day
+                        Выберете день
                       </option>
                       <option
                         v-for="day in daysValues"
@@ -206,7 +206,7 @@
                 <div
                   class="is-flex is-align-items-center is-justify-content-space-between mb-2"
                 >
-                  <p>Select time:</p>
+                  <p>Выберете время:</p>
 
                   <time-picker
                     :key="recordTimes.timepickerKey"
@@ -223,7 +223,7 @@
                     :disabled="!canAddAvailableTime"
                     @click="onAddAvailableTime"
                   >
-                    Add time
+                    Добавить время
                   </button>
                 </div>
               </div>
@@ -232,7 +232,7 @@
 
           <article class="message is-dark mb-5">
             <div class="message-header">
-              <p>Available record times</p>
+              <p>Доступные время записи</p>
             </div>
 
             <div class="message-body times-overview">
@@ -240,7 +240,7 @@
                 <div
                   class="is-flex is-align-items-center is-justify-content-space-between mb-2"
                 >
-                  <p>Select day:</p>
+                  <p>Выберете день:</p>
 
                   <div class="select">
                     <select @change="onSelectTimesDayView">
@@ -248,7 +248,7 @@
                         value="null"
                         :selected="isSelectedTimesDayView(null)"
                       >
-                        Select day
+                        Выберете день
                       </option>
                       <option
                         v-for="day in daysValues"
@@ -290,7 +290,7 @@
               </template>
               <template v-else>
                 <span class="is-size-6">
-                  Please, select day or add new time record.
+                  Пожалуйста, выбере день недели или добавте время записи.
                 </span>
               </template>
             </div>
@@ -299,7 +299,7 @@
         <template v-if="activeTab === 3">
           <article class="message is-dark">
             <div class="message-header">
-              <p>Master's services</p>
+              <p>Сервисы мастера</p>
             </div>
 
             <div class="message-body is-flex is-flex-direction-column">
@@ -405,31 +405,31 @@ export default {
     daysValues() {
       return [
         {
-          title: "Monday",
+          title: "Понедельник",
           value: 1
         },
         {
-          title: "Tuesday",
+          title: "Вторник",
           value: 2
         },
         {
-          title: "Wednesday",
+          title: "Среда",
           value: 3
         },
         {
-          title: "Thursday",
+          title: "Четверг",
           value: 4
         },
         {
-          title: "Friday",
+          title: "Пятница",
           value: 5
         },
         {
-          title: "Saturday",
+          title: "Суббота",
           value: 6
         },
         {
-          title: "Sunday",
+          title: "Воскресенье",
           value: 7
         }
       ];
@@ -746,6 +746,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .loader-container {
   height: calc(100vh - 170px);
 }
@@ -755,6 +757,8 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .master-profile__header {

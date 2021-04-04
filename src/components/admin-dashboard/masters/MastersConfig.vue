@@ -3,12 +3,12 @@
     <header class="masters-config__header">
       <div class="masters-config__header--title">
         <h1 class="title">
-          Masters management
+          Управление мастерами
         </h1>
       </div>
       <div class="masters-config__header--buttons">
         <button class="button is-link" @click="onAddMasterClick">
-          Add new master
+          Добавить нового мастера
         </button>
       </div>
     </header>
@@ -59,11 +59,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .masters-config {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .masters-config__header {

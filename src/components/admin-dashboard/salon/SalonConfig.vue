@@ -3,12 +3,12 @@
     <header class="salon-config__header">
       <div class="salon-config__header--title">
         <h1 class="title">
-          Salons management
+          Управление салонами
         </h1>
       </div>
       <div class="salon-config__header--buttons">
         <button v-if="isListMode" class="button is-link" @click="toggleMode">
-          Add new salon
+          Добавить новый салон
         </button>
       </div>
     </header>
@@ -61,11 +61,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "./src/scss/mixins";
+
 .salon-config {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: auto;
+
+  @include scrollBar();
 }
 
 .salon-config__header {
