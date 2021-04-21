@@ -22,6 +22,14 @@
       </div>
       <div class="navbar-end">
         <template v-if="isUserLogIn">
+          <router-link
+            class="navbar-item"
+            :class="{ 'is-active': currentRoute === '/profile' }"
+            to="/profile"
+          >
+            Личный кабинет
+          </router-link>
+
           <div class="navbar-item">
             <span> Здравствуйте, {{ username }}! </span>
           </div>

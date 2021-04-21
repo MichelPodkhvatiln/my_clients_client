@@ -110,6 +110,15 @@ const routes = [
     meta: {
       title: "Успех"
     }
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "contact" */ "../views/Profile.vue"),
+    meta: {
+      title: "Личный кабинет"
+    }
   }
 ];
 
