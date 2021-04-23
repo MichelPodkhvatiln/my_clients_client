@@ -15,13 +15,91 @@
         <div class="column is-4 is-offset-2">
           <ul class="profile__list">
             <li class="profile__list--item">
-              <span>Имя:</span> {{ userName }}
+              <template v-if="!isEditing">
+                <span>Имя:</span> {{ userFirstName }}
+              </template>
+              <template v-else>
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Имя:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input
+                          class="input"
+                          type="text"
+                          :value="userFirstName"
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </template>
             </li>
             <li class="profile__list--item">
-              <span>Телефон:</span> {{ userPhone }}
+              <template v-if="!isEditing">
+                <span>Фамилия:</span> {{ userLastName }}
+              </template>
+              <template v-else>
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Фамилия:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input
+                          class="input"
+                          type="text"
+                          :value="userFirstName"
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </template>
             </li>
             <li class="profile__list--item">
-              <span>Email:</span> {{ userEmail }}
+              <template v-if="!isEditing">
+                <span>Телефон:</span> {{ userPhone }}
+              </template>
+              <template v-else>
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Телефон:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <vue-tel-input
+                          :value="userPhone"
+                          @input="onPhoneInput"
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </li>
+            <li class="profile__list--item">
+              <template v-if="!isEditing">
+                <span>Email:</span> {{ userEmail }}
+              </template>
+              <template v-else>
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Email:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <p class="control">
+                        <input class="input" type="email" :value="userEmail" />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </template>
             </li>
             <li class="profile__list--item">
               <span>Роль:</span> {{ userRole }}
@@ -32,24 +110,28 @@
         <div class="column is-4">
           <ul class="profile__list">
             <li class="profile__list--item is-flex is-justify-content-flex-end">
-              <button class="button is-small is-info">
-                Изменить личные данные
+              <button
+                v-if="!isEditing"
+                class="button is-small is-info"
+                @click="toggleEditingMode"
+              >
+                Редактировать профиль
               </button>
-            </li>
-            <li class="profile__list--item is-flex is-justify-content-flex-end">
-              <button class="button is-small is-info">
-                Изменить email
-              </button>
-            </li>
-            <li class="profile__list--item is-flex is-justify-content-flex-end">
-              <button class="button is-small is-info">
-                Изменить пароль
+              <button
+                v-else
+                class="button is-small is-danger"
+                @click="toggleEditingMode"
+              >
+                Отмена
               </button>
             </li>
             <li class="profile__list--item is-flex is-justify-content-flex-end">
               <button class="button is-small is-danger" @click="onLogOutClick">
                 Выход
               </button>
+            </li>
+            <li class="profile__list--item is-flex is-justify-content-flex-end">
+              {{ editedData }}
             </li>
           </ul>
         </div>
@@ -63,10 +145,19 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Profile",
+  data() {
+    return {
+      isEditing: false,
+      editedData: []
+    };
+  },
   computed: {
     ...mapGetters("userModule", ["user"]),
-    userName() {
-      return `${this.user.profile.firstName} ${this.user.profile.lastName}`;
+    userFirstName() {
+      return this.user.profile.firstName;
+    },
+    userLastName() {
+      return this.user.profile.lastName;
     },
     userPhone() {
       return this.user.profile?.phone ?? "Не указан";
@@ -87,8 +178,46 @@ export default {
   },
   methods: {
     ...mapActions("userModule", ["logOut"]),
+    toggleEditingMode() {
+      this.editedData = [];
+      this.isEditing = !this.isEditing;
+    },
     onLogOutClick() {
       this.logOut();
+    },
+    onPhoneInput(_, phoneObject) {
+      if (phoneObject.valid) {
+        if (phoneObject.number === this.userPhone) {
+          return;
+        }
+
+        const index = this.editedData.findIndex(
+          editedFieldData => editedFieldData.field === "phone"
+        );
+
+        if (index !== -1) {
+          this.editedData.splice(index, 1, {
+            field: "phone",
+            value: phoneObject.number
+          });
+          return;
+        }
+
+        this.editedData.push({
+          field: "phone",
+          value: phoneObject.number
+        });
+      } else {
+        const index = this.editedData.findIndex(
+          editedFieldData => editedFieldData.field === "phone"
+        );
+
+        if (index === -1) {
+          return;
+        }
+
+        this.editedData.splice(index, 1);
+      }
     }
   }
 };
