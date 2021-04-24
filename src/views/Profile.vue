@@ -15,6 +15,9 @@
         <div class="column is-4 is-offset-2">
           <ul class="profile__list">
             <li class="profile__list--item">
+              <span>Роль:</span> {{ userRole }}
+            </li>
+            <li class="profile__list--item">
               <template v-if="!isEditing">
                 <span>Имя:</span> {{ userFirstName }}
               </template>
@@ -29,7 +32,7 @@
                         <input
                           class="input"
                           type="text"
-                          :value="userFirstName"
+                          v-model="editedDataForm.firstName"
                         />
                       </p>
                     </div>
@@ -52,7 +55,7 @@
                         <input
                           class="input"
                           type="text"
-                          :value="userFirstName"
+                          v-model="editedDataForm.lastName"
                         />
                       </p>
                     </div>
@@ -73,7 +76,7 @@
                     <div class="field">
                       <p class="control">
                         <vue-tel-input
-                          :value="userPhone"
+                          :value="editedDataForm.phone"
                           @input="onPhoneInput"
                         />
                       </p>
@@ -94,15 +97,16 @@
                   <div class="field-body">
                     <div class="field">
                       <p class="control">
-                        <input class="input" type="email" :value="userEmail" />
+                        <input
+                          class="input"
+                          type="email"
+                          v-model="editedDataForm.email"
+                        />
                       </p>
                     </div>
                   </div>
                 </div>
               </template>
-            </li>
-            <li class="profile__list--item">
-              <span>Роль:</span> {{ userRole }}
             </li>
           </ul>
         </div>
@@ -126,12 +130,19 @@
               </button>
             </li>
             <li class="profile__list--item is-flex is-justify-content-flex-end">
-              <button class="button is-small is-danger" @click="onLogOutClick">
+              <button
+                v-if="!isEditing"
+                class="button is-small is-danger"
+                @click="onLogOutClick"
+              >
                 Выход
+              </button>
+              <button v-else class="button is-small is-success">
+                Сохранить
               </button>
             </li>
             <li class="profile__list--item is-flex is-justify-content-flex-end">
-              {{ editedData }}
+              {{ editedDataForm }}
             </li>
           </ul>
         </div>
@@ -148,7 +159,12 @@ export default {
   data() {
     return {
       isEditing: false,
-      editedData: []
+      editedDataForm: {
+        firstName: "",
+        lastName: "",
+        phone: "",
+        email: ""
+      }
     };
   },
   computed: {
@@ -179,45 +195,30 @@ export default {
   methods: {
     ...mapActions("userModule", ["logOut"]),
     toggleEditingMode() {
-      this.editedData = [];
       this.isEditing = !this.isEditing;
+
+      if (this.isEditing) {
+        this.$set(this.editedDataForm, "firstName", this.userFirstName);
+        this.$set(this.editedDataForm, "lastName", this.userLastName);
+        this.$set(this.editedDataForm, "phone", this.userPhone);
+        this.$set(this.editedDataForm, "email", this.userEmail);
+        return;
+      }
+
+      for (const key in this.editedDataForm) {
+        this.$set(this.editedDataForm, key, "");
+      }
     },
     onLogOutClick() {
       this.logOut();
     },
     onPhoneInput(_, phoneObject) {
       if (phoneObject.valid) {
-        if (phoneObject.number === this.userPhone) {
-          return;
-        }
-
-        const index = this.editedData.findIndex(
-          editedFieldData => editedFieldData.field === "phone"
-        );
-
-        if (index !== -1) {
-          this.editedData.splice(index, 1, {
-            field: "phone",
-            value: phoneObject.number
-          });
-          return;
-        }
-
-        this.editedData.push({
-          field: "phone",
-          value: phoneObject.number
-        });
-      } else {
-        const index = this.editedData.findIndex(
-          editedFieldData => editedFieldData.field === "phone"
-        );
-
-        if (index === -1) {
-          return;
-        }
-
-        this.editedData.splice(index, 1);
+        this.$set(this.editedDataForm, "phone", phoneObject.number);
+        return;
       }
+
+      this.$set(this.editedDataForm, "phone", "");
     }
   }
 };
@@ -235,5 +236,13 @@ export default {
   span {
     font-weight: 700;
   }
+}
+
+.button {
+  min-width: 170px;
+}
+
+.field-body {
+  flex-grow: 4;
 }
 </style>
