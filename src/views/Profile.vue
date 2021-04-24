@@ -65,7 +65,13 @@
             </li>
             <li class="profile__list--item">
               <template v-if="!isEditing">
-                <span>Телефон:</span> {{ userPhone }}
+                <span>Телефон:</span>
+                <template v-if="userPhone.length">
+                  {{ userPhone }}
+                </template>
+                <template v-else>
+                  Не указан
+                </template>
               </template>
               <template v-else>
                 <div class="field is-horizontal">
@@ -137,12 +143,14 @@
               >
                 Выход
               </button>
-              <button v-else class="button is-small is-success">
+              <button
+                v-else
+                class="button is-small is-success"
+                :disabled="!canSaveChanges"
+                @click="onSaveChanges"
+              >
                 Сохранить
               </button>
-            </li>
-            <li class="profile__list--item is-flex is-justify-content-flex-end">
-              {{ editedDataForm }}
             </li>
           </ul>
         </div>
@@ -153,6 +161,23 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { required, email } from "vuelidate/lib/validators";
+
+const isNotUserFirstNameSameAs = function(value) {
+  return this.userFirstName !== value;
+};
+
+const isNotUserLastNameSameAs = function(value) {
+  return this.userLastName !== value;
+};
+
+const isNotUserPhoneSameAs = function(value) {
+  return this.userPhone !== value;
+};
+
+const isNotUserEmailSameAs = function(value) {
+  return this.userEmail !== value;
+};
 
 export default {
   name: "Profile",
@@ -176,7 +201,7 @@ export default {
       return this.user.profile.lastName;
     },
     userPhone() {
-      return this.user.profile?.phone ?? "Не указан";
+      return this.user.profile?.phone ?? "";
     },
     userEmail() {
       return this.user.email;
@@ -190,10 +215,46 @@ export default {
         default:
           return "Пользователь";
       }
+    },
+    canSaveChanges() {
+      const editedDataFormKeys = Object.keys(this.editedDataForm);
+
+      for (const key in this.$v.editedDataForm) {
+        if (!editedDataFormKeys.includes(key)) continue;
+
+        const isInvalid = this.$v.editedDataForm[key].$invalid;
+
+        if (isInvalid) continue;
+
+        return true;
+      }
+
+      return false;
+    }
+  },
+  validations: {
+    editedDataForm: {
+      firstName: {
+        required,
+        isNotUserFirstNameSameAs
+      },
+      lastName: {
+        required,
+        isNotUserLastNameSameAs
+      },
+      phone: {
+        required,
+        isNotUserPhoneSameAs
+      },
+      email: {
+        required,
+        email,
+        isNotUserEmailSameAs
+      }
     }
   },
   methods: {
-    ...mapActions("userModule", ["logOut"]),
+    ...mapActions("userModule", ["logOut", "updateProfile", "updateEmail"]),
     toggleEditingMode() {
       this.isEditing = !this.isEditing;
 
@@ -219,6 +280,47 @@ export default {
       }
 
       this.$set(this.editedDataForm, "phone", "");
+    },
+    async onSaveChanges() {
+      try {
+        const changedField = [];
+
+        for (const key in this.editedDataForm) {
+          if (!this.$v.editedDataForm[key].$invalid) {
+            changedField.push(key);
+          }
+        }
+
+        if (!changedField.length) return;
+
+        const promises = [];
+
+        changedField.forEach(field => {
+          if (field === "email") {
+            promises.push(
+              this.updateEmail({
+                userId: this.user.id,
+                email: this.editedDataForm.email
+              })
+            );
+            return;
+          }
+
+          promises.push(
+            this.updateProfile({
+              userId: this.user.id,
+              field,
+              value: this.editedDataForm[field]
+            })
+          );
+        });
+
+        await Promise.all(promises);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.toggleEditingMode();
+      }
     }
   }
 };

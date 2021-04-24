@@ -22,4 +22,18 @@ export class UserService extends BaseHttpService {
   getUser(userId) {
     return this.post(this.endpoints.getUser, { id: userId });
   }
+
+  updateProfile(userId, { field, value }) {
+    return this.patch(
+      this.endpoints.updateProfile.replace("{:userId}", String(userId)),
+      { field, value }
+    );
+  }
+
+  updateEmail(userId, { email }) {
+    return this.patch(
+      this.endpoints.updateEmail.replace("{:userId}", String(userId)),
+      { email }
+    );
+  }
 }
