@@ -31,6 +31,7 @@
                       <p class="control">
                         <input
                           class="input"
+                          :class="inputFieldClasses('firstName')"
                           type="text"
                           v-model="editedDataForm.firstName"
                         />
@@ -54,6 +55,7 @@
                       <p class="control">
                         <input
                           class="input"
+                          :class="inputFieldClasses('lastName')"
                           type="text"
                           v-model="editedDataForm.lastName"
                         />
@@ -82,6 +84,7 @@
                     <div class="field">
                       <p class="control">
                         <vue-tel-input
+                          :class="inputFieldClasses('phone')"
                           :value="editedDataForm.phone"
                           @input="onPhoneInput"
                         />
@@ -105,6 +108,7 @@
                       <p class="control">
                         <input
                           class="input"
+                          :class="inputFieldClasses('email')"
                           type="email"
                           v-model="editedDataForm.email"
                         />
@@ -281,6 +285,24 @@ export default {
 
       this.$set(this.editedDataForm, "phone", "");
     },
+    inputFieldClasses(field) {
+      const _isInvalidField = field => {
+        if (field === "phone") return false;
+
+        return this.$v.editedDataForm[field].$invalid;
+      };
+
+      const _isInvalidPhoneField = field => {
+        if (field !== "phone") return false;
+
+        return this.$v.editedDataForm[field].$invalid;
+      };
+
+      return {
+        "is-danger": _isInvalidField(field),
+        "is-invalid-phone": _isInvalidPhoneField(field)
+      };
+    },
     async onSaveChanges() {
       try {
         const changedField = [];
@@ -346,5 +368,29 @@ export default {
 
 .field-body {
   flex-grow: 4;
+}
+
+::v-deep {
+  .vue-tel-input {
+    min-height: 40px;
+    border-color: #dbdbdb;
+  }
+
+  .vue-tel-input:focus-within {
+    border-color: #3273dc;
+    box-shadow: 0 0 0 0.125em #3273dc40;
+  }
+
+  .is-invalid-phone {
+    &.vue-tel-input {
+      border-color: #f14668;
+    }
+
+    &.vue-tel-input:focus-within {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+        0 0 8px rgba(#f14668, 0.6);
+      border-color: #f14668;
+    }
+  }
 }
 </style>
