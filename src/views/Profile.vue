@@ -36,6 +36,21 @@
                           v-model="editedDataForm.firstName"
                         />
                       </p>
+
+                      <p
+                        v-if="
+                          !$v.editedDataForm.firstName.isNotUserFirstNameSameAs
+                        "
+                        class="help is-danger"
+                      >
+                        Имя не дожно совпадать с текущим
+                      </p>
+                      <p
+                        v-else-if="$v.editedDataForm.firstName.$invalid"
+                        class="help is-danger"
+                      >
+                        Имя не валидно
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -59,6 +74,21 @@
                           type="text"
                           v-model="editedDataForm.lastName"
                         />
+                      </p>
+
+                      <p
+                        v-if="
+                          !$v.editedDataForm.lastName.isNotUserLastNameSameAs
+                        "
+                        class="help is-danger"
+                      >
+                        Фамилия не дожна совпадать с текущей
+                      </p>
+                      <p
+                        v-else-if="$v.editedDataForm.lastName.$invalid"
+                        class="help is-danger"
+                      >
+                        Фамилия не валидна
                       </p>
                     </div>
                   </div>
@@ -89,6 +119,19 @@
                           @input="onPhoneInput"
                         />
                       </p>
+
+                      <p
+                        v-if="!$v.editedDataForm.phone.isNotUserPhoneSameAs"
+                        class="help is-danger"
+                      >
+                        Телефон не должен совпадать с текущим
+                      </p>
+                      <p
+                        v-else-if="$v.editedDataForm.phone.$invalid"
+                        class="help is-danger"
+                      >
+                        Телефон не валидный
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -112,6 +155,19 @@
                           type="email"
                           v-model="editedDataForm.email"
                         />
+                      </p>
+
+                      <p
+                        v-if="!$v.editedDataForm.email.isNotUserEmailSameAs"
+                        class="help is-danger"
+                      >
+                        Email не должен совпадать с текущим
+                      </p>
+                      <p
+                        v-else-if="$v.editedDataForm.email.$invalid"
+                        class="help is-danger"
+                      >
+                        Email не валидный
                       </p>
                     </div>
                   </div>
