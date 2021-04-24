@@ -14,7 +14,7 @@
       <div class="columns pt-4">
         <div class="column is-4 is-offset-2">
           <ul class="profile__list">
-            <li class="profile__list--item">
+            <li v-if="!isEditing" class="profile__list--item">
               <span>Роль:</span> {{ userRole }}
             </li>
             <li class="profile__list--item">
@@ -195,6 +195,17 @@
                 Отмена
               </button>
             </li>
+            <li
+              v-if="!isEditing"
+              class="profile__list--item is-flex is-justify-content-flex-end"
+            >
+              <button
+                class="button is-small is-info"
+                @click="onChangePasswordClick"
+              >
+                Изменить пароль
+              </button>
+            </li>
             <li class="profile__list--item is-flex is-justify-content-flex-end">
               <button
                 v-if="!isEditing"
@@ -216,12 +227,57 @@
         </div>
       </div>
     </div>
+
+    <MountingPortal mountTo="body" append>
+      <modal name="user-change-password" height="auto">
+        <section class="section">
+          <div class="field">
+            <label class="label">Новый пароль</label>
+            <div class="control">
+              <input
+                class="input"
+                v-model="passwordForm.password"
+                type="password"
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Повторите пароль</label>
+            <div class="control">
+              <input
+                class="input"
+                v-model="passwordForm.confirmPassword"
+                type="password"
+              />
+            </div>
+          </div>
+
+          <footer
+            class="is-flex is-justify-content-flex-end is-align-items-center"
+          >
+            <div class="buttons">
+              <button
+                class="button is-success"
+                :disabled="!isCanSubmitPassword"
+                @click="onSavePasswordClick"
+              >
+                Сохранить изменения
+              </button>
+              <button class="button is-danger" @click="onPasswordCancel">
+                Отмена
+              </button>
+            </div>
+          </footer>
+        </section>
+      </modal>
+    </MountingPortal>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 
 const isNotUserFirstNameSameAs = function(value) {
   return this.userFirstName !== value;
@@ -249,6 +305,10 @@ export default {
         lastName: "",
         phone: "",
         email: ""
+      },
+      passwordForm: {
+        password: "",
+        confirmPassword: ""
       }
     };
   },
@@ -290,6 +350,13 @@ export default {
       }
 
       return false;
+    },
+    isCanSubmitPassword() {
+      const isValidPassword = !this.$v.passwordForm.password.$invalid;
+      const isValidConfirmPassword = !this.$v.passwordForm.confirmPassword
+        .$invalid;
+
+      return isValidPassword && isValidConfirmPassword;
     }
   },
   validations: {
@@ -311,10 +378,24 @@ export default {
         email,
         isNotUserEmailSameAs
       }
+    },
+    passwordForm: {
+      password: {
+        required,
+        minLength: minLength(8)
+      },
+      confirmPassword: {
+        sameAsPassword: sameAs("password")
+      }
     }
   },
   methods: {
-    ...mapActions("userModule", ["logOut", "updateProfile", "updateEmail"]),
+    ...mapActions("userModule", [
+      "logOut",
+      "updateProfile",
+      "updateEmail",
+      "updatePassword"
+    ]),
     toggleEditingMode() {
       this.isEditing = !this.isEditing;
 
@@ -360,6 +441,8 @@ export default {
       };
     },
     async onSaveChanges() {
+      if (!this.canSaveChanges) return;
+
       try {
         const changedField = [];
 
@@ -398,6 +481,31 @@ export default {
         console.error(err);
       } finally {
         this.toggleEditingMode();
+      }
+    },
+    onChangePasswordClick() {
+      this.$set(this.passwordForm, "password", "");
+      this.$set(this.passwordForm, "confirmPassword", "");
+
+      this.$modal.show("user-change-password");
+    },
+    onPasswordCancel() {
+      this.$modal.hide("user-change-password");
+    },
+    async onSavePasswordClick() {
+      if (!this.isCanSubmitPassword) {
+        return;
+      }
+
+      try {
+        await this.updatePassword({
+          userId: this.user.id,
+          password: this.passwordForm.password
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.$modal.hide("user-change-password");
       }
     }
   }

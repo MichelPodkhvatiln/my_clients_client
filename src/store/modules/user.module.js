@@ -130,6 +130,13 @@ export default {
       } catch (err) {
         return Promise.reject(err);
       }
+    },
+    async updatePassword({}, { userId, password }) {
+      try {
+        await services.user.updatePassword(userId, { password });
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
   }
 };

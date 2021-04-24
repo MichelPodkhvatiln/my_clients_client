@@ -602,7 +602,7 @@ export default {
               updatedData
             });
           } catch (error) {
-            console.error();
+            console.error(error);
           } finally {
             this.$modal.hide("master-change-password");
           }

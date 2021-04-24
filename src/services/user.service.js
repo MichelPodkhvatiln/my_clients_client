@@ -36,4 +36,11 @@ export class UserService extends BaseHttpService {
       { email }
     );
   }
+
+  updatePassword(userId, { password }) {
+    return this.patch(
+      this.endpoints.updatePassword.replace("{:userId}", String(userId)),
+      { password }
+    );
+  }
 }
