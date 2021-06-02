@@ -99,6 +99,16 @@ const routes = [
         meta: {
           title: "Управление сервисами"
         }
+      },
+      {
+        path: "dashboard",
+        component: () =>
+          import(
+            /* webpackChunkName: "statsDashboard" */ "../components/admin-dashboard/stats/StatsDashboard.vue"
+          ),
+        meta: {
+          title: "Статистика по салону"
+        }
       }
     ]
   },

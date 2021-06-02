@@ -32,6 +32,11 @@ export default {
             path: "/admin/services",
             title: "Управление сервисами",
             isActive: this.currentRoute.includes("services")
+          },
+          {
+            path: "/admin/dashboard",
+            title: "Статистика по салону",
+            isActive: this.currentRoute.includes("dashboard")
           }
         ]
       };
