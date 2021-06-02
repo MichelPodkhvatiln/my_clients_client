@@ -4,7 +4,10 @@ export const endpoints = {
     signUp: "/auth/sign-up"
   },
   user: {
-    getUser: "/user/get-user"
+    getUser: "/user/get-user",
+    updateProfile: "/user/updateProfile/{:userId}",
+    updateEmail: "/user/updateEmail/{:userId}",
+    updatePassword: "/user/updatePassword/{:userId}"
   },
   salon: {
     getList: "/salon/get-list",

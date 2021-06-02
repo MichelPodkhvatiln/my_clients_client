@@ -1,3 +1,4 @@
+import Vue from "vue";
 import router from "@/router";
 import { services } from "@/utils/services";
 
@@ -42,6 +43,16 @@ export default {
     },
     setUser(state, payload) {
       state.user = payload;
+    },
+    updateField(state, { field, value }) {
+      if (state.user[field]) {
+        Vue.set(state.user, field, value);
+        return;
+      }
+
+      if (state.user.profile[field]) {
+        Vue.set(state.user.profile, field, value);
+      }
     }
   },
   actions: {
@@ -49,6 +60,7 @@ export default {
       const { data } = await services.user.getUser(userId);
 
       const user = {
+        id: data.id,
         email: data.email,
         profile: data.profile,
         role: data.role
@@ -78,7 +90,7 @@ export default {
     async logOut({ commit }) {
       const routePath = router.currentRoute.path;
 
-      if (routePath.includes("admin")) {
+      if (routePath.includes("admin") || routePath.includes("profile")) {
         await router.push("/");
       }
 
@@ -87,6 +99,44 @@ export default {
       services.auth.deleteToken();
       localStorage.removeItem("userId");
       localStorage.removeItem("token");
+    },
+    async updateProfile({ commit }, { userId, field, value }) {
+      try {
+        const { data } = await services.user.updateProfile(userId, {
+          field,
+          value
+        });
+
+        const payload = {
+          field: data.field,
+          value: data.value
+        };
+
+        commit("updateField", payload);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
+    async updateEmail({ commit }, { userId, email }) {
+      try {
+        const { data } = await services.user.updateEmail(userId, { email });
+
+        const payload = {
+          field: data.field,
+          value: data.value
+        };
+
+        commit("updateField", payload);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
+    async updatePassword({}, { userId, password }) {
+      try {
+        await services.user.updatePassword(userId, { password });
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
   }
 };
