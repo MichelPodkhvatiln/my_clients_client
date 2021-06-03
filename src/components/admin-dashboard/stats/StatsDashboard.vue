@@ -7,12 +7,25 @@
         </h1>
       </div>
     </header>
+
+    <div class="container is-fluid">
+      <div class="columns is-desktop">
+        <div class="column">
+          <line-chart />
+        </div>
+        <div class="column">
+          <line-chart />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
+import LineChart from "@/components/admin-dashboard/stats/charts/LineChart";
 export default {
-  name: "StatsConfig"
+  name: "StatsConfig",
+  components: { LineChart }
 };
 </script>
 
