@@ -4,3 +4,4 @@ export * from "./salon.service";
 export * from "./services.service";
 export * from "./masters.service";
 export * from "./record.service";
+export * from "./stats.service";

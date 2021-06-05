@@ -4,7 +4,8 @@ import {
   SalonService,
   ServicesService,
   MastersService,
-  RecordService
+  RecordService,
+  StatsService
 } from "@/services";
 
 export const services = {
@@ -13,5 +14,6 @@ export const services = {
   salon: SalonService.getInstance(),
   services: ServicesService.getInstance(),
   masters: MastersService.getInstance(),
-  record: RecordService.getInstance()
+  record: RecordService.getInstance(),
+  stats: StatsService.getInstance()
 };

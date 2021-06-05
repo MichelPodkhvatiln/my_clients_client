@@ -22,10 +22,29 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import LineChart from "@/components/admin-dashboard/stats/charts/LineChart";
+
 export default {
   name: "StatsConfig",
-  components: { LineChart }
+  components: { LineChart },
+  data() {
+    return {
+      recordWeekStats: null,
+      recordMonthStats: null
+    };
+  },
+  async mounted() {
+    try {
+      this.recordWeekStats = await this.getRecordWeekStats();
+      this.recordMonthStats = await this.getRecordMonthStats();
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  methods: {
+    ...mapActions("statsModule", ["getRecordWeekStats", "getRecordMonthStats"])
+  }
 };
 </script>
 
