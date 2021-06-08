@@ -11,10 +11,20 @@
     <div class="container is-fluid">
       <div class="columns is-desktop">
         <div class="column">
-          <line-chart />
+          <line-chart
+            v-if="recordWeekStats"
+            chart-title="Прибыль за неделю"
+            chart-label="Прибыль за день"
+            :chart-items-data="formattedRecordWeekStats()"
+          />
         </div>
         <div class="column">
-          <line-chart />
+          <line-chart
+            v-if="recordMonthStats"
+            chart-title="Прибыль за месяц"
+            chart-label="Прибыль за день"
+            :chart-items-data="formattedRecordMonthStats()"
+          />
         </div>
       </div>
     </div>
@@ -23,7 +33,10 @@
 
 <script>
 import { mapActions } from "vuex";
+import moment from "moment";
 import LineChart from "@/components/admin-dashboard/stats/charts/LineChart";
+
+moment.locale("ru");
 
 export default {
   name: "StatsConfig",
@@ -43,7 +56,23 @@ export default {
     }
   },
   methods: {
-    ...mapActions("statsModule", ["getRecordWeekStats", "getRecordMonthStats"])
+    ...mapActions("statsModule", ["getRecordWeekStats", "getRecordMonthStats"]),
+    formattedRecordWeekStats() {
+      if (!this.recordWeekStats) return [];
+
+      return this.recordWeekStats.map(item => ({
+        label: moment(item.date).format("DD MMMM YYYY"),
+        value: item.price
+      }));
+    },
+    formattedRecordMonthStats() {
+      if (!this.recordMonthStats) return [];
+
+      return this.recordMonthStats.map(item => ({
+        label: moment(item.date).format("DD MMMM YYYY"),
+        value: item.price
+      }));
+    }
   }
 };
 </script>

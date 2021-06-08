@@ -5,11 +5,28 @@
 </template>
 
 <script>
-import fast from "fast.js";
 import Chart from "chart.js/auto";
 
 export default {
   name: "LineChart",
+  props: {
+    chartItemsData: {
+      type: Array,
+      default: () => []
+    },
+    chartTitle: {
+      type: String,
+      default: ""
+    },
+    chartLabel: {
+      type: String,
+      default: ""
+    },
+    lineColor: {
+      type: String,
+      default: "#ff7050cc"
+    }
+  },
   data() {
     return {
       chartOptions: {
@@ -21,58 +38,16 @@ export default {
           y: {
             beginAtZero: true
           }
+        },
+        parsing: {
+          xAxisKey: "label",
+          yAxisKey: "value"
         }
       },
       chartItemAdditionalOptions: {
-        label: "# of Votes",
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
         tension: 0.25
-      },
-      chartItemsData: [
-        {
-          label: "Red",
-          data: 12
-        },
-        {
-          label: "Blue",
-          data: 30
-        },
-        {
-          label: "Red",
-          data: 12
-        },
-        {
-          label: "Blue",
-          data: 30
-        },
-        {
-          label: "Red",
-          data: 12
-        },
-        {
-          label: "Blue",
-          data: 30
-        },
-        {
-          label: "Red",
-          data: 12
-        },
-        {
-          label: "Blue",
-          data: 30
-        },
-
-        {
-          label: "Red",
-          data: 12
-        },
-        {
-          label: "Blue",
-          data: 30
-        }
-      ]
+      }
     };
   },
   mounted() {
@@ -80,15 +55,29 @@ export default {
     new Chart(myChartRef, {
       type: "line",
       data: {
-        labels: fast.map(this.chartItemsData, item => item.label, this),
         datasets: [
           {
-            data: fast.map(this.chartItemsData, item => item.data, this),
+            label: this.chartLabel,
+            data: this.chartItemsData,
+            backgroundColor: `${this.lineColor}`,
+            borderColor: `${this.lineColor}`,
             ...this.chartItemAdditionalOptions
           }
         ]
       },
-      options: this.chartOptions
+      options: {
+        ...this.chartOptions,
+        plugins: {
+          title: {
+            display: true,
+            text: this.chartTitle,
+            padding: {
+              top: 10,
+              bottom: 15
+            }
+          }
+        }
+      }
     });
   }
 };
