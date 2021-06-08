@@ -3,7 +3,7 @@
     <header class="stats-dashboard__header">
       <div class="stats-dashboard__header--title">
         <h1 class="title">
-          Статистика по салону
+          Статистика по салонам
         </h1>
       </div>
     </header>
