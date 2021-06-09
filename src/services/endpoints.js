@@ -39,5 +39,9 @@ export const endpoints = {
   },
   record: {
     addRecord: "/record/add-record"
+  },
+  stats: {
+    getRecordWeekStats: "/stats/records-week-stats",
+    getRecordMonthStats: "/stats/records-month-stats"
   }
 };

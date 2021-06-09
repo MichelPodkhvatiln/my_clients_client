@@ -5,6 +5,7 @@ import salonModule from "@/store/modules/salon.module";
 import servicesModule from "@/store/modules/services.module";
 import mastersModule from "@/store/modules/masters.module";
 import recordModule from "@/store/modules/record.module";
+import statsModule from "@/store/modules/stats.module";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     salonModule,
     servicesModule,
     mastersModule,
-    recordModule
+    recordModule,
+    statsModule
   }
 });
